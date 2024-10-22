@@ -1,0 +1,5 @@
+{
+  "buildCommand": "pnpm run db:push && pnpm run build",
+  "devCommand": "pnpm run dev",
+  "installCommand": "pnpm install"
+}
