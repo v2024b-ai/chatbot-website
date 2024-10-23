@@ -31,16 +31,17 @@ export default function RootLayout({
     <html lang="en" className={`${GeistSans.variable}`}>
       <body>
         <TRPCReactProvider>
+          <div className="bg-primary">
           <NavigationMenu>
-            <NavigationMenuList className="bg-secondary">
-              <NavigationMenuItem className="bg-secondary">
+            <NavigationMenuList>
+              <NavigationMenuItem>
                 <Link href="/" legacyBehavior passHref>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>Home</NavigationMenuLink>
+                <NavigationMenuLink className={`${navigationMenuTriggerStyle()} bg-primary`}>Home</NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
 
               <NavigationMenuItem>
-              <NavigationMenuTrigger>Evaluations</NavigationMenuTrigger>
+              <NavigationMenuTrigger className="bg-primary hover:bg-secondary">Evaluations</NavigationMenuTrigger>
               <NavigationMenuContent>
               <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
                 <li className="row-span-3">
@@ -63,7 +64,7 @@ export default function RootLayout({
               </NavigationMenuItem>
 
               <NavigationMenuItem>
-              <NavigationMenuTrigger>Tools</NavigationMenuTrigger>
+              <NavigationMenuTrigger className="bg-primary hover:bg-secondary">Tools</NavigationMenuTrigger>
               <NavigationMenuContent>
               <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
                 <li className="row-span-3">
@@ -86,6 +87,7 @@ export default function RootLayout({
               </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
+          </div>
           {children}
         </TRPCReactProvider>
       </body>
