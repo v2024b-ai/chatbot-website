@@ -31,8 +31,9 @@ export default function RootLayout({
     <html lang="en" className={`${GeistSans.variable}`}>
       <body>
         <TRPCReactProvider>
-          <div className="bg-primary">
+          <div className="bg-primary pt-4">
           <NavigationMenu>
+            <div className="pl-2">
             <NavigationMenuList>
               <NavigationMenuItem>
                 <Link href="/" legacyBehavior passHref>
@@ -86,6 +87,7 @@ export default function RootLayout({
               </NavigationMenuContent>
               </NavigationMenuItem>
             </NavigationMenuList>
+            </div>
           </NavigationMenu>
           </div>
           {children}
