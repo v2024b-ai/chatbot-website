@@ -7,6 +7,7 @@ export const env = createEnv({
    * isn't built with invalid env vars.
    */
   server: {
+    DIRECT_URL: z.string(),
     GEMINI_API_KEY: z.string(),
     DATABASE_URL: z.string().url(),
     NODE_ENV: z
@@ -30,6 +31,7 @@ export const env = createEnv({
   runtimeEnv: {
     GEMINI_API_KEY: process.env.GEMINI_API_KEY,
     DATABASE_URL: process.env.DATABASE_URL,
+    DIRECT_URL: process.env.DIRECT_URL,
     NODE_ENV: process.env.NODE_ENV,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
