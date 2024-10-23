@@ -1,5 +1,5 @@
 import { api, HydrateClient } from "@/trpc/server";
-import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default async function Home() {
   const hello = await api.post.hello({ text: "the ChatVPC Team" });
@@ -12,16 +12,17 @@ export default async function Home() {
           <h1 className="text-5xl font-extrabold tracking-tight sm:text-black">
             Welcome to the <span className="text-white drop-shadow-md">ChatVPC</span> App
           </h1>
+
           <Card>
             <CardHeader>
               <CardTitle>
-              Future work:
+                Future work:
               </CardTitle>
               <CardContent>
-              Nothing is in here yet, but expect really cool stuff soon...
+                Nothing is in here yet, but expect really cool stuff soon...
               </CardContent>
             </CardHeader>
-          </Card>         
+          </Card>
         </div>
       </main>
     </HydrateClient>
