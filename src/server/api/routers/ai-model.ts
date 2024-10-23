@@ -31,4 +31,10 @@ export const modelRoute = createTRPCRouter({
         data: { ...input },
       });
     }),
+
+  getModel: publicProcedure.input(z.string()).query(async ({ input, ctx }) => {
+    return ctx.db.aiEval.findFirst({
+      where: { model: input },
+    });
+  }),
 });
