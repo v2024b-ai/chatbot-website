@@ -19,7 +19,7 @@ import { Button } from "@/components/ui/button";
 
 export function AddModelForm() {
   // API SETUP
-  // const addModel = api.model.addModel.useMutation();
+  const addModel = api.model.addModel.useMutation();
   // eslint-disable-next-line react-hooks/rules-of-hooks
   // Form initializer (like use state)
   const form = useForm<z.infer<typeof addModelInput>>({
@@ -49,8 +49,8 @@ export function AddModelForm() {
 
   //   On submit stuff so when the user submits the form it calls the backend
   function onSubmit(values: z.infer<typeof addModelInput>) {
-    // addModel.mutate(values);
-    return "HELLO";
+    addModel.mutate(values);
+    return;
   }
 
   return (
