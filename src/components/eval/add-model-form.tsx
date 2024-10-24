@@ -15,13 +15,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { addModelInput } from "@/server/api/routers/ai-model";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { Button } from "react-day-picker";
-// import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-// import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 
 export function AddModelForm() {
   // API SETUP
-  const addModel = api.model.addModel.useMutation();
+  // const addModel = api.model.addModel.useMutation();
   // eslint-disable-next-line react-hooks/rules-of-hooks
   // Form initializer (like use state)
   const form = useForm<z.infer<typeof addModelInput>>({
@@ -51,7 +49,8 @@ export function AddModelForm() {
 
   //   On submit stuff so when the user submits the form it calls the backend
   function onSubmit(values: z.infer<typeof addModelInput>) {
-    addModel.mutate(values);
+    // addModel.mutate(values);
+    return "HELLO";
   }
 
   return (

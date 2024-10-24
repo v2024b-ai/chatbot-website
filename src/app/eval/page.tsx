@@ -1,10 +1,7 @@
 import { HydrateClient } from "@/trpc/server";
 import {
   Table,
-  TableBody,
   TableCaption,
-  TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
