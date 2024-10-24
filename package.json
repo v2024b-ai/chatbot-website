@@ -76,6 +76,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@pinecone-database/pinecone": "^4.0.0",
     "@types/eslint": "^8.56.10",
     "@types/node": "^20.14.10",
     "@types/react": "^18.3.3",
