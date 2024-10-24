@@ -2,7 +2,9 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 
 export const addModelInput = z.object({
-  model: z.string(),
+  model: z
+    .string()
+    .min(5, { message: "Model name length must be at least 5 characters." }),
   url: z.string(),
   ppInput: z.number().nullable(),
   ppOutput: z.number().nullable(),
@@ -20,7 +22,7 @@ export const addModelInput = z.object({
   maxInput: z.number().nullable(),
   fileInput: z.boolean().nullable(),
   fileOutput: z.boolean().nullable(),
-  features: z.array(z.string()),
+  features: z.string().nullable(),
 });
 
 export const modelRoute = createTRPCRouter({

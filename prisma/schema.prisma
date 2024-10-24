@@ -47,7 +47,7 @@ model aiEval {
   maxInput           Int?
   fileInput          Boolean?
   fileOutput         Boolean?
-  features           String[]
+  features           String?
 
   @@index([model])
 }
