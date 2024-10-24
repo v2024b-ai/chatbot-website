@@ -40,10 +40,10 @@ ListItem.displayName = "ListItem";
 
 export function NavBar() {
   return (
-    <div className="bg-primary pt-4">
-      <NavigationMenu>
-        <div className="flex w-full items-center justify-between p-2">
-          <NavigationMenuList className="flex space-x-2">
+    <div className="flex justify-between bg-primary pt-4">
+      <div className="pl-4">
+        <NavigationMenu>
+          <NavigationMenuList>
             <NavigationMenuItem>
               <Link href="/" legacyBehavior passHref>
                 <NavigationMenuLink
@@ -109,12 +109,11 @@ export function NavBar() {
               </NavigationMenuContent>
             </NavigationMenuItem>
           </NavigationMenuList>
-
-          <div className="ml-auto">
-            <ModeToggle />
-          </div>
-        </div>
-      </NavigationMenu>
+        </NavigationMenu>
+      </div>
+      <div className="pr-4">
+        <ModeToggle />
+      </div>
     </div>
   );
 }
