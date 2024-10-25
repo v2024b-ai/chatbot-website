@@ -26,20 +26,20 @@ export function AddModelForm() {
     defaultValues: {
       model: "",
       url: "",
-      ppInput: null,
-      ppOutput: null,
+      ppInput: 0,
+      ppOutput: 0,
       termsURL: "",
       ethicalConcern: false,
-      ctxLength: null,
-      modelSize: null,
+      ctxLength: 0,
+      modelSize: 0,
       perplexity: "",
-      bleu: null,
-      rouge: null,
-      meteor: null,
-      inputResponseTime: null,
-      outputResponseTime: null,
-      maxOutput: null,
-      maxInput: null,
+      bleu: 0,
+      rouge: 0,
+      meteor: 0,
+      inputResponseTime: 0,
+      outputResponseTime: 0,
+      maxOutput: 0,
+      maxInput: 0,
       fileInput: false,
       fileOutput: false,
       features: "",
@@ -108,7 +108,7 @@ export function AddModelForm() {
                   <FormItem>
                     <FormLabel>Input Price Per Million Tokens</FormLabel>
                     <FormControl>
-                      <Input placeholder="$..." {...field} />
+                      <Input type="number" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
