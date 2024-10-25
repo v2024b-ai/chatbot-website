@@ -1,6 +1,6 @@
 import { postRouter } from "@/server/api/routers/post";
 import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
-import { modelRoute } from "@/server/api/routers/eval";
+import { modelRoute } from "./routers/ai-model";
 // import { chatRouter } from "./routers/gemini";
 
 /**

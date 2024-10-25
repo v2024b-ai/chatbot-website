@@ -19,6 +19,7 @@ export default function RootLayout({
     <html lang="en" className={`${GeistSans.variable}`}>
       <body>
         <TRPCReactProvider>
+
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
