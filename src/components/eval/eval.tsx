@@ -13,10 +13,20 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addModelInput } from "@/types/modelInput";
 import { Input } from "@/components/ui/input";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { toast } from "@/hooks/use-toast";
 
 export function AddModelForm() {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
   // API SETUP
   const addModel = api.model.addModel.useMutation();
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -29,32 +39,26 @@ export function AddModelForm() {
       ppInput: 0,
       ppOutput: 0,
       termsURL: "",
-      ethicalConcern: false,
       ctxLength: 0,
       modelSize: 0,
-      perplexity: "",
-      bleu: 0,
-      rouge: 0,
-      meteor: 0,
-      inputResponseTime: 0,
-      outputResponseTime: 0,
       maxOutput: 0,
       maxInput: 0,
       fileInput: false,
       fileOutput: false,
-      features: "",
     },
   });
 
   //   On submit stuff so when the user submits the form it calls the backend
   function onSubmit(values: z.infer<typeof addModelInput>) {
     addModel.mutate(values);
-    return;
+    setIsDialogOpen(false);
+    // toast(message:"Form Successfully Submitted");
+    form.reset();
   }
 
   return (
     <>
-      <Dialog>
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogTrigger asChild>
           <Button>Add New Model</Button>
         </DialogTrigger>
@@ -82,7 +86,6 @@ export function AddModelForm() {
                   </FormItem>
                 )}
               ></FormField>
-
               {/*Input for the URL*/}
               <FormField
                 control={form.control}
@@ -92,13 +95,12 @@ export function AddModelForm() {
                   <FormItem>
                     <FormLabel>URL</FormLabel>
                     <FormControl>
-                      <Input placeholder="URL for AI Site" {...field} />
+                      <Input placeholder="https://..." {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               ></FormField>
-
               {/*  Input Price Per Token*/}
               <FormField
                 control={form.control}
@@ -108,13 +110,21 @@ export function AddModelForm() {
                   <FormItem>
                     <FormLabel>Input Price Per Million Tokens</FormLabel>
                     <FormControl>
-                      <Input type="number" {...field} />
+                      <Input
+                        {...field}
+                        onChange={(event) => {
+                          if (isNaN(+event.target.value)) {
+                            field.onChange(field.value);
+                          } else {
+                            field.onChange(+event.target.value);
+                          }
+                        }}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               ></FormField>
-
               {/*  Output Price Per Token*/}
               <FormField
                 control={form.control}
@@ -123,13 +133,22 @@ export function AddModelForm() {
                   <FormItem>
                     <FormLabel>Output Price Per Million Tokens</FormLabel>
                     <FormControl>
-                      <Input placeholder="$..." {...field} />
+                      <Input
+                        placeholder="$..."
+                        {...field}
+                        onChange={(event) => {
+                          if (isNaN(+event.target.value)) {
+                            field.onChange(field.value);
+                          } else {
+                            field.onChange(+event.target.value);
+                          }
+                        }}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               ></FormField>
-
               {/*  Output Price Per Token*/}
               <FormField
                 control={form.control}
@@ -138,13 +157,12 @@ export function AddModelForm() {
                   <FormItem>
                     <FormLabel>Terms URL</FormLabel>
                     <FormControl>
-                      <Input type="url" placeholder="https://..." {...field} />
+                      <Input placeholder="https://..." {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               ></FormField>
-
               {/*  Context Length */}
               <FormField
                 control={form.control}
@@ -153,13 +171,22 @@ export function AddModelForm() {
                   <FormItem>
                     <FormLabel>Context Length</FormLabel>
                     <FormControl>
-                      <Input placeholder="In Tokens" {...field} />
+                      <Input
+                        placeholder="In Tokens"
+                        {...field}
+                        onChange={(event) => {
+                          if (isNaN(+event.target.value)) {
+                            field.onChange(field.value);
+                          } else {
+                            field.onChange(+event.target.value);
+                          }
+                        }}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               ></FormField>
-
               {/*  Model Size */}
               <FormField
                 control={form.control}
@@ -168,48 +195,26 @@ export function AddModelForm() {
                   <FormItem>
                     <FormLabel>Model Size in Billions of Parameters</FormLabel>
                     <FormControl>
-                      <Input placeholder="For 8 Billion Input '8'" {...field} />
+                      <Input
+                        placeholder="For 8 Billion Input '8'"
+                        {...field}
+                        onChange={(event) => {
+                          if (isNaN(+event.target.value)) {
+                            field.onChange(field.value);
+                          } else {
+                            field.onChange(+event.target.value);
+                          }
+                        }}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               ></FormField>
-
-              {/*  Input Response Time */}
-              <FormField
-                control={form.control}
-                name="inputResponseTime"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Input Response Time (ms/1K Tokens)</FormLabel>
-                    <FormControl>
-                      <Input placeholder="..." {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              ></FormField>
-
-              {/*Output Response Time*/}
-              <FormField
-                control={form.control}
-                name="outputResponseTime"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Output Response Time (ms/1K Tokens)</FormLabel>
-                    <FormControl>
-                      <Input placeholder="..." {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              ></FormField>
-
-              <Button type="submit" className="justify-items-center">
-                Send
-              </Button>
+              <Button>Send</Button>
             </form>
           </Form>
+          <DialogFooter></DialogFooter>
         </DialogContent>
       </Dialog>
     </>
