@@ -14,3 +14,8 @@ export function capitalizeFirstLetter(val: string) {
 export function replicateData<T>(data: T[], count: number): T[] {
   return Array(count).fill(data).flat();
 }
+
+// takes in an object and returns an array of strings, representing the keys of the obj
+export function keysOf<T extends object>(obj: T): Array<keyof T> {
+  return Object.keys(obj) as Array<keyof T>;
+}
