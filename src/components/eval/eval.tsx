@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -27,20 +26,20 @@ export function AddModelForm() {
     defaultValues: {
       model: "",
       url: "",
-      ppInput: 0,
-      ppOutput: 0,
+      ppInput: null,
+      ppOutput: null,
       termsURL: "",
       ethicalConcern: false,
-      ctxLength: 0,
-      modelSize: 0,
+      ctxLength: null,
+      modelSize: null,
       perplexity: "",
-      bleu: 0,
-      rouge: 0,
-      meteor: 0,
-      inputResponseTime: 0,
-      outputResponseTime: 0,
-      maxOutput: 0,
-      maxInput: 0,
+      bleu: null,
+      rouge: null,
+      meteor: null,
+      inputResponseTime: null,
+      outputResponseTime: null,
+      maxOutput: null,
+      maxInput: null,
       fileInput: false,
       fileOutput: false,
       features: "",
@@ -57,13 +56,13 @@ export function AddModelForm() {
     <>
       <Dialog>
         <DialogTrigger asChild>
-          <Button>Open</Button>
+          <Button>Add New Model</Button>
         </DialogTrigger>
         <DialogContent>
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className={"space-y-6"}
+              className={"space-y-1"}
             >
               {/*Input for the */}
               <FormField
@@ -75,13 +74,10 @@ export function AddModelForm() {
                     <FormLabel>Model Name</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Model Name (ChatGPT 4o-mini...)"
+                        placeholder="ChatGPT 4o-mini, Gemini 1.5 Flash, ..."
                         {...field}
                       />
                     </FormControl>
-                    <FormDescription>
-                      Please enter the name and version of the LLM Model
-                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -94,7 +90,7 @@ export function AddModelForm() {
                 render={({ field }) => (
                   // Enter the Model name
                   <FormItem>
-                    <FormLabel>Model Name</FormLabel>
+                    <FormLabel>URL</FormLabel>
                     <FormControl>
                       <Input placeholder="URL for AI Site" {...field} />
                     </FormControl>
@@ -102,6 +98,116 @@ export function AddModelForm() {
                   </FormItem>
                 )}
               ></FormField>
+
+              {/*  Input Price Per Token*/}
+              <FormField
+                control={form.control}
+                name="ppInput"
+                render={({ field }) => (
+                  // Enter the Model name
+                  <FormItem>
+                    <FormLabel>Input Price Per Million Tokens</FormLabel>
+                    <FormControl>
+                      <Input placeholder="$..." {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              ></FormField>
+
+              {/*  Output Price Per Token*/}
+              <FormField
+                control={form.control}
+                name="ppOutput"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Output Price Per Million Tokens</FormLabel>
+                    <FormControl>
+                      <Input placeholder="$..." {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              ></FormField>
+
+              {/*  Output Price Per Token*/}
+              <FormField
+                control={form.control}
+                name="termsURL"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Terms URL</FormLabel>
+                    <FormControl>
+                      <Input type="url" placeholder="https://..." {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              ></FormField>
+
+              {/*  Context Length */}
+              <FormField
+                control={form.control}
+                name="ctxLength"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Context Length</FormLabel>
+                    <FormControl>
+                      <Input placeholder="In Tokens" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              ></FormField>
+
+              {/*  Model Size */}
+              <FormField
+                control={form.control}
+                name="modelSize"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Model Size in Billions of Parameters</FormLabel>
+                    <FormControl>
+                      <Input placeholder="For 8 Billion Input '8'" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              ></FormField>
+
+              {/*  Input Response Time */}
+              <FormField
+                control={form.control}
+                name="inputResponseTime"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Input Response Time (ms/1K Tokens)</FormLabel>
+                    <FormControl>
+                      <Input placeholder="..." {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              ></FormField>
+
+              {/*Output Response Time*/}
+              <FormField
+                control={form.control}
+                name="outputResponseTime"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Output Response Time (ms/1K Tokens)</FormLabel>
+                    <FormControl>
+                      <Input placeholder="..." {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              ></FormField>
+
+              <Button type="submit" className="justify-items-center">
+                Send
+              </Button>
             </form>
           </Form>
         </DialogContent>
