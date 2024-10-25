@@ -8,6 +8,7 @@ export const env = createEnv({
    */
   server: {
     DIRECT_URL: z.string(),
+    PINECONE_API_KEY: z.string(),
     GEMINI_API_KEY: z.string(),
     DATABASE_URL: z.string().url(),
     NODE_ENV: z
@@ -29,6 +30,7 @@ export const env = createEnv({
    * middlewares) or client-side so we need to destruct manually.
    */
   runtimeEnv: {
+    PINECONE_API_KEY: process.env.NEXT_PUBLIC_PINECONE_API_KEY,
     GEMINI_API_KEY: process.env.GEMINI_API_KEY,
     DATABASE_URL: process.env.DATABASE_URL,
     DIRECT_URL: process.env.DIRECT_URL,
