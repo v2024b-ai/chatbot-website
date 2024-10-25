@@ -34,6 +34,9 @@ export function DataTableViewOptions<TData>({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[150px]">
         <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
+        <DropdownMenuCheckboxItem onCheckedChange={() => table.toggleAllColumnsVisible(true)}>
+          TOGGLE ALL
+        </DropdownMenuCheckboxItem>
         <DropdownMenuSeparator />
         {table
           .getAllColumns()
@@ -54,6 +57,6 @@ export function DataTableViewOptions<TData>({
             )
           })}
       </DropdownMenuContent>
-    </DropdownMenu>
+    </DropdownMenu >
   )
 }
