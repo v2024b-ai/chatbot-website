@@ -8,9 +8,9 @@ export default function EvalPage() {
 
     const { data } = api.model.getAllModels.useQuery();
 
-    if (!data) return
+    // if (!data) return
 
     return (
-        <DataTable columns={ModelColumns} data={replicateData(data, 50)} filterByString="model" />
+        <DataTable columns={ModelColumns} data={data ? replicateData(data, 50) : {}} filterByString="model" />
     )
 };

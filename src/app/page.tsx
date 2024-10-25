@@ -12,21 +12,16 @@ export default async function Home() {
 
   return (
     <HydrateClient>
-      <main className="flex min-h-screen flex-col items-center justify-center  text-white">
+      <main className="flex min-h-screen flex-col items-center justify-center">
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
-          <h1 className="text-5xl font-extrabold tracking-tight text-white dark:text-black">
-            Welcome to the{" "}
-            <span className="text-black drop-shadow-md dark:text-white">
-              ChatVPC
-            </span>{" "}
-            App
+          <h1 className="text-5xl font-extrabold tracking-tightk">
+            Welcome to the ChatVPC App
           </h1>
           <Card>
             <CardHeader>
               <CardTitle>
                 Future work:
               </CardTitle>
-              <CardTitle>Future work:</CardTitle>
               <CardContent>
                 Nothing is in here yet, but expect really cool stuff soon...
               </CardContent>

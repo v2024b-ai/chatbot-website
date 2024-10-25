@@ -40,7 +40,7 @@ ListItem.displayName = "ListItem";
 
 export function NavBar() {
   return (
-    <div className="flex justify-between bg-primary pt-4">
+    <div className="flex justify-between bg-primary p-4 sticky top-0">
       <div className="pl-4">
         <NavigationMenu>
           <NavigationMenuList>
