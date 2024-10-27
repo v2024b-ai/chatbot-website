@@ -1,36 +1,40 @@
-"use client"
+"use client";
 
-import { Cross2Icon } from "@radix-ui/react-icons"
-import { Table } from "@tanstack/react-table"
+import { Cross2Icon } from "@radix-ui/react-icons";
+import { Table } from "@tanstack/react-table";
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { DataTableViewOptions } from "@/components/data-table/data-table-view-options"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
+import { AddModelForm } from "@/components/eval/eval";
 
 // import { DataTableFacetedFilter } from "./data-table-faceted-filter"
 
 interface DataTableToolbarProps<TData> {
-  table: Table<TData>
-  filterByString: string
+  table: Table<TData>;
+  filterByString: string;
 }
 
 export function DataTableToolbar<TData>({
   table,
-  filterByString
+  filterByString,
 }: DataTableToolbarProps<TData>) {
-  const isFiltered = table.getState().columnFilters.length > 0
+  const isFiltered = table.getState().columnFilters.length > 0;
 
   return (
     <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center space-x-2">
         <Input
           placeholder="Filter..."
-          value={(table.getColumn(filterByString)?.getFilterValue() as string) ?? ""}
+          value={
+            (table.getColumn(filterByString)?.getFilterValue() as string) ?? ""
+          }
           onChange={(event) =>
             table.getColumn(filterByString)?.setFilterValue(event.target.value)
           }
           className="h-8 w-[150px] lg:w-[250px]"
         />
+        <AddModelForm />
         {isFiltered && (
           <Button
             variant="ghost"
@@ -44,5 +48,5 @@ export function DataTableToolbar<TData>({
       </div>
       <DataTableViewOptions table={table} />
     </div>
-  )
+  );
 }

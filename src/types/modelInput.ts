@@ -5,18 +5,15 @@ export const allTable = z.object({
     .string()
     .min(5, { message: "Model name length must be at least 5 characters." }),
   url: z.string().url("Please input a URL"),
-  ppInput: z.number().nullable(),
-  ppOutput: z.number().nullable(),
+  ppInput: z.number(),
+  ppOutput: z.number(),
   termsURL: z.string().url("Please input a URL"),
-  ctxLength: z
-    .number()
-    .min(0, "Must have a context length greater than 1")
-    .nullable(),
+  ctxLength: z.number().min(0, "Must have a context length greater than 1"),
   modelSize: z.number(),
-  maxOutput: z.number().nullable(),
-  maxInput: z.number().nullable(),
-  fileInput: z.boolean().nullable(),
-  fileOutput: z.boolean().nullable(),
+  maxOutput: z.number(),
+  maxInput: z.number(),
+  fileInput: z.boolean(),
+  fileOutput: z.boolean(),
   perplexity: z.string().nullable(),
   bleu: z.number().nullable(),
   rouge: z.number().nullable(),
