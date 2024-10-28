@@ -23,9 +23,11 @@ export default function RootLayout({
             defaultTheme="system"
             enableSystem
           >
-            <NavBar />
-            <div className="p-4">
-              {children}
+            <div className="w-full min-h-screen">
+              <NavBar />
+              <div className="bg-muted/40">
+                {children}
+              </div>
             </div>
           </ThemeProvider>
         </TRPCReactProvider>
