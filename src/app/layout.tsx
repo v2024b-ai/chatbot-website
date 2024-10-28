@@ -23,9 +23,9 @@ export default function RootLayout({
             defaultTheme="system"
             enableSystem
           >
-            <div className="w-full min-h-screen">
+            <div className="flex flex-col w-full min-h-screen">
               <NavBar />
-              <div className="bg-muted/40">
+              <div className="flex-grow bg-muted/40">
                 {children}
               </div>
             </div>
