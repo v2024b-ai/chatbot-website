@@ -11,7 +11,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { allTable } from "@/types/modelInput";
+import { modelInfo } from "@/types/ai/models/model-eval-info-types";
 import { Input } from "@/components/ui/input";
 import {
   Dialog,
@@ -47,8 +47,8 @@ export function AddModelForm() {
   });
   // eslint-disable-next-line react-hooks/rules-of-hooks
   // Form initializer (like use state)
-  const form = useForm<z.infer<typeof allTable>>({
-    resolver: zodResolver(allTable),
+  const form = useForm<z.infer<typeof modelInfo>>({
+    resolver: zodResolver(modelInfo),
     defaultValues: {
       model: "",
       url: "",
@@ -71,7 +71,7 @@ export function AddModelForm() {
   });
 
   //   On submit stuff so when the user submits the form it calls the backend
-  function onSubmit(values: z.infer<typeof allTable>) {
+  function onSubmit(values: z.infer<typeof modelInfo>) {
     addModel.mutate(values);
   }
 
