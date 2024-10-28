@@ -14,12 +14,12 @@ import {
 
 const ListItem = React.forwardRef<
   React.ElementRef<"a">,
-  React.ComponentPropsWithoutRef<"a">
+  React.ComponentPropsWithoutRef<"a"> & { title: string, href: string }
 >(({ className, title, children, ...props }, ref) => {
   return (
     <li>
       <NavigationMenuLink asChild>
-        <a
+        <Link
           ref={ref}
           className={cn(
             "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
@@ -31,7 +31,7 @@ const ListItem = React.forwardRef<
           <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
             {children}
           </p>
-        </a>
+        </Link>
       </NavigationMenuLink>
     </li>
   );
@@ -61,7 +61,7 @@ export function NavBar() {
                 <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
                   <li className="row-span-3">
                     <NavigationMenuLink asChild>
-                      <a
+                      <Link
                         className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
                         href="/eval"
                       >
@@ -72,9 +72,12 @@ export function NavBar() {
                           See what we found about different Large Language
                           Models
                         </p>
-                      </a>
+                      </Link>
                     </NavigationMenuLink>
                   </li>
+                  <ListItem href="/eval/add-model" title="Add A Model">
+                    Test and add a model to our database!
+                  </ListItem>
                 </ul>
               </NavigationMenuContent>
             </NavigationMenuItem>
@@ -86,7 +89,7 @@ export function NavBar() {
                 <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
                   <li className="row-span-3">
                     <NavigationMenuLink asChild>
-                      <a
+                      <Link
                         className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
                         href="/tools"
                       >
@@ -97,7 +100,7 @@ export function NavBar() {
                           Look at the awesome tools that we have made for future
                           projects
                         </p>
-                      </a>
+                      </Link>
                     </NavigationMenuLink>
                   </li>
                   <ListItem href="/tools/chatbot" title="Chatbot">
