@@ -2,7 +2,6 @@
 import { DataTable } from "@/components/data-table/data-table";
 import { ModelColumns } from "./eval-columns";
 import { api } from "@/trpc/react";
-import { replicateData } from "@/lib/utils";
 import { LoadingSpinner } from "@/components/loading-spinner";
 import { Separator } from "@/components/ui/separator";
 import { AddModelForm } from "@/components/eval/eval";
@@ -28,7 +27,7 @@ export default function EvalPage() {
       <Separator className="my-6" />
       <DataTable
         columns={ModelColumns}
-        data={replicateData(data, 50)}
+        data={data}
         filterByString="model"
       />
     </main>
