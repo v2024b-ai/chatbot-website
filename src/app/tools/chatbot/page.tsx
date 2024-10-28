@@ -1,11 +1,11 @@
-import { HydrateClient } from "@/trpc/server";
+import { CenterInScreen } from "@/components/center-in-screen"
 
-export default async function ChatbotPage() {
+export default function ChatbotPage() {
   return (
-    <HydrateClient>
-      <main className="flex min-h-screen flex-col items-center justify-center bg-primary bg-gradient-to-b from-primary to-secondary text-white">
+    <main className="flex  flex-col items-center justify-center ">
+      <CenterInScreen>
         <p> Non c&apos;è ancora niente!</p>
-      </main>
-    </HydrateClient>
+      </CenterInScreen>
+    </main>
   );
 }
