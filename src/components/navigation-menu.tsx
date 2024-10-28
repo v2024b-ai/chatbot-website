@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from "react"
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { ModeToggle } from "@/components/theme-toggle";
@@ -40,22 +40,21 @@ ListItem.displayName = "ListItem";
 
 export function NavBar() {
   return (
-    <div className="flex justify-between bg-primary pt-4">
+    <header className="sticky top-0 z-30 border-b flex justify-between items-center gap-4 p-4 ">
       <div className="pl-4">
         <NavigationMenu>
           <NavigationMenuList>
             <NavigationMenuItem>
               <Link href="/" legacyBehavior passHref>
                 <NavigationMenuLink
-                  className={`${navigationMenuTriggerStyle()} bg-primary`}
+                  className={`${navigationMenuTriggerStyle()}`}
                 >
                   Home
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
-
             <NavigationMenuItem>
-              <NavigationMenuTrigger className="bg-primary hover:bg-secondary">
+              <NavigationMenuTrigger >
                 Evaluations
               </NavigationMenuTrigger>
               <NavigationMenuContent>
@@ -79,9 +78,8 @@ export function NavBar() {
                 </ul>
               </NavigationMenuContent>
             </NavigationMenuItem>
-
             <NavigationMenuItem>
-              <NavigationMenuTrigger className="bg-primary hover:bg-secondary">
+              <NavigationMenuTrigger >
                 Tools
               </NavigationMenuTrigger>
               <NavigationMenuContent>
@@ -114,6 +112,6 @@ export function NavBar() {
       <div className="pr-4">
         <ModeToggle />
       </div>
-    </div>
+    </header>
   );
 }
