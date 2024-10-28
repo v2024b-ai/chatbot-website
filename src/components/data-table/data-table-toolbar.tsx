@@ -6,7 +6,6 @@ import { Table } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
-import { AddModelForm } from "@/components/eval/eval";
 
 // import { DataTableFacetedFilter } from "./data-table-faceted-filter"
 
@@ -34,7 +33,6 @@ export function DataTableToolbar<TData>({
           }
           className="h-8 w-[150px] lg:w-[250px]"
         />
-        <AddModelForm />
         {isFiltered && (
           <Button
             variant="ghost"

@@ -123,64 +123,7 @@ export function AddModelForm() {
                   </FormItem>
                 )}
               ></FormField>
-              {/*  Input Price Per Token*/}
-              <FormField
-                control={form.control}
-                name="ppInput"
-                render={({ field }) => (
-                  // Enter the Model name
-                  <FormItem>
-                    <FormLabel>Input Price Per Million Tokens</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        onChange={(event) => {
-                          if (event.target.value == field.value + ".") {
-                            field.onChange(event.target.value);
-                            return;
-                          } else if (isNaN(+event.target.value)) {
-                            field.onChange(field.value);
-                            return;
-                          } else {
-                            field.onChange(+event.target.value);
-                            return;
-                          }
-                        }}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              ></FormField>
-              {/*  Output Price Per Token*/}
-              <FormField
-                control={form.control}
-                name="ppOutput"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Output Price Per Million Tokens</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="$..."
-                        {...field}
-                        onChange={(event) => {
-                          if (event.target.value == field.value + ".") {
-                            field.onChange(event.target.value);
-                            return;
-                          } else if (isNaN(+event.target.value)) {
-                            field.onChange(field.value);
-                            return;
-                          } else {
-                            field.onChange(+event.target.value);
-                            return;
-                          }
-                        }}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              ></FormField>
+
               {/*  Output Price Per Token*/}
               <FormField
                 control={form.control}
@@ -195,159 +138,225 @@ export function AddModelForm() {
                   </FormItem>
                 )}
               ></FormField>
-              {/*  Context Length */}
-              <FormField
-                control={form.control}
-                name="ctxLength"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Context Length</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="In Tokens"
-                        {...field}
-                        onChange={(event) => {
-                          if (event.target.value == field.value + ".") {
-                            field.onChange(event.target.value);
-                            return;
-                          } else if (isNaN(+event.target.value)) {
-                            field.onChange(field.value);
-                            return;
-                          } else {
-                            field.onChange(+event.target.value);
-                            return;
-                          }
-                        }}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              ></FormField>
-              {/*  Model Size */}
-              <FormField
-                control={form.control}
-                name="modelSize"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Model Size in Billions of Parameters</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="For 8 Billion Input '8'"
-                        {...field}
-                        onChange={(event) => {
-                          if (event.target.value == field.value + ".") {
-                            field.onChange(event.target.value);
-                            return;
-                          } else if (isNaN(+event.target.value)) {
-                            field.onChange(field.value);
-                            return;
-                          } else {
-                            field.onChange(+event.target.value);
-                            return;
-                          }
-                        }}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              ></FormField>
 
-              {/*  Max Input */}
-              <FormField
-                control={form.control}
-                name="maxInput"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Max Input</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Max Input"
-                        {...field}
-                        onChange={(event) => {
-                          if (event.target.value == field.value + ".") {
-                            field.onChange(event.target.value);
-                            return;
-                          } else if (isNaN(+event.target.value)) {
-                            field.onChange(field.value);
-                            return;
-                          } else {
-                            field.onChange(+event.target.value);
-                            return;
-                          }
-                        }}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              ></FormField>
+              <div className={"flex flex-row justify-evenly"}>
+                {/*  Input Price Per Token*/}
+                <FormField
+                  control={form.control}
+                  name="ppInput"
+                  render={({ field }) => (
+                    // Enter the Model name
+                    <FormItem>
+                      <FormLabel>Input $/M Tokens</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          onChange={(event) => {
+                            if (event.target.value == field.value + ".") {
+                              field.onChange(event.target.value);
+                              return;
+                            } else if (isNaN(+event.target.value)) {
+                              field.onChange(field.value);
+                              return;
+                            } else {
+                              field.onChange(+event.target.value);
+                              return;
+                            }
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                ></FormField>
+                {/*  Output Price Per Token*/}
+                <FormField
+                  control={form.control}
+                  name="ppOutput"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Output $/M Tokens</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="$..."
+                          {...field}
+                          onChange={(event) => {
+                            if (event.target.value == field.value + ".") {
+                              field.onChange(event.target.value);
+                              return;
+                            } else if (isNaN(+event.target.value)) {
+                              field.onChange(field.value);
+                              return;
+                            } else {
+                              field.onChange(+event.target.value);
+                              return;
+                            }
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                ></FormField>
 
-              {/*Max Output*/}
-              <FormField
-                control={form.control}
-                name="maxOutput"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Max Input</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Max Output"
-                        {...field}
-                        onChange={(event) => {
-                          if (event.target.value == field.value + ".") {
-                            field.onChange(event.target.value);
-                            return;
-                          } else if (isNaN(+event.target.value)) {
-                            field.onChange(field.value);
-                            return;
-                          } else {
-                            field.onChange(+event.target.value);
-                            return;
-                          }
-                        }}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              ></FormField>
+                {/*  Context Length */}
+                <FormField
+                  control={form.control}
+                  name="ctxLength"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Context Length</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="In Tokens"
+                          {...field}
+                          onChange={(event) => {
+                            if (event.target.value == field.value + ".") {
+                              field.onChange(event.target.value);
+                              return;
+                            } else if (isNaN(+event.target.value)) {
+                              field.onChange(field.value);
+                              return;
+                            } else {
+                              field.onChange(+event.target.value);
+                              return;
+                            }
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                ></FormField>
+              </div>
 
+              <div className={"flex flex-row justify-evenly"}>
+                {/*  Model Size */}
+                <FormField
+                  control={form.control}
+                  name="modelSize"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Model Size in Billions</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="For 8 Billion Input '8'"
+                          {...field}
+                          onChange={(event) => {
+                            if (event.target.value == field.value + ".") {
+                              field.onChange(event.target.value);
+                              return;
+                            } else if (isNaN(+event.target.value)) {
+                              field.onChange(field.value);
+                              return;
+                            } else {
+                              field.onChange(+event.target.value);
+                              return;
+                            }
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                ></FormField>
+
+                {/*  Max Input */}
+                <FormField
+                  control={form.control}
+                  name="maxInput"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Max Input</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Max Input"
+                          {...field}
+                          onChange={(event) => {
+                            if (event.target.value == field.value + ".") {
+                              field.onChange(event.target.value);
+                              return;
+                            } else if (isNaN(+event.target.value)) {
+                              field.onChange(field.value);
+                              return;
+                            } else {
+                              field.onChange(+event.target.value);
+                              return;
+                            }
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                ></FormField>
+
+                {/*Max Output*/}
+                <FormField
+                  control={form.control}
+                  name="maxOutput"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Max Output</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Max Output"
+                          {...field}
+                          onChange={(event) => {
+                            if (event.target.value == field.value + ".") {
+                              field.onChange(event.target.value);
+                              return;
+                            } else if (isNaN(+event.target.value)) {
+                              field.onChange(field.value);
+                              return;
+                            } else {
+                              field.onChange(+event.target.value);
+                              return;
+                            }
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                ></FormField>
+              </div>
               {/*File Input*/}
-              <FormField
-                control={form.control}
-                name="fileInput"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                    <FormLabel>Does this take file input?</FormLabel>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              ></FormField>
+              <div className={"flex flex-row space-x-4 p-2"}>
+                <FormField
+                  control={form.control}
+                  name="fileInput"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <FormLabel> Does this take file input?</FormLabel>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                ></FormField>
 
-              <FormField
-                control={form.control}
-                name="fileOutput"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                    <FormLabel>Does this output a file?</FormLabel>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              ></FormField>
+                <FormField
+                  control={form.control}
+                  name="fileOutput"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <FormLabel> Does this output a file?</FormLabel>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                ></FormField>
+              </div>
 
               <Button>Send</Button>
             </form>
