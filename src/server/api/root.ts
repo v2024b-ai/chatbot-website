@@ -1,5 +1,6 @@
 import { postRouter } from "@/server/api/routers/post";
 import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
+import { pineconeRouter } from "@/server/api/routers/pinecone";
 import { modelRoute } from "./routers/ai-model";
 // import { chatRouter } from "./routers/gemini";
 
@@ -11,6 +12,7 @@ import { modelRoute } from "./routers/ai-model";
 export const appRouter = createTRPCRouter({
   post: postRouter,
   model: modelRoute,
+  pinecone: pineconeRouter,
   // chat: chatRouter,
 });
 
