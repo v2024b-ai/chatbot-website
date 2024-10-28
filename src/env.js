@@ -8,6 +8,7 @@ export const env = createEnv({
    */
   server: {
     DIRECT_URL: z.string(),
+    PINECONE_API_KEY: z.string(),
     GEMINI_API_KEY: z.string(),
     DATABASE_URL: z.string().url(),
     NODE_ENV: z
@@ -18,10 +19,10 @@ export const env = createEnv({
   /**
    * Specify your client-side environment variables schema here. This way you can ensure the app
    * isn't built with invalid env vars. To expose them to the client, prefix them with
-   * `NEXT_PUBLIC_`.
+   * ``.
    */
   client: {
-    // NEXT_PUBLIC_CLIENTVAR: z.string(),
+    // CLIENTVAR: z.string(),
   },
 
   /**
@@ -29,11 +30,12 @@ export const env = createEnv({
    * middlewares) or client-side so we need to destruct manually.
    */
   runtimeEnv: {
+    PINECONE_API_KEY: process.env.PINECONE_API_KEY,
     GEMINI_API_KEY: process.env.GEMINI_API_KEY,
     DATABASE_URL: process.env.DATABASE_URL,
     DIRECT_URL: process.env.DIRECT_URL,
     NODE_ENV: process.env.NODE_ENV,
-    // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
+    // CLIENTVAR: process.env.CLIENTVAR,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

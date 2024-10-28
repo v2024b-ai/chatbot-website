@@ -24,11 +24,12 @@ export default function RootLayout({
             attribute="class"
             defaultTheme="system"
             enableSystem
-            disableTransitionOnChange
           >
-            <div className="flex min-h-screen w-full flex-col">
+            <div className="flex flex-col w-full min-h-screen">
               <NavBar />
-              <div className="flex-grow bg-muted/40">{children}</div>
+              <div className="flex-grow bg-muted/40">
+                {children}
+              </div>
             </div>
           </ThemeProvider>
         </TRPCReactProvider>
