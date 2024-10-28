@@ -1,5 +1,8 @@
+import { AddModelForm } from "@/components/eval/eval"
 
 export default function AddModelPage() {
+
+  const prompt = "some prompt"
 
   return (
     <div className="max-w-7xl mx-auto p-6  rounded-lg shadow-md space-y-6 ">
@@ -50,12 +53,16 @@ export default function AddModelPage() {
         <p>Then, copy the following prompt and query the model based on that:</p>
 
         <pre className="bg-gray-100 p-4 rounded-md border text-gray-700">
-          add query here
+          {prompt}
         </pre>
 
         <p>Then, record the output of the model.</p>
       </section>
 
+      <section className="space-y-4">
+        <h2 className="text-2xl font-semibold">That&apos;s it! You&apos;re ready to submit a model!</h2>
+        <AddModelForm />
+      </section>
     </div>
   )
 }

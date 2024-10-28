@@ -1,10 +1,10 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
-import { modelInfo } from "@/types/ai/models/model-eval-info-types";
+import { addModelSchema } from "@/types/ai/models/model-eval-info-types";
 
 export const modelRoute = createTRPCRouter({
   addModel: publicProcedure
-    .input(modelInfo)
+    .input(addModelSchema)
     .mutation(async ({ input, ctx }) => {
       return ctx.db.aiEval.create({
         data: { ...input },

@@ -1,6 +1,5 @@
 "use client";
 import { api } from "@/trpc/react";
-import { z } from "zod";
 import { useForm } from "react-hook-form";
 import {
   Form,
@@ -11,7 +10,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { modelInfo } from "@/types/ai/models/model-eval-info-types";
+import { addModelSchema, AddModelSchema } from "@/types/ai/models/model-eval-info-types";
 import { Input } from "@/components/ui/input";
 import {
   Dialog,
@@ -23,6 +22,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Textarea } from "../ui/textarea";
 
 export function AddModelForm() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -47,8 +47,8 @@ export function AddModelForm() {
   });
   // eslint-disable-next-line react-hooks/rules-of-hooks
   // Form initializer (like use state)
-  const form = useForm<z.infer<typeof modelInfo>>({
-    resolver: zodResolver(modelInfo),
+  const form = useForm<AddModelSchema>({
+    resolver: zodResolver(addModelSchema),
     defaultValues: {
       model: "",
       url: "",
@@ -62,16 +62,12 @@ export function AddModelForm() {
       fileInput: false,
       fileOutput: false,
       perplexity: "",
-      bleu: 0,
-      rouge: 0,
-      meteor: 0,
-      inputResponseTime: 0,
       outputResponseTime: 0,
     },
   });
 
   //   On submit stuff so when the user submits the form it calls the backend
-  function onSubmit(values: z.infer<typeof modelInfo>) {
+  function onSubmit(values: AddModelSchema) {
     addModel.mutate(values);
   }
 
@@ -81,7 +77,7 @@ export function AddModelForm() {
         <DialogTrigger asChild>
           <Button>Add New Model</Button>
         </DialogTrigger>
-        <DialogContent>
+        <DialogContent className="w-full">
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
@@ -136,7 +132,7 @@ export function AddModelForm() {
                 )}
               ></FormField>
 
-              <div className={"flex flex-row justify-evenly"}>
+              <div className={"flex flex-row justify-evenly space-x-2"}>
                 {/*  Input Price Per Token*/}
                 <FormField
                   control={form.control}
@@ -227,7 +223,7 @@ export function AddModelForm() {
                 ></FormField>
               </div>
 
-              <div className={"flex flex-row justify-evenly"}>
+              <div className={"flex flex-row justify-evenly space-x-2"}>
                 {/*  Model Size */}
                 <FormField
                   control={form.control}
@@ -318,6 +314,17 @@ export function AddModelForm() {
                   )}
                 ></FormField>
               </div>
+
+              <FormField control={form.control} name='modelOutput' render={({ field }) => (
+
+                <FormItem>
+                  <FormLabel>Your Model&apos;s output</FormLabel>
+                  <FormControl>
+                    <Textarea {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
               {/*File Input*/}
               <div className={"flex flex-row space-x-4 p-2"}>
                 <FormField
@@ -355,7 +362,7 @@ export function AddModelForm() {
                 ></FormField>
               </div>
 
-              <Button>Send</Button>
+              <Button className="w-full">Send</Button>
             </form>
           </Form>
           <DialogFooter></DialogFooter>
