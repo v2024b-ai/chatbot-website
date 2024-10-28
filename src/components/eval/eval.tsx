@@ -11,21 +11,18 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { addModelInput, allTable } from "@/types/modelInput";
+import { allTable } from "@/types/modelInput";
 import { Input } from "@/components/ui/input";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogFooter,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { toast, useToast } from "@/hooks/use-toast";
-import { ToastAction } from "@/components/ui/toast";
+import { useToast } from "@/hooks/use-toast";
 import { Checkbox } from "@/components/ui/checkbox";
-// import { toast } from "@/hooks/use-toast";
 
 export function AddModelForm() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -34,7 +31,6 @@ export function AddModelForm() {
   const addModel = api.model.addModel.useMutation({
     onSuccess: () => {
       setIsDialogOpen(false);
-      // toast(message:"Form Successfully Submitted");
       form.reset();
 
       toast({
@@ -45,6 +41,7 @@ export function AddModelForm() {
     onError: () => {
       toast({
         title: "An entry with the same name or url already exists",
+        variant: "destructive",
       });
     },
   });

@@ -19,18 +19,16 @@ export default function RootLayout({
     <html lang="en" className={`${GeistSans.variable}`}>
       <body>
         <TRPCReactProvider>
-
+          <Toaster />
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
             enableSystem
             disableTransitionOnChange
           >
-            <div className="flex flex-col w-full min-h-screen">
+            <div className="flex min-h-screen w-full flex-col">
               <NavBar />
-              <div className="flex-grow bg-muted/40">
-                {children}
-              </div>
+              <div className="flex-grow bg-muted/40">{children}</div>
             </div>
           </ThemeProvider>
         </TRPCReactProvider>
