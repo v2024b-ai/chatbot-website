@@ -9,7 +9,6 @@ import { NavBar } from "@/components/navigation-menu";
 export const metadata: Metadata = {
   title: "ChatVPC",
   description: "An IQP Project from WPI",
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
 export default function RootLayout({
@@ -19,15 +18,17 @@ export default function RootLayout({
     <html lang="en" className={`${GeistSans.variable}`}>
       <body>
         <TRPCReactProvider>
-
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
             enableSystem
-            disableTransitionOnChange
           >
-            <NavBar />
-            {children}
+            <div className="flex flex-col w-full min-h-screen">
+              <NavBar />
+              <div className="flex-grow bg-muted/40">
+                {children}
+              </div>
+            </div>
           </ThemeProvider>
         </TRPCReactProvider>
       </body>
