@@ -6,7 +6,8 @@ import { uploadFileData } from "@/types/ai/gemini";
 export const chatRouter = createTRPCRouter({
   text: publicProcedure.input(z.string()).mutation(async ({ input }) => {
     const gemini = new Gemini();
-    return gemini.prompt(input);
+    const output = await gemini.prompt(input);
+    return output;
   }),
 
   uploadFile: publicProcedure

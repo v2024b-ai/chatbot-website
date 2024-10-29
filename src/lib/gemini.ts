@@ -18,7 +18,7 @@ export class Gemini {
   // only takes text
   async prompt(text: string) {
     const result = await this.Model.generateContent(text);
-    return result.response.text;
+    return result.response.text();
   }
 
   // takes text (prompt) and FileData[], which is returned by the upload() method

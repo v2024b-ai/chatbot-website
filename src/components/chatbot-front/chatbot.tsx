@@ -20,9 +20,10 @@ import { useEffect, useRef, useState } from "react";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import CodeDisplayBlock from "@/components/chatbot-front/code-display-block";
-import { wait } from "next/dist/lib/wait";
+import { api } from "@/trpc/react";
 
 export default function ChatSupport() {
+  const gemini = api.chat.text.useMutation();
   const [isGenerating, setIsGenerating] = useState(false);
   let id = 0;
   const {
@@ -30,7 +31,6 @@ export default function ChatSupport() {
     setMessages,
     input,
     handleInputChange,
-    handleSubmit,
     isLoading,
   } = useChat({
     onResponse(response) {
@@ -56,7 +56,11 @@ export default function ChatSupport() {
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+
+
     setIsGenerating(true);
+
     // Create the message that you want to append to messages
     // need to use setMessages
     setMessages([
@@ -64,6 +68,22 @@ export default function ChatSupport() {
       { id: id.toString(), role: `user`, content: input },
     ]);
     id++;
+
+    await gemini.mutateAsync(input);
+    const geminiOutput = gemini.data;
+
+    if (!geminiOutput) {
+      setIsGenerating(false)
+      return
+    }
+
+    setMessages([
+      ...messages,
+      { id: id.toString(), role: `assistant`, content: geminiOutput },
+    ]);
+
+    id++
+    setIsGenerating(false)
     // handleSubmit(e);
   };
 
@@ -76,9 +96,24 @@ export default function ChatSupport() {
         ...messages,
         { id: id.toString(), role: `user`, content: input },
       ]);
-      await wait(5000);
-      setIsGenerating(false);
       id++;
+
+      await gemini.mutateAsync(input);
+      const geminiOutput = gemini.data;
+
+      if (!geminiOutput) {
+        setIsGenerating(false)
+        return
+      }
+
+      setMessages([
+        ...messages,
+        { id: id.toString(), role: `assistant`, content: geminiOutput },
+      ]);
+
+      id++
+      setIsGenerating(false)
+
       // await onSubmit(e as unknown as React.FormEvent<HTMLFormElement>);
     }
   };
@@ -87,7 +122,7 @@ export default function ChatSupport() {
     <div className="flex h-full w-full flex-col">
       {/*// <ExpandableChat size="md" position="bottom-right">*/}
       {/*//   <ExpandableChatHeader className="flex-col justify-center bg-muted/60 text-center">*/}
-      <header className="py-20">
+      <header className="py-20 p-4">
         <h1 className="text-xl font-semibold">Chat about the VPC ✨</h1>
         <p>Ask anything about the VPC for our AI to answer</p>
       </header>
