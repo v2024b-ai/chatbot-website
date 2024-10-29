@@ -1,19 +1,21 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import { Gemini } from "@/lib/gemini";
-import { uploadFileData } from "@/types/ai/gemini";
+import { promptSchema, uploadFileData } from "@/types/ai/gemini";
 
 export const chatRouter = createTRPCRouter({
-  text: publicProcedure.input(z.string()).mutation(async ({ input }) => {
-    const gemini = new Gemini();
-    const output = await gemini.prompt(input);
-    return output;
-  }),
+  text: publicProcedure
+    .input(z.object({ data: z.array(promptSchema) }))
+    .mutation(async ({ input: { data } }) => {
+      const gemini = new Gemini();
+      const output = await gemini.prompt(data);
+      return output;
+    }),
 
   uploadFile: publicProcedure
     .input(z.object({ data: z.array(uploadFileData) }))
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input: { data } }) => {
       const gemini = new Gemini();
-      return gemini.upload(input.data);
+      return gemini.upload(data);
     }),
 });

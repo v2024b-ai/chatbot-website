@@ -8,10 +8,6 @@ import { Separator } from "@/components/ui/separator";
 export default function EvalPage() {
   const { data, isLoading } = api.model.getAllModels.useQuery();
 
-  const gemini = api.chat.text.useQuery("hiiii");
-
-
-
   if (isLoading) return <LoadingSpinner big center />;
 
   if (!data) return <h1 className="text-center text-2xl">No data found!</h1>;
@@ -26,7 +22,6 @@ export default function EvalPage() {
           </p>
         </div>
       </div>
-      {gemini.data}
       <Separator className="my-6" />
       <DataTable
         columns={ModelColumns}

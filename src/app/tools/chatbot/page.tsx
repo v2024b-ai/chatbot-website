@@ -1,5 +1,5 @@
 import { CenterInScreen } from "@/components/center-in-screen";
-import ChatSupport from "@/components/chatbot-front/chatbot";
+import ChatSupport from "@/components/chatbot/chatbot";
 
 export default function ChatbotPage() {
   return (

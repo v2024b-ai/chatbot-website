@@ -1,5 +1,12 @@
 import { z } from "zod";
 
+export const promptSchema = z.object({
+  role: z.string(),
+  content: z.string(),
+});
+
+export type PromptSchema = z.infer<typeof promptSchema>;
+
 export const fileData = z.object({
   fileUri: z.string(),
   mimeType: z.string(),

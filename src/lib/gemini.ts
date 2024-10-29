@@ -4,8 +4,8 @@ import { GoogleAIFileManager } from "@google/generative-ai/server";
 import axios from "axios";
 import fs from "fs";
 import path from "path";
-import { promisify } from "util";
-import { FileData, UploadFileData } from "@/types/ai/gemini";
+import { FileData, PromptSchema, UploadFileData } from "@/types/ai/gemini";
+import { capitalizeFirstLetter } from "./utils";
 
 export class Gemini {
   AImodelName = { model: "gemini-1.5-flash" };
@@ -16,23 +16,29 @@ export class Gemini {
   constructor() {}
 
   // only takes text
-  async prompt(text: string) {
-    const result = await this.Model.generateContent(text);
+  async prompt(messages: PromptSchema[]) {
+    const result = await this.Model.generateContent(
+      this.formatMessages(messages),
+    );
     return result.response.text();
   }
 
   // takes text (prompt) and FileData[], which is returned by the upload() method
-  async promptWithFile(text: string, fileData: FileData[]) {
+  async promptWithFile(messages: PromptSchema[], fileData: FileData[]) {
     const result = await this.Model.generateContent([
-      text,
+      this.formatMessages(messages),
       ...fileData.map((data) => ({ fileData: data })),
     ]);
-    return result.response.text;
+    return result.response.text();
+  }
+
+  formatMessages(messages: PromptSchema[]) {
+    return messages
+      .map((msg) => `${capitalizeFirstLetter(msg.role)}: ${msg.content}`)
+      .join("\n");
   }
 
   async upload(fileData: UploadFileData[]) {
-    // convert fs unlink into a promise based func
-    const unlinkAsync = promisify(fs.unlink);
     const returnData: FileData[] = [];
 
     // retrueves a list of already uploaded files to gemini
@@ -61,30 +67,24 @@ export class Gemini {
       newFiles.map(async (file) => {
         const filePath = path.join("/tmp", path.basename(file.fileURL));
 
-        try {
-          const fileResponse = await axios.get(file.fileURL, {
-            responseType: "stream",
-          });
+        const fileResponse = await axios.get(file.fileURL, {
+          responseType: "stream",
+        });
 
-          const writer = fs.createWriteStream(filePath);
-          fileResponse.data.pipe(writer);
+        const writer = fs.createWriteStream(filePath);
+        fileResponse.data.pipe(writer);
 
-          await new Promise<void>((res, rej) => {
-            writer.on("finish", res);
-            writer.on("error", rej);
-          });
+        await new Promise<void>((res, rej) => {
+          writer.on("finish", res);
+          writer.on("error", rej);
+        });
 
-          const result = await this.fileManager.uploadFile(filePath, {
-            ...file,
-          });
+        const result = await this.fileManager.uploadFile(filePath, { ...file });
 
-          returnData.push({
-            mimeType: result.file.mimeType,
-            fileUri: result.file.uri,
-          });
-        } finally {
-          await unlinkAsync(filePath); // cleanup
-        }
+        returnData.push({
+          mimeType: result.file.mimeType,
+          fileUri: result.file.uri,
+        });
       }),
     );
 
