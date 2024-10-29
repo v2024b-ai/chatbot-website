@@ -1,10 +1,11 @@
-import { CenterInScreen } from "@/components/center-in-screen"
+import { CenterInScreen } from "@/components/center-in-screen";
+import ChatSupport from "@/components/chatbot-front/chatbot";
 
 export default function ChatbotPage() {
   return (
-    <main className="flex  flex-col items-center justify-center ">
+    <main className="flex flex-col items-center justify-center">
       <CenterInScreen>
-        <p> Non c&apos;è ancora niente!</p>
+        <ChatSupport />
       </CenterInScreen>
     </main>
   );

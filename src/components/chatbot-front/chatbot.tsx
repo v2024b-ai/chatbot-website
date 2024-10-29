@@ -1,56 +1,163 @@
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/rGHL6nRSWtS
- * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
- */
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
+"use client";
 
-export default function Chatbot() {
+import {
+  ChatBubble,
+  ChatBubbleAvatar,
+  ChatBubbleMessage,
+} from "@/components/ui/chat/chat-bubble";
+import { ChatInput } from "@/components/ui/chat/chat-input";
+// import {
+//   ExpandableChat,
+//   ExpandableChatHeader,
+//   ExpandableChatBody,
+//   ExpandableChatFooter,
+// } from "@/components/ui/chat/expandable-chat";
+import { ChatMessageList } from "@/components/ui/chat/chat-message-list";
+import { Button } from "@/components/ui/button";
+import { Send } from "lucide-react";
+import { useChat } from "ai/react";
+import { useEffect, useRef, useState } from "react";
+import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import CodeDisplayBlock from "@/components/chatbot-front/code-display-block";
+import { wait } from "next/dist/lib/wait";
+
+export default function ChatSupport() {
+  const [isGenerating, setIsGenerating] = useState(false);
+  let id = 0;
+  const {
+    messages,
+    setMessages,
+    input,
+    handleInputChange,
+    handleSubmit,
+    isLoading,
+  } = useChat({
+    onResponse(response) {
+      if (response) {
+        setIsGenerating(false);
+      }
+    },
+    onError(error) {
+      if (error) {
+        setIsGenerating(false);
+      }
+    },
+  });
+
+  const messagesRef = useRef<HTMLDivElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    if (messagesRef.current) {
+      messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
+    }
+  }, [messages]);
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsGenerating(true);
+    // Create the message that you want to append to messages
+    // need to use setMessages
+    setMessages([
+      ...messages,
+      { id: id.toString(), role: `user`, content: input },
+    ]);
+    id++;
+    // handleSubmit(e);
+  };
+
+  const onKeyDown = async (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      if (isGenerating || isLoading || !input) return;
+      setIsGenerating(true);
+      setMessages([
+        ...messages,
+        { id: id.toString(), role: `user`, content: input },
+      ]);
+      await wait(5000);
+      setIsGenerating(false);
+      id++;
+      // await onSubmit(e as unknown as React.FormEvent<HTMLFormElement>);
+    }
+  };
+
   return (
-    <div className="grid w-full divide-y divide-gray-200 rounded-lg border border-gray-200 dark:divide-gray-800 dark:border-gray-800">
-      <div className="flex flex-1 flex-col p-4">
-        <div className="space-y-1">
-          <h3 className="text-lg font-medium leading-none">Customer Support</h3>
-          <p className="text-sm leading-none text-gray-500 dark:text-gray-400">
-            Typing...
-          </p>
-        </div>
-        <div className="space-y-4">
-          <div className="flex flex-col items-end space-y-2">
-            <div className="rounded-lg bg-gray-100 p-4 dark:bg-gray-800">
-              <div className="text-sm">Hi there! How can I help you today?</div>
-            </div>
-            <div className="text-right text-xs text-gray-500 dark:text-gray-400">
-              2 minutes ago
-            </div>
-          </div>
-          <div className="flex flex-col items-start space-y-2">
-            <div className="rounded-lg bg-gray-100 p-4 dark:bg-gray-800">
-              <div className="text-sm">
-                I&apos;m having trouble with my order. Can you help me?
-              </div>
-            </div>
-            <div className="text-xs text-gray-500 dark:text-gray-400">
-              1 minute ago
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="p-4">
-        <form className="flex space-x-4">
-          <div className="flex-1">
-            <Label htmlFor="message">Message</Label>
-            <Textarea
-              id="message"
-              placeholder="Enter your message"
-              className="min-h-[100px]"
-            />
-          </div>
-          <Button type="submit">Send</Button>
-        </form>
-      </div>
+    <div className="flex h-full w-full flex-col">
+      {/*// <ExpandableChat size="md" position="bottom-right">*/}
+      {/*//   <ExpandableChatHeader className="flex-col justify-center bg-muted/60 text-center">*/}
+      <header className="py-20">
+        <h1 className="text-xl font-semibold">Chat about the VPC ✨</h1>
+        <p>Ask anything about the VPC for our AI to answer</p>
+      </header>
+      {/*// </ExpandableChatHeader>*/}
+      {/*// <ExpandableChatBody>*/}
+      <ChatMessageList className="bg-muted/25" ref={messagesRef}>
+        {/* Initial message */}
+        <ChatBubble variant="received">
+          <ChatBubbleAvatar src="" fallback="🤖" />
+          <ChatBubbleMessage>How can I help you?</ChatBubbleMessage>
+        </ChatBubble>
+
+        {/* Messages */}
+        {messages?.map((message, index) => (
+          <ChatBubble
+            key={index}
+            variant={message.role == "user" ? "sent" : "received"}
+          >
+            <ChatBubbleMessage
+              variant={message.role == "user" ? "sent" : "received"}
+            >
+              {message.content
+                .split("```")
+                .map((part: string, index: number) => {
+                  if (index % 2 === 0) {
+                    return (
+                      <Markdown key={index} remarkPlugins={[remarkGfm]}>
+                        {part}
+                      </Markdown>
+                    );
+                  } else {
+                    return (
+                      <pre className="pt-2" key={index}>
+                        <CodeDisplayBlock code={part} lang="" />
+                      </pre>
+                    );
+                  }
+                })}
+            </ChatBubbleMessage>
+          </ChatBubble>
+        ))}
+
+        {/* Loading */}
+        {isGenerating && (
+          <ChatBubble variant="received">
+            <ChatBubbleAvatar src="" fallback="🤖" />
+            <ChatBubbleMessage isLoading />
+          </ChatBubble>
+        )}
+      </ChatMessageList>
+      {/*// </ExpandableChatBody>*/}
+      {/*// <ExpandableChatFooter className="bg-muted/25">*/}
+      <form ref={formRef} className="relative flex gap-2" onSubmit={onSubmit}>
+        <ChatInput
+          value={input}
+          onChange={handleInputChange}
+          onKeyDown={onKeyDown}
+          className="min-h-12 bg-background shadow-none"
+        />
+        <Button
+          className="absolute right-2 top-1/2 -translate-y-1/2 transform"
+          type="submit"
+          size="icon"
+          disabled={isLoading || isGenerating || !input}
+        >
+          <Send className="size-4" />
+        </Button>
+      </form>
+      {/*// </ExpandableChatFooter>*/}
+      {/*// </ExpandableChat>*/}
     </div>
   );
 }
