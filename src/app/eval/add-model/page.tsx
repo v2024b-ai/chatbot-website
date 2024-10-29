@@ -1,4 +1,4 @@
-import { AddModelForm } from "@/components/eval/eval"
+import { AddModelForm } from "@/components/eval/add-model-form"
 
 export default function AddModelPage() {
 
