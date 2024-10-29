@@ -1,5 +1,6 @@
-import { postRouter } from "@/server/api/routers/post";
 import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
+import { pineconeRouter } from "@/server/api/routers/pinecone";
+import { modelRoute } from "./routers/ai-model";
 // import { chatRouter } from "./routers/gemini";
 
 /**
@@ -8,7 +9,8 @@ import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-  post: postRouter,
+  model: modelRoute,
+  pinecone: pineconeRouter,
   // chat: chatRouter,
 });
 

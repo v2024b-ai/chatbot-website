@@ -2,28 +2,50 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider  = "postgresql"
-    url       = env("DATABASE_URL")
-    directUrl = env("DIRECT_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model report {
-    id    String @id @default(cuid())
-    url   String
-    title String @unique
+  id    String @id @default(cuid())
+  url   String
+  title String @unique
 
-    @@index([title])
+  @@index([title])
 }
 
 model Post {
-    id        Int      @id @default(autoincrement())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-    @@index([name])
+  @@index([name])
+}
+
+model aiEval {
+  model              String   @id
+  url                String   @unique
+  ppInput            Float?
+  ppOutput           Float?
+  termsURL           String?
+  ctxLength          Int?
+  modelSize          Int?
+  perplexity         String?
+  bleu               Float?
+  rouge              Float?
+  meteor             Float?
+  inputResponseTime  Float?
+  outputResponseTime Float?
+  maxOutput          Int?
+  maxInput           Int?
+  fileInput          Boolean?
+  fileOutput         Boolean?
+
+  @@index([model])
 }

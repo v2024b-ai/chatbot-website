@@ -1,46 +1,33 @@
-import { HydrateClient } from "@/trpc/server";
-import {
-    Table,
-    TableBody,
-    TableCaption,
-    TableCell,
-    TableFooter,
-    TableHead,
-    TableHeader,
-    TableRow,
-  } from "@/components/ui/table"
+"use client";
+import { DataTable } from "@/components/data-table/data-table";
+import { ModelColumns } from "./eval-columns";
+import { api } from "@/trpc/react";
+import { LoadingSpinner } from "@/components/loading-spinner";
+import { Separator } from "@/components/ui/separator";
 
-export default async function EvalPage(){
-    return (
-    <HydrateClient>
-        <main className="flex min-h-screen flex-col items-center justify-center bg-primary bg-gradient-to-b from-primary to-secondary text-white">
-            <div className="flex text-white">
-            <Table>
-                <TableCaption className="text-white"> A list of GenAI tools and their parameters.</TableCaption>
-                <TableHeader>
-                    <TableRow>    
-                        <TableHead className="text-white">Table</TableHead>
-                        <TableHead className="text-white"> URL </TableHead>
-                        <TableHead className="text-white"> Price per 1K Token Input(USD)</TableHead>
-                        <TableHead className="text-white"> Price per 1K Token Output(USD)</TableHead>
-                        <TableHead className="text-white"> User Agreement URL</TableHead>
-                        <TableHead className="text-white"> Ethical Concerns? </TableHead>
-                        <TableHead className="text-white"> Context Length (Tokens) </TableHead>
-                        <TableHead className="text-white"> Model Size (in Billions of Parameters)</TableHead>
-                        <TableHead className="text-white"> Perplexity Score</TableHead>
-                        <TableHead className="text-white"> BLEU Score</TableHead>
-                        <TableHead className="text-white"> ROUGE Score</TableHead>
-                        <TableHead className="text-white"> METEOR Score</TableHead>
-                        <TableHead className="text-white"> Input Response Time (ms/1K Token)</TableHead>
-                        <TableHead className="text-white"> Output Response Time (ms/1K Token)</TableHead>
-                        <TableHead className="text-white"> Max Input Token</TableHead>
-                        <TableHead className="text-white"> File Input Allowed? </TableHead>
-                        <TableHead className="text-white"> Additional Features </TableHead>
-                    </TableRow>
-                </TableHeader>
-            </Table>
-            </div>
-        </main>
-    </HydrateClient>
-    )
-};
+export default function EvalPage() {
+  const { data, isLoading } = api.model.getAllModels.useQuery();
+
+  if (isLoading) return <LoadingSpinner big center />;
+
+  if (!data) return <h1 className="text-center text-2xl">No data found!</h1>;
+
+  return (
+    <main className="space-y-6 p-10 pb-16">
+      <div className="flex justify-between space-y-0.5">
+        <div>
+          <h2 className="text-2xl font-bold tracking-tight">Evaluation</h2>
+          <p className="text-muted-foreground">
+            How different LLMs compare against each other.
+          </p>
+        </div>
+      </div>
+      <Separator className="my-6" />
+      <DataTable
+        columns={ModelColumns}
+        data={data}
+        filterByString="model"
+      />
+    </main>
+  );
+}
