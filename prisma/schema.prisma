@@ -49,3 +49,11 @@ model aiEval {
 
   @@index([model])
 }
+
+model iqpData {
+  title       String @id
+  description String
+  url         String
+
+  @@index([title])
+}

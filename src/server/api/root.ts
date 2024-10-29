@@ -1,6 +1,7 @@
 import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
 import { pineconeRouter } from "@/server/api/routers/pinecone";
 import { modelRoute } from "./routers/ai-model";
+import { iqpUploadRouter } from "@/server/api/routers/iqp-upload";
 // import { chatRouter } from "./routers/gemini";
 
 /**
@@ -11,6 +12,7 @@ import { modelRoute } from "./routers/ai-model";
 export const appRouter = createTRPCRouter({
   model: modelRoute,
   pinecone: pineconeRouter,
+  iqpUpload: iqpUploadRouter,
   // chat: chatRouter,
 });
 
