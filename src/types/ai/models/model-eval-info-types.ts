@@ -14,7 +14,7 @@ export const modelInfo = z.object({
   maxInput: z.number(),
   fileInput: z.boolean(),
   fileOutput: z.boolean(),
-  perplexity: z.string().nullable(),
+  perplexity: z.number().nullable(),
   bleu: z.number().nullable(),
   rouge: z.number().nullable(),
   meteor: z.number().nullable(),
@@ -36,7 +36,7 @@ export const addModelSchema = z.object({
   fileInput: z.boolean(),
   outputResponseTime: z.number().nullable(),
   fileOutput: z.boolean(),
-  perplexity: z.string().nullable(),
+  perplexity: z.number().nullable(),
   modelOutput: z
     .string()
     .min(20, { message: "Must be at least 20 characters" }),
