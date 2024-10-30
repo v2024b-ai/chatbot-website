@@ -22,7 +22,6 @@ export const modelRoute = createTRPCRouter({
       const submitEval = async () => {
           const Eval = await postEval({genStr: input.modelOutput});
           console.log("Eval result: ", Eval)
-
           return Eval
         }
       } catch (error) {
