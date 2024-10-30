@@ -4,16 +4,19 @@ import { GoogleAIFileManager } from "@google/generative-ai/server";
 import axios from "axios";
 import fs from "fs";
 import path from "path";
-import { FileData, PromptSchema, UploadFileData } from "@/types/ai/gemini";
+import {
+  type FileData,
+  type PromptSchema,
+  type UploadFileData,
+} from "@/types/ai/gemini";
 import { capitalizeFirstLetter } from "./utils";
+import { type Readable } from "stream";
 
 export class Gemini {
   AImodelName = { model: "gemini-1.5-flash" };
-  GenAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string);
+  GenAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
   Model = this.GenAI.getGenerativeModel(this.AImodelName);
-  fileManager = new GoogleAIFileManager(process.env.GEMINI_API_KEY as string);
-
-  constructor() {}
+  fileManager = new GoogleAIFileManager(process.env.GEMINI_API_KEY!);
 
   // only takes text
   async prompt(messages: PromptSchema[]) {
@@ -72,7 +75,8 @@ export class Gemini {
         });
 
         const writer = fs.createWriteStream(filePath);
-        fileResponse.data.pipe(writer);
+
+        (fileResponse.data as Readable).pipe(writer);
 
         await new Promise<void>((res, rej) => {
           writer.on("finish", res);

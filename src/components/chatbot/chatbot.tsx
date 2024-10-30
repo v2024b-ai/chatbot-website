@@ -114,10 +114,10 @@ export default function ChatBot() {
                 <FormControl>
                   <Textarea
                     {...field}
-                    onKeyDown={(e) => {
+                    onKeyDown={async (e) => {
                       if (e.key === 'Enter' && !e.shiftKey) {
                         e.preventDefault();
-                        form.handleSubmit(onSubmit)();
+                        await form.handleSubmit(onSubmit)();
                       }
                     }}
                   />
