@@ -18,19 +18,35 @@ export const modelRoute = createTRPCRouter({
   addModel: publicProcedure
     .input(addModelSchema)
     .mutation(async ({ input, ctx }) => {
-      try{
+     
       const submitEval = async () => {
           const Eval = await postEval({genStr: input.modelOutput});
           console.log("Eval result: ", Eval)
           return Eval
         }
-      } catch (error) {
-        console.error('Error getting evals:', error)
-        throw error
-      }
+       
+      const evals = await submitEval();
 
       return ctx.db.aiEval.create({
-        data: { ...input },
+        data: { 
+          model: input.model,
+          url: input.url,
+          ppInput: input.ppInput,
+          ppOutput: input.ppOutput,
+          termsURL: input.termsURL,
+          ctxLength: input.ctxLength,
+          modelSize: input.modelSize,
+          maxOutput: input.maxOutput,
+          maxInput: input.maxInput,
+          fileInput: input.fileInput,
+          outputResponseTime: input.outputResponseTime,
+          fileOutput: input.fileOutput,
+          perplexity: input.perplexity,
+          bleu: parseFloat(evals.BLEU),
+          rouge: parseFloat(evals.ROUGE),
+          meteor: parseFloat(evals.METEOR)
+        },
+          
       });
     }),
 
