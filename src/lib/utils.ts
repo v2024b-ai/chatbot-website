@@ -19,3 +19,8 @@ export function replicateData<T>(data: T[], count: number): T[] {
 export function keysOf<T extends object>(obj: T): Array<keyof T> {
   return Object.keys(obj) as Array<keyof T>;
 }
+
+// generator function for cuid
+export function* cuidGenerate() {
+  while (true) yield cuid();
+}
