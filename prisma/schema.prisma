@@ -19,33 +19,23 @@ model report {
   @@index([title])
 }
 
-model Post {
-  id        Int      @id @default(autoincrement())
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([name])
-}
-
 model aiEval {
-  model              String   @id
-  url                String   @unique
-  ppInput            Float?
-  ppOutput           Float?
-  termsURL           String?
-  ctxLength          Int?
-  modelSize          Int?
-  perplexity         String?
+  model              String  @id
+  url                String  @unique
+  ppInput            Float
+  ppOutput           Float
+  termsURL           String
+  ctxLength          Int
+  modelSize          Int
+  perplexity         Float?
   bleu               Float?
   rouge              Float?
   meteor             Float?
-  inputResponseTime  Float?
   outputResponseTime Float?
-  maxOutput          Int?
-  maxInput           Int?
-  fileInput          Boolean?
-  fileOutput         Boolean?
+  maxOutput          Int
+  maxInput           Int
+  fileInput          Boolean
+  fileOutput         Boolean
 
   @@index([model])
 }

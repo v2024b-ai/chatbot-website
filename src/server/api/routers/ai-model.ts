@@ -7,7 +7,7 @@ export const modelRoute = createTRPCRouter({
     .input(addModelSchema)
     .mutation(async ({ input, ctx }) => {
       return ctx.db.aiEval.create({
-        data: { ...input },
+        data: { ...input, bleu: 0, rouge: 0, meteor: 0 },
       });
     }),
 

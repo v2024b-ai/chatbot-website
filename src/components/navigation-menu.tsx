@@ -40,7 +40,7 @@ ListItem.displayName = "ListItem";
 
 export function NavBar() {
   return (
-    <header className="top-0 z-100 border-b flex justify-between items-center gap-4 p-4 ">
+    <header className="top-0 z-1000 border-b flex justify-between items-center gap-4 p-4 ">
       <div className="pl-4">
         <NavigationMenu>
           <NavigationMenuList>
@@ -112,7 +112,7 @@ export function NavBar() {
           </NavigationMenuList>
         </NavigationMenu>
       </div>
-      <div className="pr-4">
+      <div className="pr-4 z-1000">
         <ModeToggle />
       </div>
     </header>

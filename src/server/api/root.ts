@@ -1,7 +1,7 @@
 import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
 import { pineconeRouter } from "@/server/api/routers/pinecone";
 import { modelRoute } from "./routers/ai-model";
-// import { chatRouter } from "./routers/gemini";
+import { chatRouter } from "./routers/gemini";
 
 /**
  * This is the primary router for your server.
@@ -11,7 +11,7 @@ import { modelRoute } from "./routers/ai-model";
 export const appRouter = createTRPCRouter({
   model: modelRoute,
   pinecone: pineconeRouter,
-  // chat: chatRouter,
+  chat: chatRouter,
 });
 
 // export type definition of API
