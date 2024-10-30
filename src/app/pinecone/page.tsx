@@ -1,6 +1,8 @@
+/* eslint-disable */
 "use client";
 import * as React from "react";
 import { Card } from "@/components/ui/card";
+// import { pc, model } from "@/server/api/routers/pinecone";
 import {
   Form,
   FormControl,
