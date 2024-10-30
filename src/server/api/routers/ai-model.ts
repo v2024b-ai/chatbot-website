@@ -8,17 +8,26 @@ interface PostData {
   genStr: string;
 }
 
+interface EvalData {
+  BLEU: string,
+  METEOR: string,
+  ROUGE: string;
+}
+
 export const modelRoute = createTRPCRouter({
   addModel: publicProcedure
     .input(addModelSchema)
     .mutation(async ({ input, ctx }) => {
-
+      try{
       const submitEval = async () => {
-        
-        try{
           const Eval = await postEval({genStr: input.modelOutput});
           console.log("Eval result: ", Eval)
+
+          return Eval
         }
+      } catch (error) {
+        console.error('Error getting evals:', error)
+        throw error
       }
 
       return ctx.db.aiEval.create({
@@ -37,12 +46,12 @@ export const modelRoute = createTRPCRouter({
   }),
 });
 
-const postEval = async (data: ): Promise<any> => {
+const postEval = async (data: PostData): Promise<EvalData> => {
 
   const url = "chatvpc-python.vercel.app/test-scoring/"
 
   try {
-    const evals = await axios.post(url, data, {
+    const evals = await axios.post<EvalData>(url, data, {
       headers: {
         'Content Type': 'application/json',
       },
