@@ -63,12 +63,12 @@ export const modelRoute = createTRPCRouter({
 
 const postEval = async (data: PostData): Promise<EvalData> => {
 
-  const url = "chatvpc-python.vercel.app/test-scoring/"
+  const url = "https://chatvpc-python.vercel.app/test-scoring/"
 
   try {
     const evals = await axios.post<EvalData>(url, data, {
       headers: {
-        'Content Type': 'application/json',
+        'Content-Type': 'application/json',
       },
     });
     return evals.data;
