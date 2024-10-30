@@ -15,7 +15,6 @@ import { Input } from "@/components/ui/input";
 import {
   Dialog,
   DialogContent,
-  DialogFooter,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -140,7 +139,7 @@ export function AddModelForm() {
                   render={({ field }) => (
                     // Enter the Model name
                     <FormItem>
-                      <FormLabel>Input $/M Tokens</FormLabel>
+                      <FormLabel>Input Price</FormLabel>
                       <FormControl>
                         <Input
                           {...field}
@@ -168,7 +167,7 @@ export function AddModelForm() {
                   name="ppOutput"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Output $/M Tokens</FormLabel>
+                      <FormLabel>Output Price</FormLabel>
                       <FormControl>
                         <Input
                           placeholder="$..."
@@ -221,6 +220,33 @@ export function AddModelForm() {
                     </FormItem>
                   )}
                 ></FormField>
+                <FormField
+                  control={form.control}
+                  name="perplexity"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Perplexity</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          onChange={(event) => {
+                            if (event.target.value == field.value + ".") {
+                              field.onChange(event.target.value);
+                              return;
+                            } else if (isNaN(+event.target.value)) {
+                              field.onChange(field.value);
+                              return;
+                            } else {
+                              field.onChange(+event.target.value);
+                              return;
+                            }
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                ></FormField>
               </div>
 
               <div className={"flex flex-row justify-evenly space-x-2"}>
@@ -230,7 +256,7 @@ export function AddModelForm() {
                   name="modelSize"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Model Size in Billions</FormLabel>
+                      <FormLabel>Model Size</FormLabel>
                       <FormControl>
                         <Input
                           placeholder="For 8 Billion Input '8'"
@@ -313,6 +339,33 @@ export function AddModelForm() {
                     </FormItem>
                   )}
                 ></FormField>
+                <FormField
+                  control={form.control}
+                  name="outputResponseTime"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Response Time</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          onChange={(event) => {
+                            if (event.target.value == field.value + ".") {
+                              field.onChange(event.target.value);
+                              return;
+                            } else if (isNaN(+event.target.value)) {
+                              field.onChange(field.value);
+                              return;
+                            } else {
+                              field.onChange(+event.target.value);
+                              return;
+                            }
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                ></FormField>
               </div>
 
               <FormField control={form.control} name='modelOutput' render={({ field }) => (
@@ -365,7 +418,6 @@ export function AddModelForm() {
               <Button className="w-full">Send</Button>
             </form>
           </Form>
-          <DialogFooter></DialogFooter>
         </DialogContent>
       </Dialog>
     </>
