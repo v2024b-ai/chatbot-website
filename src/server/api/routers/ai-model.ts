@@ -3,29 +3,33 @@ import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { addModelSchema } from "@/types/ai/models/model-eval-info-types";
 import axios from 'axios';
 
+interface Scores {
+  BLEU: string;
+  METEOR: string;
+  ROUGE: string;
+}
+
+interface Data {
+  scores: Scores;
+}
 
 interface PostData {
   genStr: string;
-}
-
-interface EvalData {
-  BLEU: string,
-  METEOR: string,
-  ROUGE: string;
 }
 
 export const modelRoute = createTRPCRouter({
   addModel: publicProcedure
     .input(addModelSchema)
     .mutation(async ({ input, ctx }) => {
-     
-      const submitEval = async () => {
-          const Eval = await postEval({genStr: input.modelOutput});
-          console.log("Eval result: ", Eval)
-          return Eval
-        }
-       
-      const evals = await submitEval();
+      
+      const Eval = await postEval({genStr: input.modelOutput});
+      
+      const data: Data = JSON.parse(Eval);
+
+      console.log(data.scores);
+      console.log(data.scores.BLEU);
+      console.log(data.scores.ROUGE);
+      console.log(data.scores.METEOR);
 
       return ctx.db.aiEval.create({
         data: { 
@@ -42,9 +46,9 @@ export const modelRoute = createTRPCRouter({
           outputResponseTime: input.outputResponseTime,
           fileOutput: input.fileOutput,
           perplexity: input.perplexity,
-          bleu: parseFloat(evals.BLEU),
-          rouge: parseFloat(evals.ROUGE),
-          meteor: parseFloat(evals.METEOR)
+          bleu: parseFloat(data.scores.BLEU),
+          rouge: parseFloat(data.scores.ROUGE),
+          meteor: parseFloat(data.scores.METEOR)
         },
           
       });
@@ -61,12 +65,12 @@ export const modelRoute = createTRPCRouter({
   }),
 });
 
-const postEval = async (data: PostData): Promise<EvalData> => {
+const postEval = async (data: PostData): Promise<string> => {
 
   const url = "https://chatvpc-python.vercel.app/test-scoring/"
 
   try {
-    const evals = await axios.post<EvalData>(url, data, {
+    const evals = await axios.post<string>(url, data, {
       headers: {
         'Content-Type': 'application/json',
       },
