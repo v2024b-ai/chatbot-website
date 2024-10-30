@@ -60,7 +60,7 @@ export function AddModelForm() {
       maxInput: 0,
       fileInput: false,
       fileOutput: false,
-      perplexity: "",
+      perplexity: 0,
       outputResponseTime: 0,
     },
   });
@@ -229,6 +229,7 @@ export function AddModelForm() {
                       <FormControl>
                         <Input
                           {...field}
+                          value={field.value ?? 0}
                           onChange={(event) => {
                             if (event.target.value == field.value + ".") {
                               field.onChange(event.target.value);
@@ -348,6 +349,7 @@ export function AddModelForm() {
                       <FormControl>
                         <Input
                           {...field}
+                          value={field.value ?? 0}
                           onChange={(event) => {
                             if (event.target.value == field.value + ".") {
                               field.onChange(event.target.value);
