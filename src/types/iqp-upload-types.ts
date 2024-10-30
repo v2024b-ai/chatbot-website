@@ -9,7 +9,7 @@ export const uploadInput = z.object({
 });
 
 export const findURLS = z.object({
-  titles: z.string().array(),
+  titles: z.array(z.string()),
 });
 
 export type UploadInput = z.infer<typeof uploadInput>;

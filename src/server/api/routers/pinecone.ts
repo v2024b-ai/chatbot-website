@@ -19,7 +19,7 @@ async function generateEmbeddings(input: string): Promise<number[]> {
 
     // Extract the vector from the embeddings response
     if (embeddings.length > 0 && embeddings[0]!.values) {
-      return embeddings[0]!.values; // Assuming `values` is the key that holds the numeric array
+      return embeddings[0]!.values;
     } else {
       throw new Error("No embeddings received.");
     }

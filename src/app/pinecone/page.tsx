@@ -22,15 +22,21 @@ import {
   pineconeReportStore,
 } from "@/types/pinecone";
 import { CenterInScreen } from "@/components/center-in-screen";
-import { z } from "zod";
-import { uploadInput } from "@/types/iqp-upload-types";
-
-export type UploadInput = z.infer<typeof uploadInput>;
+import { uploadInput, UploadInput } from "@/types/iqp-upload-types";
 
 export default function PineconePage() {
-  const queryMutation = api.pinecone.getReports.useMutation();
+  const queryMutation = api.pinecone.getReports.useMutation({
+    onSuccess: (data) => {
+      if (data) {
+        getURLS.mutate({ titles: data });
+      }
+    },
+  });
   const reportMutation = api.pinecone.storeReports.useMutation();
   const iqpMutation = api.iqpUpload.upload.useMutation();
+  const getURLS = api.iqpUpload.getReportURLS.useMutation();
+
+  // const allPapers = api.iqpUpload.getAllReports.useQuery();
 
   const form = useForm<PineconeQueryInput>({
     resolver: zodResolver(pineconeQueryInput),
@@ -67,6 +73,18 @@ export default function PineconePage() {
   const handleIQPUpload = (data: UploadInput) => {
     iqpMutation.mutate(data);
   };
+
+  // New function for batch upserting all papers
+  // const handleBatchUpload = () => {
+  //   if (!allPapers.data) return;
+  //
+  //   allPapers.data.forEach((paper) => {
+  //     reportMutation.mutate({
+  //       id: paper.title,
+  //       input: paper.description,
+  //     });
+  //   });
+  // };
 
   return (
     <CenterInScreen>
@@ -226,6 +244,11 @@ export default function PineconePage() {
           </form>
         </Form>
       </Card>
+
+      {/*/!* Batch Upload Button *!/*/}
+      {/*<Button style={{ marginTop: "1rem" }} onClick={handleBatchUpload}>*/}
+      {/*  Batch Upload All Papers*/}
+      {/*</Button>*/}
     </CenterInScreen>
   );
 }
