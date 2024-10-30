@@ -49,17 +49,11 @@
         "@t3-oss/env-nextjs": "^0.10.1",
         "@tanstack/react-query": "^5.59.16",
         "@tanstack/react-table": "^8.20.5",
-<<<<<<< HEAD
     "@trpc/client": "^11.0.0-rc.446",
         "@trpc/react-query": "^11.0.0-rc.446",
         "@trpc/server": "^11.0.0-rc.446",
         "ai": "^3.4.27",
         "axios": "^1.7.7",
-=======
-    "@trpc/client": "11.0.0-rc.593",
-        "@trpc/react-query": "11.0.0-rc.593",
-        "@trpc/server": "11.0.0-rc.593",
->>>>>>> origin/dev
     "class-variance-authority": "^0.7.0",
         "clsx": "^2.1.1",
         "cmdk": "1.0.0",
@@ -76,12 +70,8 @@
         "react-day-picker": "8.10.1",
         "react-dom": "^18.3.1",
         "react-hook-form": "^7.53.1",
-<<<<<<< HEAD
     "react-markdown": "^9.0.1",
         "react-resizable-panels": "^2.1.4",
-=======
-    "react-resizable-panels": "^2.1.6",
->>>>>>> origin/dev
     "recharts": "^2.13.0",
         "remark-gfm": "^4.0.0",
         "server-only": "^0.0.1",
