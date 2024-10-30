@@ -16,7 +16,7 @@ export default function AddModelPage() {
         </p>
 
         <ul className="list-disc list-inside space-y-2 ">
-          <li><span className="font-semibold">Model</span> - The name of the model. For example, "gemini-1.5-pro"</li>
+          <li><span className="font-semibold">Model</span> - The name of the model. For example, &quot;gemini-1.5-pro&quot;</li>
           <li><span className="font-semibold">URL</span> - The front page for the model</li>
           <li><span className="font-semibold">Input Price</span> - The price for input per million tokens</li>
           <li><span className="font-semibold">Output Price</span> - The price for output per million tokens</li>
@@ -27,7 +27,7 @@ export default function AddModelPage() {
           <li><span className="font-semibold">Max Output Length</span> - The max number of output tokens per request</li>
           <li><span className="font-semibold">File Input</span> - Can the model accept file input?</li>
           <li><span className="font-semibold">File Output</span> - Can the model produce a file as output?</li>
-          <li><span className="font-semibold">Features</span> - A comma-delimited string representing the features of the model, e.g., "audio output, text to speech"</li>
+          <li><span className="font-semibold">Features</span> - A comma-delimited string representing the features of the model, e.g., &quot;audio output, text to speech&quot;</li>
         </ul>
 
         <p className="mt-4">
