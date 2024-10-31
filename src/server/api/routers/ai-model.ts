@@ -1,38 +1,29 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { addModelSchema } from "@/types/ai/models/model-eval-info-types";
-import axios from 'axios';
-
-interface Scores {
-  BLEU: string;
-  METEOR: string;
-  ROUGE: string;
-}
-
-interface Data {
-  scores: Scores;
-}
+import axios from "axios";
 
 interface PostData {
   genStr: string;
+}
+
+interface scores {
+  scores: { BLEU: number; ROUGE: number; METEOR: number };
 }
 
 export const modelRoute = createTRPCRouter({
   addModel: publicProcedure
     .input(addModelSchema)
     .mutation(async ({ input, ctx }) => {
-      
-      const Eval = await postEval({genStr: input.modelOutput});
-      
-      const data: Data = JSON.parse(Eval);
-
-      console.log(data.scores);
-      console.log(data.scores.BLEU);
-      console.log(data.scores.ROUGE);
-      console.log(data.scores.METEOR);
+      // EVAL IS A STRING
+      const Eval: scores = await postEval({ genStr: input.modelOutput });
+      console.log(Eval);
+      console.log(Eval.scores.BLEU);
+      console.log(Eval.scores.ROUGE);
+      console.log(Eval.scores.METEOR);
 
       return ctx.db.aiEval.create({
-        data: { 
+        data: {
           model: input.model,
           url: input.url,
           ppInput: input.ppInput,
@@ -46,11 +37,10 @@ export const modelRoute = createTRPCRouter({
           outputResponseTime: input.outputResponseTime,
           fileOutput: input.fileOutput,
           perplexity: input.perplexity,
-          bleu: parseFloat(data.scores.BLEU),
-          rouge: parseFloat(data.scores.ROUGE),
-          meteor: parseFloat(data.scores.METEOR)
+          bleu: Eval.scores.BLEU,
+          rouge: Eval.scores.ROUGE,
+          meteor: Eval.scores.METEOR,
         },
-          
       });
     }),
 
@@ -65,19 +55,17 @@ export const modelRoute = createTRPCRouter({
   }),
 });
 
-const postEval = async (data: PostData): Promise<string> => {
-
-  const url = "https://chatvpc-python.vercel.app/test-scoring/"
-
+const postEval = async (data: PostData): Promise<scores> => {
+  const url = "https://chatvpc-python.vercel.app/test-scoring/";
   try {
-    const evals = await axios.post<string>(url, data, {
+    const evals = await axios.post<scores>(url, data, {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     });
     return evals.data;
   } catch (error) {
-    console.error('Error posting evals:', error);
+    console.error("Error posting evals:", error);
     throw error;
   }
-}
+};
