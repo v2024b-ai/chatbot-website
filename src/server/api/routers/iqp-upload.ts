@@ -1,8 +1,8 @@
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { findURLS, uploadInput } from "@/types/iqp-upload-types";
 
-import pdfParse from "pdf-parse";
-import axios from "axios";
+// import pdfParse from "pdf-parse";
+// import axios from "axios";
 
 // // Function to download PDFs from URLs and return their text content
 // async function downloadPDFsFromURLs(urls: string[]): Promise<string[]> {
@@ -41,6 +41,7 @@ export const iqpUploadRouter = createTRPCRouter({
         data: { ...input },
       });
     }),
+
   getReportURLS: publicProcedure
     .input(findURLS)
     .mutation(async ({ input, ctx }) => {
@@ -57,6 +58,7 @@ export const iqpUploadRouter = createTRPCRouter({
         },
       });
     }),
+
   getAllReports: publicProcedure.query(async ({ ctx }) => {
     return ctx.db.iqpData.findMany({
       select: { title: true, description: true },

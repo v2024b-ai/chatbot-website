@@ -44,8 +44,11 @@ export class Gemini {
   async upload(fileData: UploadFileData[]) {
     const returnData: FileData[] = [];
 
+    // const newFiles = fileData;
     // retrueves a list of already uploaded files to gemini
     const UploadedFiles = await this.getFileList();
+
+    console.log("got to before filtering data");
 
     const newFiles = fileData.filter((file) => {
       if (!UploadedFiles.names.has(file.displayName)) {
@@ -66,6 +69,8 @@ export class Gemini {
       return false;
     });
 
+    console.log(">>> NEW FILES TO UPLOAD TO GEMINI: ", newFiles);
+
     await Promise.all(
       newFiles.map(async (file) => {
         const filePath = path.join("/tmp", path.basename(file.fileURL));
@@ -82,8 +87,10 @@ export class Gemini {
           writer.on("finish", res);
           writer.on("error", rej);
         });
-
-        const result = await this.fileManager.uploadFile(filePath, { ...file });
+        //
+        const result = await this.fileManager.uploadFile(filePath, {
+          ...file,
+        });
 
         returnData.push({
           mimeType: result.file.mimeType,
@@ -97,6 +104,20 @@ export class Gemini {
 
   async getFileList() {
     const result = await this.fileManager.listFiles();
+
+    console.log(">>>> RESULT FROM GET FILE LIST: ", result);
+
+    if (!result) {
+      return {
+        names: new Set(),
+        data: [] as {
+          fileUri: string;
+          mimeType: string;
+          displayName: string;
+        }[],
+      };
+    }
+
     return {
       names: new Set(result.files.map((file) => file.name)),
       data: result.files.map((file) => ({
