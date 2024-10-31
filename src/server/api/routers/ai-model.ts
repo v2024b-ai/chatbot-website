@@ -17,10 +17,7 @@ export const modelRoute = createTRPCRouter({
     .mutation(async ({ input, ctx }) => {
       // EVAL IS A STRING
       const Eval: scores = await postEval({ genStr: input.modelOutput });
-      console.log(Eval);
-      console.log(Eval.scores.BLEU);
-      console.log(Eval.scores.ROUGE);
-      console.log(Eval.scores.METEOR);
+      //removed the console.logs to declutter the console and the code
 
       return ctx.db.aiEval.create({
         data: {
