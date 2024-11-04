@@ -45,6 +45,7 @@ export const pineconeRouter = createTRPCRouter({
       console.log("this is the response: ", response);
       return response.matches.map((match) => match.id);
     }),
+
   storeReports: publicProcedure
     .input(pineconeReportStore)
     .mutation(async ({ input }) => {
