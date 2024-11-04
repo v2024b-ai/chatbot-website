@@ -19,6 +19,9 @@ import CodeDisplayBlock from "@/components/chatbot/code-display-block";
 import { FormControl, FormField, FormItem, Form } from "../ui/form";
 import { Textarea } from "../ui/textarea";
 import cuid from "cuid";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
+import { useRecommendation } from "@/hooks/use-recommended-document";
+import { RecommendedDocumentButton } from "./recommended-document-button";
 
 
 const makeNewMessage = (
@@ -34,12 +37,10 @@ const makeNewMessage = (
   role,
 });
 
-export default function ChatBot() {
+export default function ChatBotWithRec() {
   const [isGenerating, setIsGenerating] = useState(false);
   const { messages, setMessages, isLoading } = useChat();
-  const [recommendations, setRecommendations] = useState<
-    { title: string; url: string }[]
-  >([]);
+  const { setInput, rec } = useRecommendation();
 
   const gemini = api.chat.text.useMutation({
     onSuccess: (data) => {
@@ -48,7 +49,6 @@ export default function ChatBot() {
         const { message, recommendedFiles } = data;
 
         setMessages([...messages, makeNewMessage(message, "assistant")]);
-        setRecommendations(recommendedFiles || []);
       }
       setIsGenerating(false);
     },
@@ -59,7 +59,12 @@ export default function ChatBot() {
     resolver: zodResolver(inputSchema),
     defaultValues: { prompt: "" },
   });
+  const inputVal = form.getValues().prompt
 
+  // useEffect(() => {
+  //   setInput(inputVal)
+  // }, [inputVal]);
+  //
   function onSubmit(values: z.infer<typeof inputSchema>) {
     form.reset();
     setIsGenerating(true);
@@ -74,10 +79,23 @@ export default function ChatBot() {
   return (
     <div className="flex h-full w-full">
       <div className="flex flex-1 flex-col">
-        <header className="p-4 py-20">
+        <header className="p-4 pt-20">
           <h1 className="text-xl font-semibold">Chat about the VPC ✨</h1>
           <p>Ask anything about the VPC for our AI to answer</p>
         </header>
+        <div className="p-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Recommendations:</CardTitle>
+              <CardDescription>Recommended reports and files</CardDescription>
+            </CardHeader>
+            <CardContent>
+              {rec.map(r => (
+                <RecommendedDocumentButton key={r.fileURL} url={r.fileURL} title={r.displayName} />
+              ))}
+            </CardContent>
+          </Card>
+        </div>
         <ChatMessageList>
           <ChatBubble variant="received">
             <ChatBubbleAvatar src="" fallback="🤖" />
@@ -157,3 +175,4 @@ export default function ChatBot() {
     </div>
   );
 }
+

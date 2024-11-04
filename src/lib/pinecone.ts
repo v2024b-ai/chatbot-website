@@ -1,3 +1,4 @@
+import { db } from "@/server/db";
 import {
   type EmbeddingsList,
   type Index,
@@ -25,7 +26,7 @@ export class PineconeHelper {
     this.index = this.pc.index(this.indexName);
   }
 
-  async getReports({ input, topK = 3 }: { topK?: number; input: string }) {
+  async getReportTitles({ input, topK = 3 }: { topK?: number; input: string }) {
     const vector: number[] = await this.generateEmbeddings(input);
 
     // Perform the query with the numeric vector
@@ -37,6 +38,25 @@ export class PineconeHelper {
     return response.matches.map((match) => match.id);
   }
 
+  async getReportTitleAndUrls({
+    input,
+    topK = 3,
+  }: {
+    topK?: number;
+    input: string;
+  }) {
+    return db.iqpData.findMany({
+      where: {
+        title: {
+          in: await this.getReportTitles({ input, topK }),
+        },
+      },
+      select: {
+        title: true,
+        url: true,
+      },
+    });
+  }
   async storeReports({ input, id }: { input: string; id: string }) {
     const vector: number[] = await this.generateEmbeddings(input);
 

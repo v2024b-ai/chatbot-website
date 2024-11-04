@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const pineconeQueryInput = z.object({
+  topK: z.number().optional(),
   input: z
     .string()
     .min(2, { message: "Input must be longer than 2 characters" }),
