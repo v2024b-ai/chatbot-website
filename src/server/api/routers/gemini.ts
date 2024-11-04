@@ -20,7 +20,7 @@ async function generateEmbeddings(input: string): Promise<number[]> {
       },
     );
 
-    console.log("These are the embedding shit: ", embeddings);
+    console.log("These are the embedding data: ", embeddings);
 
     // Extract the vector from the embeddings response
     if (embeddings.length > 0 && embeddings[0]!.values) {
@@ -40,26 +40,27 @@ export const chatRouter = createTRPCRouter({
     .mutation(async ({ input: { data }, ctx }) => {
       const gemini = new Gemini();
 
-      const pinecodeInput = data.at(data.length - 1)?.content;
+      const pineconeInput = data.at(data.length - 1)?.content;
 
-      if (!pinecodeInput) return;
+      if (!pineconeInput) return;
 
-      const vector: number[] = await generateEmbeddings(pinecodeInput);
+      const vector: number[] = await generateEmbeddings(pineconeInput);
 
       // Perform the query with the numeric vector
       const response = await index.namespace(indexName).query({
-        topK: 1,
+        topK: 10,
         vector: vector,
         includeValues: true,
       });
 
       console.log("this is the response: ", response);
-      const relavantReportNames = response.matches.map((match) => match.id);
+      const relevantReportNames = response.matches.map((match) => match.id);
 
+      // Retrieve relevant report titles and URLs from the database
       const urlAndNames = await ctx.db.iqpData.findMany({
         where: {
           title: {
-            in: relavantReportNames,
+            in: relevantReportNames,
           },
         },
         select: {
@@ -68,22 +69,22 @@ export const chatRouter = createTRPCRouter({
         },
       });
 
-      console.log("after prisma query: ", urlAndNames);
+      console.log("after Prisma query: ", urlAndNames);
 
-      const urlNamesMimeObjects = urlAndNames.map(
-        (obj): UploadFileData => ({
-          fileURL: obj.url,
-          mimeType: "application/pdf",
-          displayName: obj.title,
-        }),
-      );
+      // Send the prompt data to Gemini and get the response
+      const geminiResponse = await gemini.prompt(data);
 
-      console.log("After mapping with mimetype: ", urlNamesMimeObjects);
+      // Prepare the recommended files as an array of objects
+      const recommendedFiles = urlAndNames.map((file) => ({
+        title: file.title,
+        url: file.url,
+      }));
 
-      const geminiUploadResults = await gemini.upload(urlNamesMimeObjects);
-
-      const output = await gemini.promptWithFile(data, geminiUploadResults);
-      return output;
+      // Return an object with both the response message and recommended files
+      return {
+        message: geminiResponse,
+        recommendedFiles,
+      };
     }),
 
   uploadFile: publicProcedure
