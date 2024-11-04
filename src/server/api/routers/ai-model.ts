@@ -1,13 +1,43 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { addModelSchema } from "@/types/ai/models/model-eval-info-types";
+import axios from "axios";
+
+interface PostData {
+  genStr: string;
+}
+
+interface scores {
+  scores: { BLEU: number; ROUGE: number; METEOR: number };
+}
 
 export const modelRoute = createTRPCRouter({
   addModel: publicProcedure
     .input(addModelSchema)
     .mutation(async ({ input, ctx }) => {
+      // EVAL IS A STRING
+      const Eval: scores = await postEval({ genStr: input.modelOutput });
+      //removed the console.logs to declutter the console and the code
+
       return ctx.db.aiEval.create({
-        data: { ...input, bleu: 0, rouge: 0, meteor: 0 },
+        data: {
+          model: input.model,
+          url: input.url,
+          ppInput: input.ppInput,
+          ppOutput: input.ppOutput,
+          termsURL: input.termsURL,
+          ctxLength: input.ctxLength,
+          modelSize: input.modelSize,
+          maxOutput: input.maxOutput,
+          maxInput: input.maxInput,
+          fileInput: input.fileInput,
+          outputResponseTime: input.outputResponseTime,
+          fileOutput: input.fileOutput,
+          perplexity: input.perplexity,
+          bleu: Eval.scores.BLEU,
+          rouge: Eval.scores.ROUGE,
+          meteor: Eval.scores.METEOR,
+        },
       });
     }),
 
@@ -21,3 +51,18 @@ export const modelRoute = createTRPCRouter({
     return ctx.db.aiEval.findMany();
   }),
 });
+
+const postEval = async (data: PostData): Promise<scores> => {
+  const url = "https://chatvpc-python.vercel.app/test-scoring/";
+  try {
+    const evals = await axios.post<scores>(url, data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return evals.data;
+  } catch (error) {
+    console.error("Error posting evals:", error);
+    throw error;
+  }
+};
