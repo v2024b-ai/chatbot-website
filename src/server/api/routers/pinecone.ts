@@ -4,17 +4,23 @@ import { PineconeHelper } from "@/lib/pinecone";
 
 export const pineconeRouter = createTRPCRouter({
   getReportTitles: publicProcedure
-    .input(pineconeQueryInput) // Use the defined input schema
+    .input(pineconeQueryInput)
     .mutation(async ({ input }) => {
       const pine = new PineconeHelper();
       return pine.getReportTitles(input);
     }),
 
   getReportTitlesAndUrls: publicProcedure
-    .input(pineconeQueryInput) // Use the defined input schema
+    .input(pineconeQueryInput)
     .mutation(async ({ input }) => {
       const pine = new PineconeHelper();
-      return pine.getReportTitleAndUrls(input);
+      return pine.getReportTitleAndUrls(input).then((res) =>
+        res.map((data) => ({
+          url: data.url,
+          title: data.title,
+          mimeType: "application/pdf",
+        })),
+      );
     }),
 
   storeReports: publicProcedure

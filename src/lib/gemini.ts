@@ -13,10 +13,10 @@ import { capitalizeFirstLetter } from "./utils";
 import { type Readable } from "stream";
 
 export class Gemini {
-  AImodelName = { model: "gemini-1.5-flash" };
-  GenAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
-  Model = this.GenAI.getGenerativeModel(this.AImodelName);
-  fileManager = new GoogleAIFileManager(process.env.GEMINI_API_KEY!);
+  private AImodelName = { model: "gemini-1.5-flash-8b" };
+  private GenAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
+  private Model = this.GenAI.getGenerativeModel(this.AImodelName);
+  private fileManager = new GoogleAIFileManager(process.env.GEMINI_API_KEY!);
 
   // only takes text
   async prompt(messages: PromptSchema[]) {
@@ -35,13 +35,13 @@ export class Gemini {
     return result.response.text();
   }
 
-  formatMessages(messages: PromptSchema[]) {
+  private formatMessages(messages: PromptSchema[]) {
     return messages
       .map((msg) => `${capitalizeFirstLetter(msg.role)}: ${msg.content}`)
       .join("\n");
   }
 
-  async upload(fileData: UploadFileData[]) {
+  async upload(fileData: UploadFileData[]): Promise<FileData[]> {
     const returnData: FileData[] = [];
 
     // const newFiles = fileData;
@@ -102,21 +102,17 @@ export class Gemini {
     return returnData;
   }
 
-  async getFileList() {
+  private async getFileList() {
     const result = await this.fileManager.listFiles();
 
     console.log(">>>> RESULT FROM GET FILE LIST: ", result);
 
-    if (!result) {
-      return {
-        names: new Set(),
-        data: [] as {
-          fileUri: string;
-          mimeType: string;
-          displayName: string;
-        }[],
-      };
+    // Check if files are undefined and handle it
+    if (!result.files) {
+      return { names: new Set(), data: [] };
     }
+
+    console.log(">>>> RESULT FROM GET FILE LIST: ", result);
 
     return {
       names: new Set(result.files.map((file) => file.name)),
