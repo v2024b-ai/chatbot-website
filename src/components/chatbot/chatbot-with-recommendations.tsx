@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { api } from "@/trpc/react";
 import { z } from "zod";
 import {
@@ -20,8 +20,10 @@ import { FormControl, FormField, FormItem, Form } from "../ui/form";
 import { Textarea } from "../ui/textarea";
 import cuid from "cuid";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
-import { useRecommendation } from "@/hooks/use-recommended-document";
 import { RecommendedDocumentButton } from "./recommended-document-button";
+import { type UploadFileData } from "@/types/ai/gemini";
+import { useDebounce } from "@/hooks/use-debounce";
+import { LoadingSpinner } from "../loading-spinner";
 
 
 const makeNewMessage = (
@@ -39,8 +41,20 @@ const makeNewMessage = (
 
 export default function ChatBotWithRec() {
   const [isGenerating, setIsGenerating] = useState(false);
+  const [rec, setRec] = useState<UploadFileData[]>([]);
   const { messages, setMessages, isLoading } = useChat();
-  const { setInput, rec } = useRecommendation();
+  const pinecone = api.pinecone.getReportTitlesAndUrls.useMutation({
+    onSuccess: (data) => {
+      setRec(
+        data.map(({ title, url }) => ({
+          displayName: title,
+          fileURL: url,
+          mimeType: "application/pdf",
+        })),
+      );
+    },
+  });
+
 
   const gemini = api.chat.text.useMutation({
     onSuccess: (data) => {
@@ -59,12 +73,11 @@ export default function ChatBotWithRec() {
     resolver: zodResolver(inputSchema),
     defaultValues: { prompt: "" },
   });
-  const inputVal = form.getValues().prompt
 
-  // useEffect(() => {
-  //   setInput(inputVal)
-  // }, [inputVal]);
-  //
+  const handlePineconeChange = useDebounce(
+    (input: string) => pinecone.mutate({ input }), 500
+  )
+
   function onSubmit(values: z.infer<typeof inputSchema>) {
     form.reset();
     setIsGenerating(true);
@@ -90,9 +103,13 @@ export default function ChatBotWithRec() {
               <CardDescription>Recommended reports and files</CardDescription>
             </CardHeader>
             <CardContent>
-              {rec.map(r => (
-                <RecommendedDocumentButton key={r.fileURL} url={r.fileURL} title={r.displayName} />
-              ))}
+              {pinecone.isPending ?
+                <LoadingSpinner />
+                : (
+                  <div className="flex  gap-4">
+                    {rec.map(r => <RecommendedDocumentButton key={r.fileURL} url={r.fileURL} title={r.displayName} />)}
+                  </div>
+                )}
             </CardContent>
           </Card>
         </div>
@@ -151,6 +168,10 @@ export default function ChatBotWithRec() {
                   <FormControl>
                     <Textarea
                       {...field}
+                      onChange={async (e) => {
+                        field.onChange(e);
+                        await handlePineconeChange(e.target.value)
+                      }}
                       onKeyDown={async (e) => {
                         if (e.key === "Enter" && !e.shiftKey) {
                           e.preventDefault();
