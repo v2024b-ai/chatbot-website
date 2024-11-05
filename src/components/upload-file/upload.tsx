@@ -1,52 +1,62 @@
 "use client";
-import { CenterInScreen } from "@/components/center-in-screen";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import React from "react";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { CenterInScreen } from "@/components/center-in-screen";
+
 import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { sendURL, sendURLType } from "@/types/podcast/podcast-types";
+
+// const formSchema = z.object({
+//   url: z.string().url("Please enter a url in the form of https://..."),
+// });
 
 export default function UploadButton() {
-  const [file, setFile] = useState<File | null>(null);
-  const [loadingDialog, setLoadingDialog] = useState(false);
+  const form = useForm<sendURLType>({
+    resolver: zodResolver(sendURL),
+    defaultValues: {
+      url: "",
+    },
+  });
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-expect-error
-      // dw about this hehe I'll figure it out later
-      setFile(e.target.files[0]);
-    }
-  };
-
-  const handleUpload = async () => {
-    if (file && file.type == "pdf") {
-      setLoadingDialog(true);
-      console.log("Uploading file...");
-
-      const formData = new FormData();
-      formData.append("file", file);
-
-      setLoadingDialog(false);
-    }
-  };
+  function onSubmit(values: sendURLType) {
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
+    console.log(values);
+  }
 
   return (
     <main className="flex flex-col items-center justify-center">
       <CenterInScreen>
-        <Input
-          type="file"
-          accept=".pdf"
-          className="max-w-80 cursor-pointer"
-          onChange={handleFileChange}
-        ></Input>
-        {file && (
-          <Button
-            type="button"
-            className="w-50 cursor-pointer self-center"
-            onClick={handleUpload}
-          >
-            Upload &#34; {file.name.toString()} &#34;
-          </Button>
-        )}
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <FormField
+              control={form.control}
+              name="url"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>URL Link to PDF</FormLabel>
+                  <FormControl>
+                    <Input placeholder="https://" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit">Get Podcast</Button>
+          </form>
+        </Form>
       </CenterInScreen>
     </main>
   );
