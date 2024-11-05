@@ -28,7 +28,7 @@ export default async function Home() {
                 Check out the tools that we do have implemented in the tools section!
               </CardContent>
               <CardContent>
-                Also look at the evaluation tool that we have developed under Evaluations > Add a Model
+                Also look at the evaluation tool that we have developed under Evaluations {'>'} Add a Model
               </CardContent>
             </CardHeader>
           </Card>
