@@ -107,7 +107,9 @@ export default function ChatBotWithRec() {
                 <LoadingSpinner />
                 : (
                   <div className="flex  gap-4">
-                    {rec.map(r => <RecommendedDocumentButton key={r.fileURL} url={r.fileURL} title={r.displayName} />)}
+                    {rec.map(r =>
+                      <RecommendedDocumentButton key={r.fileURL} url={r.fileURL} title={r.displayName} />
+                    )}
                   </div>
                 )}
             </CardContent>

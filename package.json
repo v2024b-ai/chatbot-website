@@ -9,6 +9,7 @@
         "db:migrate": "prisma migrate deploy",
         "db:push": "prisma db push",
         "db:push++": "prisma db push && rm -rf node_modules/prisma && pnpm i",
+        "db:push:hard": "prisma db push && rm -rf node_modules/prisma && pnpm i",
         "db:studio": "prisma studio",
         "dev": "next dev",
         "postinstall": "prisma generate",
