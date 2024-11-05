@@ -22,7 +22,13 @@ export default async function Home() {
                 Future work:
               </CardTitle>
               <CardContent>
-                Nothing is in here yet, but expect really cool stuff soon...
+                Podcasts, Chatbots, Retrieval Augmented Generation, and more!
+              </CardContent>
+              <CardContent>
+                Check out the tools that we do have implemented in the tools section!
+              </CardContent>
+              <CardContent>
+                Also look at the evaluation tool that we have developed under Evaluations > Add a Model
               </CardContent>
             </CardHeader>
           </Card>
