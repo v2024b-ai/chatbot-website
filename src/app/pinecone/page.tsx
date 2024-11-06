@@ -1,4 +1,8 @@
 // /* eslint-disable */
+
+export default function page() {
+  return <div>nothing to see here...  </div>
+}
 // "use client";
 // import * as React from "react";
 // import { Card } from "@/components/ui/card";
