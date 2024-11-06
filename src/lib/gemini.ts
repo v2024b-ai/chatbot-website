@@ -13,10 +13,10 @@ import { capitalizeFirstLetter } from "./utils";
 import { type Readable } from "stream";
 
 export class Gemini {
-  AImodelName = { model: "gemini-1.5-flash" };
-  GenAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
-  Model = this.GenAI.getGenerativeModel(this.AImodelName);
-  fileManager = new GoogleAIFileManager(process.env.GEMINI_API_KEY!);
+  private AImodelName = { model: "gemini-1.5-pro" };
+  private GenAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
+  private Model = this.GenAI.getGenerativeModel(this.AImodelName);
+  private fileManager = new GoogleAIFileManager(process.env.GEMINI_API_KEY!);
 
   // only takes text
   async prompt(messages: PromptSchema[]) {
@@ -35,17 +35,20 @@ export class Gemini {
     return result.response.text();
   }
 
-  formatMessages(messages: PromptSchema[]) {
+  private formatMessages(messages: PromptSchema[]) {
     return messages
       .map((msg) => `${capitalizeFirstLetter(msg.role)}: ${msg.content}`)
       .join("\n");
   }
 
-  async upload(fileData: UploadFileData[]) {
+  async upload(fileData: UploadFileData[]): Promise<FileData[]> {
     const returnData: FileData[] = [];
 
+    // const newFiles = fileData;
     // retrueves a list of already uploaded files to gemini
     const UploadedFiles = await this.getFileList();
+
+    console.log("got to before filtering data");
 
     const newFiles = fileData.filter((file) => {
       if (!UploadedFiles.names.has(file.displayName)) {
@@ -66,6 +69,8 @@ export class Gemini {
       return false;
     });
 
+    console.log(">>> NEW FILES TO UPLOAD TO GEMINI: ", newFiles);
+
     await Promise.all(
       newFiles.map(async (file) => {
         const filePath = path.join("/tmp", path.basename(file.fileURL));
@@ -82,8 +87,10 @@ export class Gemini {
           writer.on("finish", res);
           writer.on("error", rej);
         });
-
-        const result = await this.fileManager.uploadFile(filePath, { ...file });
+        //
+        const result = await this.fileManager.uploadFile(filePath, {
+          ...file,
+        });
 
         returnData.push({
           mimeType: result.file.mimeType,
@@ -95,8 +102,18 @@ export class Gemini {
     return returnData;
   }
 
-  async getFileList() {
+  private async getFileList() {
     const result = await this.fileManager.listFiles();
+
+    console.log(">>>> RESULT FROM GET FILE LIST: ", result);
+
+    // Check if files are undefined and handle it
+    if (!result.files) {
+      return { names: new Set(), data: [] };
+    }
+
+    console.log(">>>> RESULT FROM GET FILE LIST: ", result);
+
     return {
       names: new Set(result.files.map((file) => file.name)),
       data: result.files.map((file) => ({

@@ -19,31 +19,37 @@ import CodeDisplayBlock from "@/components/chatbot/code-display-block";
 import { FormControl, FormField, FormItem, Form } from "../ui/form";
 import { Textarea } from "../ui/textarea";
 import cuid from "cuid";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { type UploadFileData } from "@/types/ai/gemini";
+import { useDebounce } from "@/hooks/use-debounce";
+import { LoadingSpinner } from "../loading-spinner";
 
 
-const makeNewMessage = (
-  content: string,
-  role: "user" | "assistant",
-): {
-  id: string;
-  content: string;
-  role: "user" | "assistant";
-} => ({
-  id: cuid(),
-  content,
-  role,
-});
-
-export default function ChatBot() {
+export default function ChatBotWithRec() {
   const [isGenerating, setIsGenerating] = useState(false);
+  const [hasSentFirstMsg, setHasSentFirstMsg] = useState(false);
+  const [rec, setRec] = useState<UploadFileData[]>([]);
+  const [selectedFiles, setSelectedFiles] = useState<UploadFileData>({} as UploadFileData);
   const { messages, setMessages, isLoading } = useChat();
 
-  const gemini = api.chat.text.useMutation({
+  const pinecone = api.pinecone.getReportTitlesAndUrls.useMutation({
+    onSuccess: (data) => {
+      setRec(
+        data.map(({ title, url, mimeType }) => ({
+          displayName: title,
+          fileURL: url,
+          mimeType: mimeType
+        })),
+      );
+    },
+  });
+
+
+  const gemini = api.chat.prompt.useMutation({
     onSuccess: (data) => {
       if (data) {
-        // Separate response message from recommendations
-
         setMessages([...messages, makeNewMessage(data, "assistant")]);
+        setHasSentFirstMsg(true);
       }
       setIsGenerating(false);
     },
@@ -55,6 +61,12 @@ export default function ChatBot() {
     defaultValues: { prompt: "" },
   });
 
+  const handlePineconeChange = useDebounce((input: string) => pinecone.mutate({ input }), 500)
+
+  function onRecommendedFileClick(file: UploadFileData) {
+    setSelectedFiles(file)
+  }
+
   function onSubmit(values: z.infer<typeof inputSchema>) {
     form.reset();
     setIsGenerating(true);
@@ -63,16 +75,31 @@ export default function ChatBot() {
     const updatedMessages = [...messages, userMessage];
     setMessages(updatedMessages);
 
-    gemini.mutate({ data: updatedMessages });
+    gemini.mutate({ data: updatedMessages, files: selectedFiles });
   }
 
   return (
     <div className="flex h-full w-full">
       <div className="flex flex-1 flex-col">
-        <header className="p-4 py-20">
+        <header className="px-4 pt-20">
           <h1 className="text-xl font-semibold">Chat about the VPC ✨</h1>
-          <p>Ask anything about the VPC for our AI to answer</p>
         </header>
+        <div className="p-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Recommendations:</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {pinecone.isPending ?
+                <LoadingSpinner />
+                : (
+                  <div className="flex  gap-4">
+                    {rec.map(file => <RecButton selected={file == selectedFiles} file={file} onRecommendedFileClick={onRecommendedFileClick} key={file.fileURL} />)}
+                  </div>
+                )}
+            </CardContent>
+          </Card>
+        </div>
         <ChatMessageList>
           <ChatBubble variant="received">
             <ChatBubbleAvatar src="" fallback="🤖" />
@@ -128,6 +155,10 @@ export default function ChatBot() {
                   <FormControl>
                     <Textarea
                       {...field}
+                      onChange={async (e) => {
+                        field.onChange(e);
+                        if (!hasSentFirstMsg) await handlePineconeChange(e.target.value)
+                      }}
                       onKeyDown={async (e) => {
                         if (e.key === "Enter" && !e.shiftKey) {
                           e.preventDefault();
@@ -149,6 +180,30 @@ export default function ChatBot() {
           </form>
         </Form>
       </div>
-    </div>
+    </div >
   );
 }
+
+function RecButton({ selected, file, onRecommendedFileClick }: { file: UploadFileData, onRecommendedFileClick?: (file: UploadFileData) => void, selected: boolean }) {
+  return (
+    <Button onClick={() => onRecommendedFileClick && onRecommendedFileClick(file)} key={file.fileURL} variant={selected ? "default" : "outline"} className="flex p-2 flex-col text-wrap h-full w-full">
+      <h1 className="text-xl">{file.displayName}</h1>
+      <p className="text-gray-600">{file.mimeType}</p>
+    </Button>
+  )
+}
+
+const makeNewMessage = (
+  content: string,
+  role: "user" | "assistant",
+): {
+  id: string;
+  content: string;
+  role: "user" | "assistant";
+} => ({
+  id: cuid(),
+  content,
+  role,
+});
+
+
