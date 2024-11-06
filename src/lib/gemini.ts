@@ -13,7 +13,7 @@ import { capitalizeFirstLetter } from "./utils";
 import { type Readable } from "stream";
 
 export class Gemini {
-  private AImodelName = { model: "gemini-1.5-flash-8b" };
+  private AImodelName = { model: "gemini-1.5-pro" };
   private GenAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
   private Model = this.GenAI.getGenerativeModel(this.AImodelName);
   private fileManager = new GoogleAIFileManager(process.env.GEMINI_API_KEY!);

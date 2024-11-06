@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { api } from "@/trpc/react";
 import { z } from "zod";
 import {
@@ -37,18 +37,13 @@ const makeNewMessage = (
 export default function ChatBot() {
   const [isGenerating, setIsGenerating] = useState(false);
   const { messages, setMessages, isLoading } = useChat();
-  const [recommendations, setRecommendations] = useState<
-    { title: string; url: string }[]
-  >([]);
 
   const gemini = api.chat.text.useMutation({
     onSuccess: (data) => {
       if (data) {
         // Separate response message from recommendations
-        const { message, recommendedFiles } = data;
 
-        setMessages([...messages, makeNewMessage(message, "assistant")]);
-        setRecommendations(recommendedFiles || []);
+        setMessages([...messages, makeNewMessage(data, "assistant")]);
       }
       setIsGenerating(false);
     },
