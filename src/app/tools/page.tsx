@@ -17,9 +17,9 @@ export default function ToolsPage() {
         </p>
       </div>
       <Separator className="my-6" />
-      <div className="ml-10">
+      <div className="gap-2 flex flex-wrap">
         <Link href="/tools/chatbot">
-          <Card className="float-left aspect-square w-64 transition-shadow duration-300 hover:shadow-lg">
+          <Card className="aspect-square w-64 transition-shadow duration-300 hover:shadow-lg">
             <CardHeader>
               <CardTitle>ChatVPC ChatBot</CardTitle>
               <CardDescription>
@@ -30,7 +30,7 @@ export default function ToolsPage() {
         </Link>
 
         <Link href="/tools/podcast">
-          <Card className="float-left aspect-square w-64 transition-shadow duration-300 hover:shadow-lg">
+          <Card className=" aspect-square w-64 transition-shadow duration-300 hover:shadow-lg">
             <CardHeader>
               <CardTitle>ChatVPC Podcast Generator</CardTitle>
               <CardDescription>
@@ -40,6 +40,7 @@ export default function ToolsPage() {
             </CardHeader>
           </Card>
         </Link>
+
       </div>
     </main>
   );
