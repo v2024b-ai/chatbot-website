@@ -24,26 +24,28 @@ import { type UploadFileData } from "@/types/ai/gemini";
 import { useDebounce } from "@/hooks/use-debounce";
 import { LoadingSpinner } from "../loading-spinner";
 
-
 export default function ChatBotWithRec() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [hasSentFirstMsg, setHasSentFirstMsg] = useState(false);
   const [rec, setRec] = useState<UploadFileData[]>([]);
-  const [selectedFiles, setSelectedFiles] = useState<UploadFileData>({} as UploadFileData);
+  const [selectedFiles, setSelectedFiles] = useState<
+    UploadFileData | undefined
+  >();
   const { messages, setMessages, isLoading } = useChat();
 
   const pinecone = api.pinecone.getReportTitlesAndUrls.useMutation({
     onSuccess: (data) => {
-      setRec(
-        data.map(({ title, url, mimeType }) => ({
-          displayName: title,
-          fileURL: url,
-          mimeType: mimeType
-        })),
-      );
+      const formattedData = data.map(({ title, url, mimeType }) => ({
+        displayName: title,
+        fileURL: url,
+        mimeType: mimeType,
+      }));
+
+      setRec(formattedData);
+
+      setSelectedFiles(formattedData.at(0));
     },
   });
-
 
   const gemini = api.chat.prompt.useMutation({
     onSuccess: (data) => {
@@ -61,10 +63,13 @@ export default function ChatBotWithRec() {
     defaultValues: { prompt: "" },
   });
 
-  const handlePineconeChange = useDebounce((input: string) => pinecone.mutate({ input }), 500)
+  const handlePineconeChange = useDebounce(
+    (input: string) => pinecone.mutate({ input }),
+    500,
+  );
 
   function onRecommendedFileClick(file: UploadFileData) {
-    setSelectedFiles(file)
+    setSelectedFiles(file);
   }
 
   function onSubmit(values: z.infer<typeof inputSchema>) {
@@ -75,7 +80,7 @@ export default function ChatBotWithRec() {
     const updatedMessages = [...messages, userMessage];
     setMessages(updatedMessages);
 
-    gemini.mutate({ data: updatedMessages, files: selectedFiles });
+    gemini.mutate({ data: updatedMessages, files: selectedFiles! });
   }
 
   return (
@@ -90,13 +95,20 @@ export default function ChatBotWithRec() {
               <CardTitle>Recommendations:</CardTitle>
             </CardHeader>
             <CardContent>
-              {pinecone.isPending ?
+              {pinecone.isPending ? (
                 <LoadingSpinner />
-                : (
-                  <div className="flex  gap-4">
-                    {rec.map(file => <RecButton selected={file == selectedFiles} file={file} onRecommendedFileClick={onRecommendedFileClick} key={file.fileURL} />)}
-                  </div>
-                )}
+              ) : (
+                <div className="flex gap-4">
+                  {rec.map((file) => (
+                    <RecButton
+                      selected={file.fileURL === selectedFiles?.fileURL}
+                      file={file}
+                      onRecommendedFileClick={onRecommendedFileClick}
+                      key={file.fileURL}
+                    />
+                  ))}
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
@@ -157,7 +169,8 @@ export default function ChatBotWithRec() {
                       {...field}
                       onChange={async (e) => {
                         field.onChange(e);
-                        if (!hasSentFirstMsg) await handlePineconeChange(e.target.value)
+                        if (!hasSentFirstMsg)
+                          await handlePineconeChange(e.target.value);
                       }}
                       onKeyDown={async (e) => {
                         if (e.key === "Enter" && !e.shiftKey) {
@@ -173,24 +186,37 @@ export default function ChatBotWithRec() {
             <Button
               type="submit"
               className="w-full"
-              disabled={isLoading || isGenerating}
+              disabled={isLoading || isGenerating || selectedFiles == undefined}
             >
               Submit! <Send />
             </Button>
           </form>
         </Form>
       </div>
-    </div >
+    </div>
   );
 }
 
-function RecButton({ selected, file, onRecommendedFileClick }: { file: UploadFileData, onRecommendedFileClick?: (file: UploadFileData) => void, selected: boolean }) {
+function RecButton({
+  selected,
+  file,
+  onRecommendedFileClick,
+}: {
+  file: UploadFileData;
+  onRecommendedFileClick?: (file: UploadFileData) => void;
+  selected: boolean;
+}) {
   return (
-    <Button onClick={() => onRecommendedFileClick && onRecommendedFileClick(file)} key={file.fileURL} variant={selected ? "default" : "outline"} className="flex p-2 flex-col text-wrap h-full w-full">
+    <Button
+      onClick={() => onRecommendedFileClick && onRecommendedFileClick(file)}
+      key={file.fileURL}
+      variant={selected ? "default" : "outline"}
+      className="flex h-full w-full flex-col text-wrap p-2"
+    >
       <h1 className="text-xl">{file.displayName}</h1>
       <p className="text-gray-600">{file.mimeType}</p>
     </Button>
-  )
+  );
 }
 
 const makeNewMessage = (
@@ -205,5 +231,3 @@ const makeNewMessage = (
   content,
   role,
 });
-
-
