@@ -102,7 +102,9 @@ export function NavBar() {
                   <ListItem href="/tools/chatbot" title="Chatbot">
                     Use the chatbot to ask questions about specific VPC IQPs
                   </ListItem>
-
+                  <ListItem href="/tools/csv-analyzer" title="Data Analyzer">
+                    Use this chatbot to analyze CSV files
+                  </ListItem>
                   <ListItem href="/tools/podcast" title="Podcast">
                     Get a full podcast about any inputted report
                   </ListItem>
