@@ -9,7 +9,7 @@ import Link from "next/link";
 
 export default function ToolsPage() {
   return (
-    <main className=" space-y-6 p-10 pb-16 ">
+    <main className="space-y-6 p-10 pb-16">
       <div className="space-y-0.5">
         <h2 className="text-2xl font-bold tracking-tight">Tools</h2>
         <p className="text-muted-foreground">
@@ -17,9 +17,9 @@ export default function ToolsPage() {
         </p>
       </div>
       <Separator className="my-6" />
-      <div className="ml-10">
+      <div className="gap-2 flex flex-wrap">
         <Link href="/tools/chatbot">
-          <Card className="float-left aspect-square w-64 transition-shadow duration-300 hover:shadow-lg">
+          <Card className="aspect-square w-64 transition-shadow duration-300 hover:shadow-lg">
             <CardHeader>
               <CardTitle>ChatVPC ChatBot</CardTitle>
               <CardDescription>
@@ -28,6 +28,19 @@ export default function ToolsPage() {
             </CardHeader>
           </Card>
         </Link>
+
+        <Link href="/tools/podcast">
+          <Card className=" aspect-square w-64 transition-shadow duration-300 hover:shadow-lg">
+            <CardHeader>
+              <CardTitle>ChatVPC Podcast Generator</CardTitle>
+              <CardDescription>
+                Upload a report and get back a complete podcast format
+                conversation about the topics of the report
+              </CardDescription>
+            </CardHeader>
+          </Card>
+        </Link>
+
       </div>
     </main>
   );

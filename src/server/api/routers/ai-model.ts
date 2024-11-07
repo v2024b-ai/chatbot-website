@@ -18,7 +18,6 @@ export const modelRoute = createTRPCRouter({
       // EVAL IS A STRING
       const Eval: scores = await postEval({ genStr: input.modelOutput });
       //removed the console.logs to declutter the console and the code
-
       return ctx.db.aiEval.create({
         data: {
           model: input.model,

@@ -1,4 +1,4 @@
-import * as React from "react"
+import * as React from "react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { ModeToggle } from "@/components/theme-toggle";
@@ -14,7 +14,7 @@ import {
 
 const ListItem = React.forwardRef<
   React.ElementRef<"a">,
-  React.ComponentPropsWithoutRef<"a"> & { title: string, href: string }
+  React.ComponentPropsWithoutRef<"a"> & { title: string; href: string }
 >(({ className, title, children, ...props }, ref) => {
   return (
     <li>
@@ -40,7 +40,7 @@ ListItem.displayName = "ListItem";
 
 export function NavBar() {
   return (
-    <header className="top-0 z-1000 border-b flex justify-between items-center gap-4 p-4 ">
+    <header className="z-1000 top-0 flex items-center justify-between gap-4 border-b p-4">
       <div className="pl-4">
         <NavigationMenu>
           <NavigationMenuList>
@@ -54,9 +54,7 @@ export function NavBar() {
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <NavigationMenuTrigger >
-                Evaluations
-              </NavigationMenuTrigger>
+              <NavigationMenuTrigger>Evaluations</NavigationMenuTrigger>
               <NavigationMenuContent>
                 <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
                   <li className="row-span-3">
@@ -82,9 +80,7 @@ export function NavBar() {
               </NavigationMenuContent>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <NavigationMenuTrigger >
-                Tools
-              </NavigationMenuTrigger>
+              <NavigationMenuTrigger>Tools</NavigationMenuTrigger>
               <NavigationMenuContent>
                 <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
                   <li className="row-span-3">
@@ -106,13 +102,17 @@ export function NavBar() {
                   <ListItem href="/tools/chatbot" title="Chatbot">
                     Use the chatbot to ask questions about specific VPC IQPs
                   </ListItem>
+
+                  <ListItem href="/tools/podcast" title="Podcast">
+                    Get a full podcast about any inputted report
+                  </ListItem>
                 </ul>
               </NavigationMenuContent>
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
       </div>
-      <div className="pr-4 z-1000">
+      <div className="z-1000 pr-4">
         <ModeToggle />
       </div>
     </header>
