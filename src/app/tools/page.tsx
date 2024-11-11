@@ -20,7 +20,7 @@ export default function ToolsPage() {
       <Separator className="my-6" />
       <div className="flex flex-wrap gap-2">
         {Models.map((model) => (
-          <Link href={model.link}>
+          <Link key={model.title} href={model.link}>
             <Card className="aspect-square w-64 transition-shadow duration-300 hover:shadow-lg">
               <CardHeader>
                 <CardTitle>{model.title}</CardTitle>

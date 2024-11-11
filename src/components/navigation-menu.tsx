@@ -101,7 +101,11 @@ export function NavBar() {
                     </NavigationMenuLink>
                   </li>
                   {Models.map((model) => (
-                    <ListItem href={model.link} title={model.title}>
+                    <ListItem
+                      key={model.title}
+                      href={model.link}
+                      title={model.title}
+                    >
                       {model.shortDesc}
                     </ListItem>
                   ))}
