@@ -3,13 +3,11 @@ import { CenterInScreen } from "@/components/center-in-screen";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { wait } from "next/dist/lib/wait";
 import axios from "axios";
 
 export default function UploadButton() {
   const [file, setFile] = useState<File | null>(null);
   const [loadingDialog, setLoadingDialog] = useState(false);
-
   interface retData {
     dialogue: string;
     audio: File;
@@ -20,22 +18,36 @@ export default function UploadButton() {
     }
   };
 
+  async function downloadFile() {
+    const url = "http://127.0.0.1:8000/gen-pod/";
+    const formData = new FormData();
+    if (file) {
+      formData.append("file", file);
+      const response = await axios.post(url, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+        responseType: "stream",
+      });
+
+      const blob = new Blob([response?.data], { type: "mp3" });
+
+      const url_two = URL.createObjectURL(blob);
+
+      // Create a temporary link to trigger the download
+      const a = document.createElement("a");
+      a.href = url_two;
+      a.download = "something.mp3";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url); // Clean up the URL object
+    }
+  }
+
   const handleUpload = async () => {
     // console.log(file?.name + file?.type);
     setLoadingDialog(true);
     console.log("Uploading file... ");
-    await wait(5);
-    /*Send backend request here*/
-    const retData: retData = await axios.post(
-      "http://127.0.0.1:8000/gen-pod/",
-      file,
-      {
-        headers: {
-          "Content-Type": file?.type,
-        },
-      },
-    );
-
+    await downloadFile();
     setLoadingDialog(false);
   };
 
