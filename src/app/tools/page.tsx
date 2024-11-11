@@ -6,6 +6,7 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
+import { Models } from "@/data/models-array";
 
 export default function ToolsPage() {
   return (
@@ -17,30 +18,17 @@ export default function ToolsPage() {
         </p>
       </div>
       <Separator className="my-6" />
-      <div className="gap-2 flex flex-wrap">
-        <Link href="/tools/chatbot">
-          <Card className="aspect-square w-64 transition-shadow duration-300 hover:shadow-lg">
-            <CardHeader>
-              <CardTitle>ChatVPC ChatBot</CardTitle>
-              <CardDescription>
-                Use the chatbot to ask questions about specific VPC IQPs
-              </CardDescription>
-            </CardHeader>
-          </Card>
-        </Link>
-
-        <Link href="/tools/podcast">
-          <Card className=" aspect-square w-64 transition-shadow duration-300 hover:shadow-lg">
-            <CardHeader>
-              <CardTitle>ChatVPC Podcast Generator</CardTitle>
-              <CardDescription>
-                Upload a report and get back a complete podcast format
-                conversation about the topics of the report
-              </CardDescription>
-            </CardHeader>
-          </Card>
-        </Link>
-
+      <div className="flex flex-wrap gap-2">
+        {Models.map((model) => (
+          <Link href={model.link}>
+            <Card className="aspect-square w-64 transition-shadow duration-300 hover:shadow-lg">
+              <CardHeader>
+                <CardTitle>{model.title}</CardTitle>
+                <CardDescription>{model.longDesc}</CardDescription>
+              </CardHeader>
+            </Card>
+          </Link>
+        ))}
       </div>
     </main>
   );
