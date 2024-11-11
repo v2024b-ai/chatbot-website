@@ -3,30 +3,40 @@ import { CenterInScreen } from "@/components/center-in-screen";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { wait } from "next/dist/lib/wait";
+import axios from "axios";
 
 export default function UploadButton() {
   const [file, setFile] = useState<File | null>(null);
   const [loadingDialog, setLoadingDialog] = useState(false);
 
+  interface retData {
+    dialogue: string;
+    audio: File;
+  }
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-expect-error
-      // dw about this hehe I'll figure it out later
       setFile(e.target.files[0]);
     }
   };
 
   const handleUpload = async () => {
-    if (file && file.type == "pdf") {
-      setLoadingDialog(true);
-      console.log("Uploading file...");
+    // console.log(file?.name + file?.type);
+    setLoadingDialog(true);
+    console.log("Uploading file... ");
+    await wait(5);
+    /*Send backend request here*/
+    const retData: retData = await axios.post(
+      "http://127.0.0.1:8000/gen-pod/",
+      file,
+      {
+        headers: {
+          "Content-Type": file?.type,
+        },
+      },
+    );
 
-      const formData = new FormData();
-      formData.append("file", file);
-
-      setLoadingDialog(false);
-    }
+    setLoadingDialog(false);
   };
 
   return (
@@ -44,7 +54,7 @@ export default function UploadButton() {
             className="w-50 cursor-pointer self-center"
             onClick={handleUpload}
           >
-            Upload &#34; {file.name.toString()} &#34;
+            Upload &#34; {file.name} &#34;
           </Button>
         )}
       </CenterInScreen>

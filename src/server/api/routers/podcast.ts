@@ -24,7 +24,7 @@ const getPod = async (data: string): Promise<retData> => {
   try {
     const pod = await axios.post<retData>(url, data, {
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "",
       },
     });
     // This will return a mp3 file and also a big ass string which will be the dialogue
