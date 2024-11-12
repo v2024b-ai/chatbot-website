@@ -5,13 +5,13 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { LoadingSpinner } from "@/components/loading-spinner";
+import { useToast } from "@/hooks/use-toast";
 
 export default function UploadButton() {
   const [file, setFile] = useState<File | null>();
   const [hasDownload, setHasDownload] = useState(false);
   const [play, setPlay] = useState(false);
-  const [blobURL, setBlobURL] = useState("");
-
+  const { toast } = useToast();
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setFile(e.target.files[0]);
@@ -33,18 +33,19 @@ export default function UploadButton() {
         const blob = new Blob([response?.data], {
           type: "audio/mpeg",
         });
+
         // Make the URL for blob
         const url_two = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url_two;
-        a.download = "something.mp3";
+        a.download = file.name.replace(".pdf", "") + ".mp3";
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
-        // Make the audio playable
-        const audio = new Audio();
-        audio.src = url_two;
-        await audio.play();
+        toast({
+          title: "Podcast has been downloaded",
+          variant: "destructive",
+        });
         // Change the states
         setFile(null);
         setHasDownload(false);
@@ -82,7 +83,7 @@ export default function UploadButton() {
           <p className="space-y-6">Podcast is Generating...</p>
         </div>
       )}
-      {play && <audio controls src={blobURL} datatype="audio/mpeg" />}
+      {/*{play && <audio controls src={blobURL} datatype="audio/mpeg" />}*/}
     </main>
   );
 }
