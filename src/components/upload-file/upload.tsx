@@ -32,7 +32,9 @@ export default function UploadButton() {
           responseType: "blob",
         });
 
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const audioBlob = response.data; // Adjust MIME type as needed
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         const audioUrl = URL.createObjectURL(audioBlob);
 
         const a = document.createElement("a");
@@ -50,6 +52,7 @@ export default function UploadButton() {
         // Get the transcript
         const urlTrans = "http://127.0.0.1:8000//get-trans/";
         const trans = await axios.get(urlTrans);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         setTranscript(trans.data);
         // Change the states
         setFile(null);
