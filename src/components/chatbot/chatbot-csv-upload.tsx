@@ -19,32 +19,18 @@ import CodeDisplayBlock from "@/components/chatbot/code-display-block";
 import { FormControl, FormField, FormItem, Form } from "../ui/form";
 import { Textarea } from "../ui/textarea";
 import cuid from "cuid";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { Input } from "../ui/input";
+import { Label } from "@radix-ui/react-dropdown-menu";
 
-
-const makeNewMessage = (
-  content: string,
-  role: "user" | "assistant",
-): {
-  id: string;
-  content: string;
-  role: "user" | "assistant";
-} => ({
-  id: cuid(),
-  content,
-  role,
-});
-
-export default function ChatBot() {
+export default function ChatBotCSV() {
   const [isGenerating, setIsGenerating] = useState(false);
   const { messages, setMessages, isLoading } = useChat();
 
   const gemini = api.chat.text.useMutation({
     onSuccess: (data) => {
-      if (data) {
-        // Separate response message from recommendations
+      if (data) setMessages([...messages, makeNewMessage(data, "assistant")]);
 
-        setMessages([...messages, makeNewMessage(data, "assistant")]);
-      }
       setIsGenerating(false);
     },
   });
@@ -69,10 +55,23 @@ export default function ChatBot() {
   return (
     <div className="flex h-full w-full">
       <div className="flex flex-1 flex-col">
-        <header className="p-4 py-20">
+        <header className="px-4 pt-20">
           <h1 className="text-xl font-semibold">Chat about the VPC ✨</h1>
-          <p>Ask anything about the VPC for our AI to answer</p>
+          <p>Use a CSV file to ask questions</p>
         </header>
+        <div className="p-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>
+                Upload CSV here!
+              </CardTitle>
+              <CardContent className="p-2">
+                {/* <Input type="file" accept=".csv" /> */}
+                <Input type="text" placeholder="URL of file download..." />
+              </CardContent>
+            </CardHeader>
+          </Card>
+        </div>
         <ChatMessageList>
           <ChatBubble variant="received">
             <ChatBubbleAvatar src="" fallback="🤖" />
@@ -152,3 +151,18 @@ export default function ChatBot() {
     </div>
   );
 }
+
+const makeNewMessage = (
+  content: string,
+  role: "user" | "assistant",
+): {
+  id: string;
+  content: string;
+  role: "user" | "assistant";
+} => ({
+  id: cuid(),
+  content,
+  role,
+});
+
+

@@ -11,6 +11,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+import { Models } from "@/data/models-array";
 
 const ListItem = React.forwardRef<
   React.ElementRef<"a">,
@@ -99,13 +100,15 @@ export function NavBar() {
                       </Link>
                     </NavigationMenuLink>
                   </li>
-                  <ListItem href="/tools/chatbot" title="Chatbot">
-                    Use the chatbot to ask questions about specific VPC IQPs
-                  </ListItem>
-
-                  <ListItem href="/tools/podcast" title="Podcast">
-                    Get a full podcast about any inputted report
-                  </ListItem>
+                  {Models.map((model) => (
+                    <ListItem
+                      key={model.title}
+                      href={model.link}
+                      title={model.title}
+                    >
+                      {model.shortDesc}
+                    </ListItem>
+                  ))}
                 </ul>
               </NavigationMenuContent>
             </NavigationMenuItem>

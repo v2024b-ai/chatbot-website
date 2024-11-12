@@ -19,3 +19,25 @@ export function replicateData<T>(data: T[], count: number): T[] {
 export function keysOf<T extends object>(obj: T): Array<keyof T> {
   return Object.keys(obj) as Array<keyof T>;
 }
+
+export function debounce<A = unknown, R = void>(
+  fn: (args: A) => R,
+  ms: number,
+): [(args: A) => Promise<R>, () => void] {
+  let timer: NodeJS.Timeout;
+
+  const debouncedFunc = (args: A): Promise<R> =>
+    new Promise((resolve) => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+
+      timer = setTimeout(() => {
+        resolve(fn(args));
+      }, ms);
+    });
+
+  const teardown = () => clearTimeout(timer);
+
+  return [debouncedFunc, teardown];
+}

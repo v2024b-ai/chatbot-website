@@ -5,6 +5,17 @@ export const promptSchema = z.object({
   content: z.string(),
 });
 
+export const uploadFileData = z.object({
+  fileURL: z.string(),
+  mimeType: z.string(),
+  displayName: z.string(),
+});
+
+export const propmptWithFilesSchema = z.object({
+  data: z.array(promptSchema),
+  files: uploadFileData,
+});
+
 export type PromptSchema = z.infer<typeof promptSchema>;
 
 export const fileData = z.object({
@@ -12,12 +23,6 @@ export const fileData = z.object({
   mimeType: z.string(),
 });
 
-export const uploadFileData = z.object({
-  fileURL: z.string(),
-  mimeType: z.string(),
-  displayName: z.string(),
-});
+export type UploadFileData = z.infer<typeof uploadFileData>;
 
 export type FileData = z.infer<typeof fileData>;
-
-export type UploadFileData = z.infer<typeof uploadFileData>;
