@@ -11,6 +11,7 @@ export default function UploadButton() {
   const [file, setFile] = useState<File | null>();
   const [hasDownload, setHasDownload] = useState(false);
   const [play, setPlay] = useState(false);
+  const [blobURL, setBlobURL] = useState("");
   const { toast } = useToast();
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -27,18 +28,16 @@ export default function UploadButton() {
       try {
         const response = await axios.post(url, formData, {
           headers: { "Content-Type": "multipart/form-data" },
-          responseType: "stream",
-        });
-        // Create Blob and download
-        const blob = new Blob([response?.data], {
-          type: "audio/mpeg",
+          responseType: "blob",
         });
 
-        // Make the URL for blob
-        const url_two = URL.createObjectURL(blob);
+        const audioBlob = response.data; // Adjust MIME type as needed
+        const audioUrl = URL.createObjectURL(audioBlob);
+
         const a = document.createElement("a");
-        a.href = url_two;
+        a.href = audioUrl;
         a.download = file.name.replace(".pdf", "") + ".mp3";
+        setBlobURL(audioUrl);
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -83,7 +82,7 @@ export default function UploadButton() {
           <p className="space-y-6">Podcast is Generating...</p>
         </div>
       )}
-      {/*{play && <audio controls src={blobURL} datatype="audio/mpeg" />}*/}
+      {play && <audio controls src={blobURL} datatype="audio/mpeg" />}
     </main>
   );
 }
