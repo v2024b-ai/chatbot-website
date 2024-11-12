@@ -12,6 +12,7 @@ export default function UploadButton() {
   const [hasDownload, setHasDownload] = useState(false);
   const [play, setPlay] = useState(false);
   const [blobURL, setBlobURL] = useState("");
+  const [transcript, setTranscript] = useState("");
   const { toast } = useToast();
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -45,6 +46,11 @@ export default function UploadButton() {
           title: "Podcast has been downloaded",
           variant: "destructive",
         });
+
+        // Get the transcript
+        const urlTrans = "http://127.0.0.1:8000//get-trans/";
+        const trans = await axios.get(urlTrans);
+        setTranscript(trans.data);
         // Change the states
         setFile(null);
         setHasDownload(false);
@@ -63,7 +69,7 @@ export default function UploadButton() {
         <Input
           type="file"
           accept=".pdf"
-          className="max-w-80 cursor-pointer"
+          className="max-w-80 cursor-pointer border-2 bg-input bg-contain"
           onChange={handleFileChange}
         ></Input>
       )}
@@ -82,7 +88,14 @@ export default function UploadButton() {
           <p className="space-y-6">Podcast is Generating...</p>
         </div>
       )}
-      {play && <audio controls src={blobURL} datatype="audio/mpeg" />}
+      {play && (
+        <div className="flex h-1/2 w-full flex-row justify-evenly p-4">
+          <audio controls src={blobURL} datatype="audio/mpeg" />
+          <div className="w-100 whit h-full w-3/4 overflow-x-auto overflow-y-scroll whitespace-pre-wrap break-words border-2 p-4">
+            {transcript}
+          </div>
+        </div>
+      )}
     </main>
   );
 }
