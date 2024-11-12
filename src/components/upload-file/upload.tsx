@@ -1,17 +1,17 @@
 "use client";
-import { CenterInScreen } from "@/components/center-in-screen";
+
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
+import { LoadingSpinner } from "@/components/loading-spinner";
 
 export default function UploadButton() {
-  const [file, setFile] = useState<File | null>(null);
-  const [loadingDialog, setLoadingDialog] = useState(false);
-  interface retData {
-    dialogue: string;
-    audio: File;
-  }
+  const [file, setFile] = useState<File | null>();
+  const [hasDownload, setHasDownload] = useState(false);
+  const [play, setPlay] = useState(false);
+  const [blobURL, setBlobURL] = useState("");
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setFile(e.target.files[0]);
@@ -19,57 +19,70 @@ export default function UploadButton() {
   };
 
   async function downloadFile() {
-    const url = "http://127.0.0.1:8000/gen-pod/";
+    const url = "http://127.0.0.1:8000//gen-pod/";
     const formData = new FormData();
     if (file) {
       formData.append("file", file);
-      const response = await axios.post(url, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-        responseType: "stream",
-      });
-
-      const blob = new Blob([response?.data], { type: "mp3" });
-
-      const url_two = URL.createObjectURL(blob);
-
-      // Create a temporary link to trigger the download
-      const a = document.createElement("a");
-      a.href = url_two;
-      a.download = "something.mp3";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url); // Clean up the URL object
+      setHasDownload(true);
+      try {
+        const response = await axios.post(url, formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+          responseType: "stream",
+        });
+        // Create Blob and download
+        const blob = new Blob([response?.data], {
+          type: "audio/mpeg",
+        });
+        // Make the URL for blob
+        const url_two = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url_two;
+        a.download = "something.mp3";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        // Make the audio playable
+        const audio = new Audio();
+        audio.src = url_two;
+        await audio.play();
+        // Change the states
+        setFile(null);
+        setHasDownload(false);
+        setPlay(true);
+        return;
+      } catch (e) {
+        console.error(e);
+        return;
+      }
     }
   }
 
-  const handleUpload = async () => {
-    // console.log(file?.name + file?.type);
-    setLoadingDialog(true);
-    console.log("Uploading file... ");
-    await downloadFile();
-    setLoadingDialog(false);
-  };
-
   return (
-    <main className="flex flex-col items-center justify-center">
-      <CenterInScreen>
+    <main className="flex h-full w-full flex-col items-center justify-center">
+      {!hasDownload && (
         <Input
           type="file"
           accept=".pdf"
           className="max-w-80 cursor-pointer"
           onChange={handleFileChange}
         ></Input>
-        {file && (
-          <Button
-            type="button"
-            className="w-50 cursor-pointer self-center"
-            onClick={handleUpload}
-          >
-            Upload &#34; {file.name} &#34;
-          </Button>
-        )}
-      </CenterInScreen>
+      )}
+      {file && !hasDownload && (
+        <Button
+          type="button"
+          className="w-50 cursor-pointer self-center"
+          onClick={downloadFile}
+        >
+          Upload
+        </Button>
+      )}
+      {hasDownload && (
+        <div className="flex flex-col">
+          <LoadingSpinner big />
+          <p className="space-y-6">Podcast is Generating...</p>
+        </div>
+      )}
+      {play && <audio controls src={blobURL} datatype="audio/mpeg" />}
     </main>
   );
 }
