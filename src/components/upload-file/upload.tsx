@@ -21,7 +21,7 @@ export default function UploadButton() {
   };
 
   async function downloadFile() {
-    const url = "http://127.0.0.1:8000//gen-pod/";
+    const url = "https://chatvpc-python.vercel.app/gen-pod/";
     const formData = new FormData();
     if (file) {
       formData.append("file", file);
@@ -50,7 +50,7 @@ export default function UploadButton() {
         });
 
         // Get the transcript
-        const urlTrans = "http://127.0.0.1:8000//get-trans/";
+        const urlTrans = "https://chatvpc-python.vercel.app/get-trans/";
         const trans = await axios.get(urlTrans);
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         setTranscript(trans.data);
