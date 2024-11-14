@@ -9,32 +9,45 @@ import { Teams } from "@/data/teams/teams-array"; //if you want to add your team
 
 export default function AboutPage() {
   return (
-    <main>
-      <div>
-        <h1>These are the teams that have worked on this project</h1>
-      </div>
-      <div>
+    <main className="flex flex-col items-center justify-center">
+      <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
+        <h1 className="text-3xl font-bold tracking-tight">
+          These are the teams that have worked on this project:
+        </h1>
+
         {Teams.map((team, teamIndex) => (
           <div key={teamIndex}>
-            <h1>{team.title}</h1>
-            <h2>{team.term}</h2>
-            <p>{team.description}</p>
-            <div>
+            <div className="flex flex-col items-center justify-center mb-5">
+              <h1 className="text-2xl font-bold tracking-tight">{team.title}</h1>
+              <h2 className="text-xl font-bold tracking-tight">{team.term}</h2>
+              <p className="text-lg">{team.description}</p>
+            </div>
+
+            <div className="grid gap-4">
               {team.member.map((member, memberIndex) => (
-                <div key={memberIndex}>
-                  <h3>{member.name}</h3>
-                  <h4>{member.major}</h4>
-                  <p>{member.descrip}</p>
-                  <Image
-                    src={member.picture}
-                    alt={`${member.name}'s picture`}
-                  />
+                <div key={memberIndex} className="flex-wrap gap-4">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>{member.name}</CardTitle>
+                      <CardDescription> {member.major}</CardDescription>
+                    </CardHeader>
+                    <div className="relative w-[15vw] h-[30vh]">
+
+                      <Image
+                        src={member.picture}
+                        alt={`${member.name}'s picture`}
+                        layout="fill"
+                      />
+                    </div>
+
+                    <p>{member.descrip}</p>
+                  </Card>
                 </div>
               ))}
             </div>
           </div>
         ))}
       </div>
-    </main>
+    </main >
   );
 }
