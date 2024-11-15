@@ -1,5 +1,4 @@
-import { TeamCards } from "@/types/team-cards";
-import { MemberCards } from "@/types/team-cards";
+import type { TeamCards,MemberCards } from "@/types/team-cards";
 import Lucas from "@/data/teams/B24pioneer/LucasLamenha.jpeg";
 import Mina from "@/data/teams/B24pioneer/MinaBoktor.jpeg";
 import James from "@/data/teams/B24pioneer/JamesWalden.jpeg";

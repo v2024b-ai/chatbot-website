@@ -1,5 +1,6 @@
 import {
   Card,
+  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
@@ -23,24 +24,25 @@ export default function AboutPage() {
               <p className="text-lg">{team.description}</p>
             </div>
 
-            <div className="grid gap-4">
+            <div className="flex flex-wrap gap-4">
               {team.member.map((member, memberIndex) => (
-                <div key={memberIndex} className="flex-wrap gap-4">
-                  <Card>
+                <div key={memberIndex} className="flex flex-wrap justify-center gap-4">
+                  <Card className="w-auto h-auto">
                     <CardHeader>
                       <CardTitle>{member.name}</CardTitle>
                       <CardDescription> {member.major}</CardDescription>
                     </CardHeader>
-                    <div className="relative w-[15vw] h-[30vh]">
+                    <CardContent className="max-w-full">
+                      <div className="relative w-[15vw] h-[30vh]">
 
-                      <Image
-                        src={member.picture}
-                        alt={`${member.name}'s picture`}
-                        layout="fill"
-                      />
-                    </div>
-
-                    <p>{member.descrip}</p>
+                        <Image
+                          src={member.picture}
+                          alt={`${member.name}'s picture`}
+                          layout="fill"
+                          objectFit="contain"
+                        />
+                      </div>
+                    </CardContent>
                   </Card>
                 </div>
               ))}
