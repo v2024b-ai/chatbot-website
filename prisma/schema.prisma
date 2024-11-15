@@ -49,7 +49,7 @@ model iqpData {
 }
 
 model fountainsCSV {
-  ck_id                               String @id @default
+  ck_id                               String @id
   lat                                 Float?
   lng                                 Float?
   additional_notes                    String?
