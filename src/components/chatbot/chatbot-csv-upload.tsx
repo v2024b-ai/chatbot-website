@@ -21,7 +21,6 @@ import { Textarea } from "../ui/textarea";
 import cuid from "cuid";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Input } from "../ui/input";
-import { Label } from "@radix-ui/react-dropdown-menu";
 
 export default function ChatBotCSV() {
   const [isGenerating, setIsGenerating] = useState(false);
@@ -62,9 +61,7 @@ export default function ChatBotCSV() {
         <div className="p-4">
           <Card>
             <CardHeader>
-              <CardTitle>
-                Upload CSV here!
-              </CardTitle>
+              <CardTitle>Upload CSV here!</CardTitle>
               <CardContent className="p-2">
                 {/* <Input type="file" accept=".csv" /> */}
                 <Input type="text" placeholder="URL of file download..." />
@@ -164,5 +161,3 @@ const makeNewMessage = (
   content,
   role,
 });
-
-
