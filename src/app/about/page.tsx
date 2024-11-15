@@ -18,28 +18,32 @@ export default function AboutPage() {
 
         {Teams.map((team, teamIndex) => (
           <div key={teamIndex}>
-            <div className="flex flex-col items-center justify-center mb-5">
-              <h1 className="text-2xl font-bold tracking-tight">{team.title}</h1>
+            <div className="mb-5 flex flex-col items-center justify-center">
+              <h1 className="text-2xl font-bold tracking-tight">
+                {team.title}
+              </h1>
               <h2 className="text-xl font-bold tracking-tight">{team.term}</h2>
               <p className="text-lg">{team.description}</p>
             </div>
 
             <div className="flex flex-wrap gap-4">
               {team.member.map((member, memberIndex) => (
-                <div key={memberIndex} className="flex flex-wrap justify-center gap-4">
-                  <Card className="w-auto h-auto">
+                <div
+                  key={memberIndex}
+                  className="flex flex-wrap justify-center gap-4"
+                >
+                  <Card className="h-auto w-auto">
                     <CardHeader>
                       <CardTitle>{member.name}</CardTitle>
                       <CardDescription> {member.major}</CardDescription>
                     </CardHeader>
                     <CardContent className="max-w-full">
-                      <div className="relative w-[15vw] h-[30vh]">
-
+                      <div className="relative h-[30vh] w-[15vw]">
                         <Image
                           src={member.picture}
                           alt={`${member.name}'s picture`}
-                          layout="fill"
-                          objectFit="contain"
+                          fill
+                          style={{ objectFit: "contain" }}
                         />
                       </div>
                     </CardContent>
@@ -50,6 +54,6 @@ export default function AboutPage() {
           </div>
         ))}
       </div>
-    </main >
+    </main>
   );
 }
