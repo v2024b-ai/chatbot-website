@@ -10,7 +10,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { addModelSchema, AddModelSchema } from "@/types/ai/models/model-eval-info-types";
+import { addModelSchema } from "@/types/ai/models/model-eval-info-types";
+import type { AddModelSchema } from "@/types/ai/models/model-eval-info-types";
 import { Input } from "@/components/ui/input";
 import {
   Dialog,

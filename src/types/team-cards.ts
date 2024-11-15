@@ -1,4 +1,4 @@
-import { StaticImageData } from "next/image";
+import type { StaticImageData } from "next/image";
 
 export type TeamCards = {
   title: string;
@@ -11,5 +11,4 @@ export type MemberCards = {
   name: string;
   major: string;
   picture: StaticImageData;
-  descrip: string;
 };
