@@ -1,5 +1,5 @@
 import { LoaderPinwheel } from "lucide-react";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
 export function LoadingSpinner({ big = false, center = false, children }: { big?: boolean, center?: boolean, children?: ReactNode }) {
   return (
