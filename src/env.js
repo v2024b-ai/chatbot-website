@@ -22,6 +22,7 @@ export const env = createEnv({
    * ``.
    */
   client: {
+    NEXT_PUBLIC_PYTHON_BACKEND_URL: z.string(),
     // CLIENTVAR: z.string(),
   },
 
@@ -31,6 +32,7 @@ export const env = createEnv({
    */
   runtimeEnv: {
     PINECONE_API_KEY: process.env.PINECONE_API_KEY,
+    NEXT_PUBLIC_PYTHON_BACKEND_URL: process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL,
     GEMINI_API_KEY: process.env.GEMINI_API_KEY,
     DATABASE_URL: process.env.DATABASE_URL,
     DIRECT_URL: process.env.DIRECT_URL,
