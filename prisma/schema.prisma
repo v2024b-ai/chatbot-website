@@ -53,7 +53,7 @@ model fountainsCSV {
   lat                                 Float
   lng                                 Float
   additional_notes                    String?
-  base_area                           Float
+  base_area                           Float?
   base_perimeter                      Float
   base_shape                          String
   birthID                             String
@@ -61,7 +61,7 @@ model fountainsCSV {
   condition_notes                     String?
   depth                               Float?
   faucet_design                       String?
-  faucet_height_cm                    Float
+  faucet_height_cm                    Float?
   faucet_length_cm                    Float?
   flow_rate                           Float?
   format                              String?
@@ -69,13 +69,13 @@ model fountainsCSV {
   height_cm                           Float?
   high_traffic_area                   Boolean?
   material                            String
-  number_of_drains                    Int
+  number_of_drains                    Int?
   old_code                            String?
   original_paint_remaining_pct        Float?
   owner                               String
   parish                              String?
   raised_drain                        Boolean?
-  risk_factor_algae_pct               Float
+  risk_factor_algae_pct               Float?
   risk_factor_graffiti_pct            Float?
   risk_factor_grime                   String
   risk_factor_missing_pieces          String
@@ -94,7 +94,7 @@ model fountainsCSV {
   visibility                          String?
   width                               Float?
   width_cm                            Float?
-  wiki_friendly_title                 String
+  wiki_friendly_title                 String?
 
   @@index([ck_id])
 }
