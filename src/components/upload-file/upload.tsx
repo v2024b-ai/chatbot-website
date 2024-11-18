@@ -21,7 +21,7 @@ export default function UploadButton() {
   };
 
   async function downloadFile() {
-    const url = "https://chatvpc-python.vercel.app/gen-pod/";
+    const url = "https://podcast-gen.pages.dev/gen-pod/";
     const formData = new FormData();
     if (file) {
       formData.append("file", file);
@@ -50,7 +50,7 @@ export default function UploadButton() {
         });
 
         // Get the transcript
-        const urlTrans = "https://chatvpc-python.vercel.app/get-trans/";
+        const urlTrans = "https://podcast-gen.pages.dev/get-trans/";
         const trans = await axios.get(urlTrans);
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         setTranscript(trans.data);
