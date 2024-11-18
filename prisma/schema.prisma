@@ -54,7 +54,7 @@ model fountainsCSV {
   lng                                 Float
   additional_notes                    String?
   base_area                           Float?
-  base_perimeter                      Float
+  base_perimeter                      Float?
   base_shape                          String
   birthID                             String
   bolted_to_ground                    Boolean
@@ -80,8 +80,8 @@ model fountainsCSV {
   risk_factor_grime                   String
   risk_factor_missing_pieces          String
   risk_factor_overall_damage_pct      Float?
-  risk_factor_rust_percent            Float
-  risk_factor_surface_damage_percent  Float
+  risk_factor_rust_percent            Float?
+  risk_factor_surface_damage_percent  Float?
   running                             Boolean?
   service_panel                       Boolean
   sestiere_or_island                  String
