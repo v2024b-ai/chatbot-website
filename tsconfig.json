@@ -44,7 +44,6 @@
     "**/*.cjs",
     "**/*.js",
     ".next/types/**/*.ts",
-    "prisma/**/*.mjs"
   ],
   "exclude": [
     "node_modules",
