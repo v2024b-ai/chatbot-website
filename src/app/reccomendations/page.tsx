@@ -4,11 +4,12 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-  CardImage,
+  CardContent,
 } from "@/components/ui/card";
 
 import { CenterInScreen } from "@/components/center-in-screen";
 import path from "path";
+import Image from "next/image";
 
 type cardDetails = {
   name: string;
@@ -44,10 +45,19 @@ export default function ReccPage() {
         {arr.map((recc) => (
           <Card key={recc.name}>
             <CardHeader>
-              <CardImage></CardImage>
               <CardTitle>{recc.name}</CardTitle>
               <CardDescription>{recc.description}</CardDescription>
             </CardHeader>
+            <CardContent className="max-w-full">
+              <div className="relative h-[30vh] w-[15vw]">
+                <Image
+                  src={recc.img}
+                  alt={recc.name}
+                  fill
+                  style={{ objectFit: "contain" }}
+                />
+              </div>
+            </CardContent>
           </Card>
         ))}
       </CenterInScreen>
