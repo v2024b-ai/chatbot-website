@@ -8,33 +8,32 @@ import { LoadingSpinner } from "@/components/loading-spinner";
 import { useToast } from "@/hooks/use-toast";
 
 export default function UploadButton() {
-  const [file, setFile] = useState<File | null>();
+  const [file, setFile] = useState<File | undefined>();
   const [hasDownload, setHasDownload] = useState(false);
   const [play, setPlay] = useState(false);
   const [blobURL, setBlobURL] = useState("");
   const [transcript, setTranscript] = useState("");
   const { toast } = useToast();
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
+    if (e.target.files)
       setFile(e.target.files[0]);
-    }
+
   };
 
   async function downloadFile() {
     const url = "https://podcast-gen.pages.dev/gen-pod/";
+
     const formData = new FormData();
     if (file) {
       formData.append("file", file);
       setHasDownload(true);
       try {
-        const response = await axios.post(url, formData, {
+        const response = await axios.post<Blob>(url, formData, {
           headers: { "Content-Type": "multipart/form-data" },
           responseType: "blob",
         });
 
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const audioBlob = response.data; // Adjust MIME type as needed
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         const audioUrl = URL.createObjectURL(audioBlob);
 
         const a = document.createElement("a");
@@ -53,9 +52,10 @@ export default function UploadButton() {
         const urlTrans = "https://podcast-gen.pages.dev/get-trans/";
         const trans = await axios.get(urlTrans);
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+
         setTranscript(trans.data);
         // Change the states
-        setFile(null);
+        setFile(undefined);
         setHasDownload(false);
         setPlay(true);
         return;
@@ -68,26 +68,25 @@ export default function UploadButton() {
 
   return (
     <main className="flex h-full w-full flex-col items-center justify-center">
-      {!hasDownload && (
+      <div className='flex space-x-4'>
         <Input
           type="file"
           accept=".pdf"
           className="max-w-80 cursor-pointer border-2 bg-input bg-contain"
           onChange={handleFileChange}
-        ></Input>
-      )}
-      {file && !hasDownload && (
+        />
         <Button
           type="button"
           className="w-50 cursor-pointer self-center"
+          disabled={!file}
           onClick={downloadFile}
         >
           Upload
         </Button>
-      )}
+      </div>
       {hasDownload && (
         <div className="flex flex-col">
-          <LoadingSpinner big />
+          <LoadingSpinner />
           <p className="space-y-6">Podcast is Generating...</p>
         </div>
       )}

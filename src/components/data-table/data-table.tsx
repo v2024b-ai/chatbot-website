@@ -1,10 +1,12 @@
 "use client"
-
-import {
+import type {
   ColumnDef,
   ColumnFiltersState,
   SortingState,
   VisibilityState,
+} from "@tanstack/react-table" //not with the rest of the imports since these are only used as types
+
+import {
   flexRender,
   getCoreRowModel,
   getFacetedRowModel,
