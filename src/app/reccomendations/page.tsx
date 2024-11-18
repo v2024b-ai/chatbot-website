@@ -55,7 +55,7 @@ export default function ReccPage() {
         <div className="flex flex-col">
           <header>
             <div className="flex flex-row flex-wrap justify-center text-2xl">
-              <h1>Reccomendations</h1>
+              <h1>Recommendations</h1>
               <p>
                 These are the best tools that we were able to find that could
                 potentially be useful to VPC students in the future
