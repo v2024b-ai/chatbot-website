@@ -112,12 +112,16 @@ export function NavBar() {
                 </ul>
               </NavigationMenuContent>
             </NavigationMenuItem>
+
             <NavigationMenuItem>
-              <Link href="/reccomendations" legacyBehavior passHref>
+              <Link href="/recommendations" legacyBehavior passHref>
                 <NavigationMenuLink
                   className={`${navigationMenuTriggerStyle()}`}
                 >
-                  Reccomendations
+                  Recommendations
+                </NavigationMenuLink>
+              </Link>
+            </NavigationMenuItem>
 
             <NavigationMenuItem>
               <Link href="/about" legacyBehavior passHref>
@@ -125,7 +129,6 @@ export function NavBar() {
                   className={`${navigationMenuTriggerStyle()}`}
                 >
                   About Us
-
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
