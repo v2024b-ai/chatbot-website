@@ -4,8 +4,7 @@ import type {
   ColumnFiltersState,
   SortingState,
   VisibilityState,
-} from "@tanstack/react-table"; //not with the rest of the imports since these are only used as types
-import { Ellipsis } from "lucide-react";
+} from "@tanstack/react-table";
 import {
   flexRender,
   getCoreRowModel,
