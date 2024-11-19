@@ -6,18 +6,14 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { CenterInScreen } from "@/components/center-in-screen";
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 import notebookLM from "public/notebook-lm.png";
 import gemini from "public/gemini.png";
 import chatGPT from "public/chatgpt.png";
 import openWebUI from "public/openwebui.png";
 import Link from "next/link";
-type cardDetails = {
-  name: string;
-  description: string;
-  img: StaticImageData;
-  link: string;
-};
+import type { cardDetails } from "@/types/cardDetails";
+
 const arr: cardDetails[] = [
   {
     name: "NotebookLM",
@@ -50,50 +46,47 @@ const arr: cardDetails[] = [
 ];
 export default function ReccPage() {
   return (
-    <main className="space-y-6 p-10 pb-16">
-      <CenterInScreen>
-        <div className="flex flex-col">
-          <header>
-            <div className="flex flex-row flex-wrap justify-center text-2xl">
-              <h1>Recommendations</h1>
-              <p>
-                These are the best tools that we were able to find that could
-                potentially be useful to VPC students in the future
-              </p>
-            </div>
-          </header>
-          <br />
-          <Card className={"flex w-full justify-evenly p-3"}>
-            {arr.map((recc) => (
-              <HoverCard key={recc.name}>
-                <HoverCardTrigger asChild>
-                  <Link
-                    href={recc.link}
-                    className="text-white outline-primary duration-100 hover:outline"
-                  >
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>{recc.name}</CardTitle>
-                        <HoverCardContent>{recc.description}</HoverCardContent>
-                      </CardHeader>
-                      <CardContent className="max-w-full">
-                        <div className="relative h-[30vh] w-[15vw]">
-                          <Image
-                            src={recc.img}
-                            alt={recc.name}
-                            fill
-                            style={{ objectFit: "contain" }}
-                          />
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </Link>
-                </HoverCardTrigger>
-              </HoverCard>
-            ))}
-          </Card>
+    <main className="p-10 pb-16">
+      <div className="flex flex-col">
+        <div className="flex flex-wrap justify-center text-2xl">
+          <h1>Recommendations</h1>
+          <p>
+            These are the best tools that we were able to find that could
+            potentially be useful to VPC students in the future
+          </p>
         </div>
-      </CenterInScreen>
+        <br />
+        <Card className={"flex w-full justify-evenly p-3"}>
+          {arr.map((recc) => (
+            <HoverCard key={recc.name}>
+              <HoverCardTrigger asChild>
+                <Link
+                  href={recc.link}
+                  className="text-white outline-primary duration-100 hover:outline"
+                >
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>{recc.name}</CardTitle>
+                      <HoverCardContent>{recc.description}</HoverCardContent>
+                    </CardHeader>
+                    <CardContent className="max-w-full">
+                      <div className="relative h-[30vh] w-[15vw]">
+                        <Image
+                          src={recc.img}
+                          alt={recc.name}
+                          fill
+                          style={{ objectFit: "contain" }}
+                        />
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+              </HoverCardTrigger>
+            </HoverCard>
+          ))}
+        </Card>
+      </div>
+
     </main>
   );
 }
