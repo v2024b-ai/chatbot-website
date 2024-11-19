@@ -3,7 +3,7 @@
 import { Input } from "@/components/ui/input";
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { LoadingSpinner } from "@/components/loading-spinner";
 import { useToast } from "@/hooks/use-toast";
 
@@ -22,7 +22,8 @@ export default function UploadButton() {
   };
 
   async function downloadFile() {
-    const url = `${process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL}/gen-pod/`
+    const url = "https://podcast-gen.pages.dev/gen-pod/";
+
     const formData = new FormData();
     if (file) {
       formData.append("file", file);
@@ -49,9 +50,10 @@ export default function UploadButton() {
         });
 
         // Get the transcript
-        const urlTrans = process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL! + "/get-trans/";
 
-        const trans = await axios.get<string>(urlTrans);
+        const urlTrans = "https://podcast-gen.pages.dev/get-trans/";
+        const trans = await axios.get(urlTrans);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         setTranscript(trans.data);
         // Change the states
         setFile(undefined);
