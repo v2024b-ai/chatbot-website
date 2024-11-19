@@ -26,7 +26,6 @@ export class SemanticRetriever {
 
   constructor() {
     this.GenAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
-
     this.Model = this.GenAI.getGenerativeModel(this.AIEmbeddingName);
   }
 
@@ -83,7 +82,7 @@ export class SemanticRetriever {
     return dotProduct / magnitudes;
   }
 
-  async chunkPDF(URL: string, chunkSize = 1000, chunkOverlap = 100) {
+  async chunkPDF(URL: string, chunkSize = 5, chunkOverlap = 1) {
     try {
       // Fetch the PDF file as a stream
       const { data: fileStream } = await axios.get<Buffer>(URL, {
@@ -94,15 +93,37 @@ export class SemanticRetriever {
       const parsedPDF = await pdf(fileStream);
       console.log(">>> PDF Text Extracted:", parsedPDF.text);
 
-      // Split the text into words for chunking
-      const words = parsedPDF.text.split(/\s+/);
+      const text = parsedPDF.text ?? "";
+      const paragraphs = text
+        .split(/\n+/) // Split on single or multiple newlines
+        .reduce((acc, line) => {
+          const trimmedLine = line.trim();
+
+          if (
+            acc.length > 0 &&
+            acc[acc.length - 1]?.endsWith('.') &&
+            trimmedLine.length > 0
+          ) {
+            acc.push(trimmedLine); // Start a new paragraph
+          } else if (trimmedLine.length > 0) {
+            if (acc.length === 0) {
+              acc.push(trimmedLine);
+            } else {
+              acc[acc.length - 1] += ` ${trimmedLine}`;
+            }
+          }
+
+          return acc;
+        }, [] as string[]) // Ensure the accumulator is typed as an array of strings
+        .filter((para) => para.length > 0);
+
       const chunks: string[] = [];
 
       // Generate chunks with the specified size and overlap
-      for (let i = 0; i < words.length; i += chunkSize - chunkOverlap) {
-        const chunk = words.slice(i, i + chunkSize).join(" ");
+      for (let i = 0; i < paragraphs.length; i += chunkSize - chunkOverlap) {
+        const chunk = paragraphs.slice(i, i + chunkSize).join("\n\n"); // Join paragraphs with double newlines
         chunks.push(chunk);
-        if (i + chunkSize >= words.length) break; // Stop when near the end
+        if (i + chunkSize >= paragraphs.length) break; // Stop when near the end
       }
 
       return chunks;
