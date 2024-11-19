@@ -5,7 +5,6 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
-import { CenterInScreen } from "@/components/center-in-screen";
 import Image from "next/image";
 import notebookLM from "public/notebook-lm.png";
 import gemini from "public/gemini.png";
