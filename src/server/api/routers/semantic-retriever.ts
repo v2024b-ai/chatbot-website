@@ -17,24 +17,29 @@ export const embeddingRouter = createTRPCRouter({
   // }),
   //
   test: publicProcedure
-    .input(z.object({
-      hi: z.string()
-    }))
+    .input(
+      z.object({
+        hi: z.string(),
+      }),
+    )
     .query(async ({ ctx }) => {
-      console.log("got here")
-      const firstData = await ctx.db.iqpData.findFirst()
-      if (!firstData) throw Error("NO DATA IN DB")
+      console.log("got here");
+      const firstData = await ctx.db.iqpData.findFirst();
+      if (!firstData) throw Error("NO DATA IN DB");
 
-      const URL = firstData.url
+      const URL = firstData.url;
 
       const retrevier = new SemanticRetriever();
 
-      const chunks = await retrevier.chunkPDF(URL)
+      const chunks = await retrevier.chunkPDF(URL);
 
-      console.log(">>> FIRST DATA: ", firstData)
+      console.log(">>> FIRST DATA: ", firstData);
       console.log(">>> CHUNKS: ", chunks);
 
-      return { message: "hi" }
-    })
-});
+      const res = await retrevier.batchEmbedDocuments(chunks);
 
+      console.log("Epic response that will 100% wokr with no errors: ", res);
+
+      return { message: "hi" };
+    }),
+});
