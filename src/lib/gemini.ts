@@ -68,7 +68,6 @@ export class SemanticRetriever {
       .sort((a, b) => (a.cs < b.cs ? 1 : -1))
       .slice(0, topK);
 
-    console.log(">>> SORTED COSINE CHUNKS: ", sortedChunks);
     return sortedChunks;
   }
 
@@ -82,7 +81,7 @@ export class SemanticRetriever {
     return dotProduct / magnitudes;
   }
 
-  async chunkPDF(URL: string, chunkSize = 5, chunkOverlap = 1) {
+  async chunkPDF(URL: string, chunkSize = 35, chunkOverlap = 3) {
     try {
       // Fetch the PDF file as a stream
       const { data: fileStream } = await axios.get<Buffer>(URL, {
@@ -91,39 +90,20 @@ export class SemanticRetriever {
 
       // Parse the PDF directly from the stream
       const parsedPDF = await pdf(fileStream);
-      console.log(">>> PDF Text Extracted:", parsedPDF.text);
 
-      const text = parsedPDF.text ?? "";
-      const paragraphs = text
-        .split(/\n+/) // Split on single or multiple newlines
-        .reduce((acc, line) => {
-          const trimmedLine = line.trim();
-
-          if (
-            acc.length > 0 &&
-            acc[acc.length - 1]?.endsWith('.') &&
-            trimmedLine.length > 0
-          ) {
-            acc.push(trimmedLine); // Start a new paragraph
-          } else if (trimmedLine.length > 0) {
-            if (acc.length === 0) {
-              acc.push(trimmedLine);
-            } else {
-              acc[acc.length - 1] += ` ${trimmedLine}`;
-            }
-          }
-
-          return acc;
-        }, [] as string[]) // Ensure the accumulator is typed as an array of strings
-        .filter((para) => para.length > 0);
+      // Split the text into sentences using regex
+      const sentences = parsedPDF.text
+        .split(/(?<=[.!?])\s+/) // Split after '.', '!', or '?' followed by whitespace
+        .map((sentence) => sentence.trim()) // Trim whitespace around sentences
+        .filter((sentence) => sentence.length > 0); // Remove empty strings
 
       const chunks: string[] = [];
 
       // Generate chunks with the specified size and overlap
-      for (let i = 0; i < paragraphs.length; i += chunkSize - chunkOverlap) {
-        const chunk = paragraphs.slice(i, i + chunkSize).join("\n\n"); // Join paragraphs with double newlines
+      for (let i = 0; i < sentences.length; i += chunkSize - chunkOverlap) {
+        const chunk = sentences.slice(i, i + chunkSize).join(" "); // Join sentences into a chunk
         chunks.push(chunk);
-        if (i + chunkSize >= paragraphs.length) break; // Stop when near the end
+        if (i + chunkSize >= sentences.length) break; // Stop when near the end
       }
 
       return chunks;

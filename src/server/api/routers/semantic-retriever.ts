@@ -24,22 +24,46 @@ export const embeddingRouter = createTRPCRouter({
     )
     .query(async ({ ctx }) => {
       console.log("got here");
-      const firstData = await ctx.db.iqpData.findFirst();
-      if (!firstData) throw Error("NO DATA IN DB");
 
-      const URL = firstData.url;
+      const reports = await ctx.db.iqpData.findMany({
+        where: {
+          pdfContents: { none: {} }
+        }
+      });
+      if (!reports) throw new Error("NO DATA IN DB");
 
-      const retrevier = new SemanticRetriever();
+      await Promise.all(
+        reports.map(async (report) => {
 
-      const chunks = await retrevier.chunkPDF(URL);
+          console.log(">>> Starting report: ", report.title)
+          const retriever = new SemanticRetriever();
 
-      console.log(">>> FIRST DATA: ", firstData);
-      console.log(">>> CHUNKS: ", chunks);
+          // Process the PDF to get chunks
+          const chunks = await retriever.chunkPDF(report.url);
 
-      const res = await retrevier.batchEmbedDocuments(chunks);
+          // Generate embeddings for each chunk
+          const embeddings = await retriever.batchEmbedDocuments(chunks);
 
-      console.log("Epic response that will 100% wokr with no errors: ", res);
+          // Map chunks and embeddings into the correct format for the database
+          const data = chunks.map((text, index) => ({
+            text,
+            embedding: embeddings[index]?.values, // Ensure embedding values are properly extracted
+          }));
 
-      return { message: "hi" };
+          // Update the database with the processed data
+          await ctx.db.iqpData.update({
+            where: { title: report.title },
+            data: {
+              pdfContents: {
+                createMany: { data },
+              },
+            },
+          });
+
+          console.log(">>> Finished report: ", report.title)
+        }),
+      );
+
+      return { message: "hi" }; // Ensure this is outside of the Promise.all
     }),
 });
