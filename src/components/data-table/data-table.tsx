@@ -104,7 +104,12 @@ export function DataTable<TData, TValue>({
                           </HoverCardTrigger>
                         </TableHead>
                         <HoverCardContent>
-                          <p>Idk anymore</p>
+                          <p>
+                            Measurement of the difference between an automatic
+                            translation and human-created reference translations
+                            of the same source sentence. The bigger this value
+                            is the better the model is.
+                          </p>
                         </HoverCardContent>
                       </HoverCard>
                     );
@@ -131,7 +136,13 @@ export function DataTable<TData, TValue>({
                           </HoverCardTrigger>
                         </TableHead>
                         <HoverCardContent>
-                          <p>Idk anymore</p>
+                          <p>
+                            Compare an automatically produced summary or
+                            translation against a reference or a set of
+                            references (human-produced) summary or translation.
+                            ROUGE metrics range between 0 and 1, with higher
+                            scores indicating higher similarity.
+                          </p>
                         </HoverCardContent>
                       </HoverCard>
                     );
@@ -157,7 +168,14 @@ export function DataTable<TData, TValue>({
                         </TableHead>
 
                         <HoverCardContent>
-                          <p>Idk anymore</p>
+                          <p>
+                            Evaluation metric for machine translation that
+                            improves over traditional metrics like BLEU by
+                            incorporating linguistic features such as synonymy,
+                            stemming, and word order, and placing more emphasis
+                            on recall to better align with human judgments of
+                            translation quality. The bigger the better.
+                          </p>
                         </HoverCardContent>
                       </HoverCard>
                     );
