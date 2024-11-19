@@ -1,11 +1,11 @@
-"use client"
+"use client";
 import type {
   ColumnDef,
   ColumnFiltersState,
   SortingState,
   VisibilityState,
-} from "@tanstack/react-table" //not with the rest of the imports since these are only used as types
-
+} from "@tanstack/react-table"; //not with the rest of the imports since these are only used as types
+import { Ellipsis } from "lucide-react";
 import {
   flexRender,
   getCoreRowModel,
@@ -15,7 +15,7 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table"
+} from "@tanstack/react-table";
 
 import {
   Table,
@@ -24,27 +24,35 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table";
 
-import { DataTablePagination } from "./data-table-pagination"
-import { DataTableToolbar } from "./data-table-toolbar"
-import { useState } from "react"
+import { DataTablePagination } from "./data-table-pagination";
+import { DataTableToolbar } from "./data-table-toolbar";
+import { useState } from "react";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+import { createHoverCardScope } from "@radix-ui/react-hover-card";
+import { builders } from "prettier/doc";
+import cursor = builders.cursor;
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
-  filterByString: string
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
+  filterByString: string;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
-  filterByString
+  filterByString,
 }: DataTableProps<TData, TValue>) {
-  const [rowSelection, setRowSelection] = useState({})
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-  const [sorting, setSorting] = useState<SortingState>([])
+  const [rowSelection, setRowSelection] = useState({});
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [sorting, setSorting] = useState<SortingState>([]);
 
   const table = useReactTable({
     data,
@@ -66,7 +74,7 @@ export function DataTable<TData, TValue>({
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
-  })
+  });
 
   return (
     <div className="space-y-4">
@@ -77,16 +85,94 @@ export function DataTable<TData, TValue>({
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id} colSpan={header.colSpan}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                    </TableHead>
-                  )
+                  if (header.column.columnDef.header === "Bleu") {
+                    return (
+                      <HoverCard key={header.id}>
+                        <TableHead
+                          colSpan={header.colSpan}
+                          style={{ cursor: "pointer" }}
+                        >
+                          <HoverCardTrigger
+                            style={{ width: 0, height: 0, padding: 0 }}
+                          >
+                            {header.isPlaceholder
+                              ? null
+                              : flexRender(
+                                  header.column.columnDef.header,
+                                  header.getContext(),
+                                )}
+                          </HoverCardTrigger>
+                        </TableHead>
+                        <HoverCardContent>
+                          <p>Idk anymore</p>
+                        </HoverCardContent>
+                      </HoverCard>
+                    );
+                  }
+
+                  if (header.column.columnDef.header === "Rouge") {
+                    return (
+                      <HoverCard key={header.id}>
+                        <TableHead
+                          colSpan={header.colSpan}
+                          style={{
+                            cursor: "pointer",
+                          }}
+                        >
+                          <HoverCardTrigger
+                            style={{ width: 0, height: 0, padding: 0 }}
+                          >
+                            {header.isPlaceholder
+                              ? null
+                              : flexRender(
+                                  header.column.columnDef.header,
+                                  header.getContext(),
+                                )}
+                          </HoverCardTrigger>
+                        </TableHead>
+                        <HoverCardContent>
+                          <p>Idk anymore</p>
+                        </HoverCardContent>
+                      </HoverCard>
+                    );
+                  }
+
+                  if (header.column.columnDef.header === "Meteor") {
+                    return (
+                      <HoverCard key={header.id}>
+                        <TableHead
+                          colSpan={header.colSpan}
+                          style={{ cursor: "pointer" }}
+                        >
+                          <HoverCardTrigger
+                            style={{ width: 0, height: 0, padding: 0 }}
+                          >
+                            {header.isPlaceholder
+                              ? null
+                              : flexRender(
+                                  header.column.columnDef.header,
+                                  header.getContext(),
+                                )}
+                          </HoverCardTrigger>
+                        </TableHead>
+
+                        <HoverCardContent>
+                          <p>Idk anymore</p>
+                        </HoverCardContent>
+                      </HoverCard>
+                    );
+                  } else {
+                    return (
+                      <TableHead key={header.id} colSpan={header.colSpan}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )}
+                      </TableHead>
+                    );
+                  }
                 })}
               </TableRow>
             ))}
@@ -102,7 +188,7 @@ export function DataTable<TData, TValue>({
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}
@@ -123,5 +209,5 @@ export function DataTable<TData, TValue>({
       </div>
       <DataTablePagination table={table} />
     </div>
-  )
+  );
 }
