@@ -17,7 +17,7 @@ import {
 import { capitalizeFirstLetter } from "./utils";
 import { type Readable } from "stream";
 import { db } from "@/server/db";
-import pdf from 'pdf-parse'
+import pdf from "pdf-parse"
 
 export class SemanticRetriever {
   private AIEmbeddingName = { model: "text-embedding-004" };
@@ -32,8 +32,6 @@ export class SemanticRetriever {
     this.Model = this.GenAI.getGenerativeModel(
       this.AIEmbeddingName,
     );
-
-    console.log("init")
   }
 
   // takes in a string and returns embedding
