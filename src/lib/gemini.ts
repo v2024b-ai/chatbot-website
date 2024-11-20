@@ -35,6 +35,29 @@ export class Gemini {
     return result.response.text();
   }
 
+  async prompWithDB(messages: PromptSchema[], csvSchema: string ){
+
+    const systemPrompt: PromptSchema = {
+      role: "system",
+      content: "You are a chatbot that is meant to give back an PostgreSQL query on a specific schema based on " +
+        "the users question. Do NOT give back anything else other than PostgreSQL queries. If you are return an "+
+        "SQL query, start the query with ```sql and do NOT include anything else in the message. Limit the "+
+        "amount of rows you would the query show to 25 rows. Only return the user another SQL query if they "+
+        "explicitly request you to do so. You will then answer questions based on the result of the query, "+
+        "not necessarily only in SQL. This is the prisma schema you will use to reference:" + csvSchema
+    };
+
+    try{
+      const result = await this.Model.generateContent(
+        this.formatMessages([systemPrompt, ...messages]),
+      );
+      return result.response.text();
+    } catch(error){
+      console.error("Error generating content:", error);
+      throw new Error("Failed to generate content.");
+    }
+  }
+
   private formatMessages(messages: PromptSchema[]) {
     return messages
       .map((msg) => `${capitalizeFirstLetter(msg.role)}: ${msg.content}`)

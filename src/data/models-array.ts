@@ -23,5 +23,12 @@ export const Models: Array<ModelCards> = [
       " specific report.",
     link: "/tools/podcast",
   },
+  {
+    title: "CSV Query Tool Chatbot",
+    shortDesc: "Query our CSVs and ask questions to our chatbot",
+    longDesc:
+      "Ask CSV specific questions to our live-querying chatbot" +
+      " and get real-data answers from select data sets.",
+    link: "/tools/csv-query",
+  },
 ];
-
