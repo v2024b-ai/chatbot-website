@@ -36,22 +36,33 @@ export class SemanticRetriever {
   }
 
   // takes in an array of strings and returns embeddings
-  async batchEmbedDocuments(data: string[]) {
-    function convertData(text: string) {
-      return {
-        taskType: TaskType.RETRIEVAL_DOCUMENT,
-        content: {
-          role: "user",
-          parts: [{ text }],
-        },
-      };
-    }
+  async batchEmbedDocument(documentParts: string[], title: string) {
+    const convertData = (text: string) => ({
+      taskType: TaskType.RETRIEVAL_DOCUMENT,
+      content: {
+        role: "user",
+        parts: [{ text }],
+      },
+    })
 
     const result = await this.Model.batchEmbedContents({
-      requests: data.map(convertData),
+      requests: documentParts.map(convertData),
     });
 
-    return result.embeddings;
+    const data = documentParts.map((text, index) => ({
+      text,
+      embedding: result.embeddings[index]?.values, // Ensure embedding values are properly extracted
+    }));
+
+    // Update the database with the processed data
+    return db.iqpData.update({
+      where: { title },
+      data: {
+        pdfContents: {
+          createMany: { data },
+        },
+      },
+    });
   }
 
   async getRelivantChunks(qryString: string, topK = 5) {

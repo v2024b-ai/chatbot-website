@@ -42,23 +42,7 @@ export const embeddingRouter = createTRPCRouter({
           const chunks = await retriever.chunkPDF(report.url);
 
           // Generate embeddings for each chunk
-          const embeddings = await retriever.batchEmbedDocuments(chunks);
-
-          // Map chunks and embeddings into the correct format for the database
-          const data = chunks.map((text, index) => ({
-            text,
-            embedding: embeddings[index]?.values, // Ensure embedding values are properly extracted
-          }));
-
-          // Update the database with the processed data
-          await ctx.db.iqpData.update({
-            where: { title: report.title },
-            data: {
-              pdfContents: {
-                createMany: { data },
-              },
-            },
-          });
+          await retriever.batchEmbedDocument(chunks, report.title);
 
           console.log(">>> Finished report: ", report.title)
         }),

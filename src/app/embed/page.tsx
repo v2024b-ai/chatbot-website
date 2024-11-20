@@ -2,7 +2,7 @@
 import { api } from "@/trpc/react";
 
 export default function page() {
-  const { data: papers } = api.embedding.test.useQuery({ hi: "sdosdso" })
+  // const { data: papers } = api.embedding.test.useQuery({ hi: "sdosdso" })
 
   console.log(papers)
 
