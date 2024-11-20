@@ -25,11 +25,7 @@ export const embeddingRouter = createTRPCRouter({
     .query(async ({ ctx }) => {
       console.log("got here");
 
-      const reports = await ctx.db.iqpData.findMany({
-        where: {
-          pdfContents: { none: {} }
-        }
-      });
+      const reports = await ctx.db.iqpData.findMany();
       if (!reports) throw new Error("NO DATA IN DB");
 
       await Promise.all(
@@ -47,6 +43,8 @@ export const embeddingRouter = createTRPCRouter({
           console.log(">>> Finished report: ", report.title)
         }),
       );
+
+      console.log(">>> Finished all reports!")
 
       return { message: "hi" }; // Ensure this is outside of the Promise.all
     }),

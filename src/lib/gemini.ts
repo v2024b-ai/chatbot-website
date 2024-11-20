@@ -30,7 +30,7 @@ export class SemanticRetriever {
   }
 
   // takes in a string and returns embedding
-  async embed(data: string) {
+  private async embed(data: string) {
     const result = await this.Model.embedContent(data);
     return result.embedding.values;
   }
@@ -139,6 +139,29 @@ export class Gemini {
       this.formatMessages(messages),
     );
     return result.response.text();
+  }
+
+  async promptWithChunks(messages: PromptSchema[], chunks: string[], assistantRole = "helpful assistant") {
+    if (!chunks || chunks.length === 0)
+      throw new Error("Chunks cannot be empty.");
+
+    const systemPrompt: PromptSchema = {
+      role: "system",
+      content: `You are a ${assistantRole}. Here is some context provided in the form of paragraphs:
+              ${chunks.join("\n\n")}
+              Use this information to answer the user's questions.
+              If the provided context is insufficient to answer a question, respond with "I do not know."`
+    };
+
+    try {
+      const result = await this.Model.generateContent(
+        this.formatMessages([systemPrompt, ...messages]),
+      );
+      return result.response.text();
+    } catch (error) {
+      console.error("Error generating content:", error);
+      throw new Error("Failed to generate content.");
+    }
   }
 
   // takes text (prompt) and FileData[], which is returned by the upload() method
