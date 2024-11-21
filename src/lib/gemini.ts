@@ -44,9 +44,8 @@ export class Gemini {
         "SQL query, start the query with ```sql and do NOT include anything else in the message. Limit the " +
         "amount of rows you would the query show to 25 rows. Do not select all of"+
         " the columns. Only select the columns relevant to the users question. In your SQL statements, " + 
-        "ALWAYS add quotation marks around the name of the relation in the FROM field."+ 
-        " Only return the user " +
-        "another SQL query if they " +
+        "ALWAYS add quotation marks around the name of the relation in the FROM field. Always filter out " + 
+        " NULL values from the results. Only return the user another SQL query if they " +
         "explicitly request you to do so. You will then answer questions based on the result of the query, " +
         "not necessarily only in SQL. This is the prisma schema you will use to reference:" + csvSchema
     };
