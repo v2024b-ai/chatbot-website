@@ -3,9 +3,9 @@ import type { ModelCards } from "@/types/model-cards";
 export const Models: Array<ModelCards> = [
   {
     title: "Chatbot",
-    shortDesc: "Use the chatbot to ask questions about specific VPC IQPs",
-    longDesc: "Use the chatbot to ask questions about specific VPC IQPs",
-    link: "/tools/chatbot",
+    shortDesc: "Use the chatbot to ask questions about any of the VPC IQP's",
+    longDesc: "Use the chatbot to ask questions about any of the VPC IQP's",
+    link: "/tools/chatbotV2",
   },
   {
     title: "Data Analyzer",
@@ -23,5 +23,12 @@ export const Models: Array<ModelCards> = [
       " specific report.",
     link: "/tools/podcast",
   },
+  {
+    title: "Report Chatbot",
+    shortDesc:
+      "Use the chatbot to ask questions after selecting a specific VPC IQP reports",
+    longDesc:
+      "Use the chatbot to ask questions after selecting a specific VPC IQP reports",
+    link: "/tools/chatbot",
+  },
 ];
-
