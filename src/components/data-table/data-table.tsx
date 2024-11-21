@@ -28,14 +28,8 @@ import {
 import { DataTablePagination } from "./data-table-pagination";
 import { DataTableToolbar } from "./data-table-toolbar";
 import { useState } from "react";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
-import { createHoverCardScope } from "@radix-ui/react-hover-card";
+
 import { builders } from "prettier/doc";
-import cursor = builders.cursor;
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -84,112 +78,16 @@ export function DataTable<TData, TValue>({
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
-                  if (header.column.columnDef.header === "Bleu") {
-                    return (
-                      <HoverCard key={header.id}>
-                        <TableHead
-                          colSpan={header.colSpan}
-                          style={{ cursor: "pointer" }}
-                        >
-                          <HoverCardTrigger
-                            style={{ width: 0, height: 0, padding: 0 }}
-                          >
-                            {header.isPlaceholder
-                              ? null
-                              : flexRender(
-                                  header.column.columnDef.header,
-                                  header.getContext(),
-                                )}
-                          </HoverCardTrigger>
-                        </TableHead>
-                        <HoverCardContent>
-                          <p>
-                            Measurement of the difference between an automatic
-                            translation and human-created reference translations
-                            of the same source sentence. The bigger this value
-                            is the better the model is.
-                          </p>
-                        </HoverCardContent>
-                      </HoverCard>
-                    );
-                  }
-
-                  if (header.column.columnDef.header === "Rouge") {
-                    return (
-                      <HoverCard key={header.id}>
-                        <TableHead
-                          colSpan={header.colSpan}
-                          style={{
-                            cursor: "pointer",
-                          }}
-                        >
-                          <HoverCardTrigger
-                            style={{ width: 0, height: 0, padding: 0 }}
-                          >
-                            {header.isPlaceholder
-                              ? null
-                              : flexRender(
-                                  header.column.columnDef.header,
-                                  header.getContext(),
-                                )}
-                          </HoverCardTrigger>
-                        </TableHead>
-                        <HoverCardContent>
-                          <p>
-                            Compare an automatically produced summary or
-                            translation against a reference or a set of
-                            references (human-produced) summary or translation.
-                            ROUGE metrics range between 0 and 1, with higher
-                            scores indicating higher similarity.
-                          </p>
-                        </HoverCardContent>
-                      </HoverCard>
-                    );
-                  }
-
-                  if (header.column.columnDef.header === "Meteor") {
-                    return (
-                      <HoverCard key={header.id}>
-                        <TableHead
-                          colSpan={header.colSpan}
-                          style={{ cursor: "pointer" }}
-                        >
-                          <HoverCardTrigger
-                            style={{ width: 0, height: 0, padding: 0 }}
-                          >
-                            {header.isPlaceholder
-                              ? null
-                              : flexRender(
-                                  header.column.columnDef.header,
-                                  header.getContext(),
-                                )}
-                          </HoverCardTrigger>
-                        </TableHead>
-
-                        <HoverCardContent>
-                          <p>
-                            Evaluation metric for machine translation that
-                            improves over traditional metrics like BLEU by
-                            incorporating linguistic features such as synonymy,
-                            stemming, and word order, and placing more emphasis
-                            on recall to better align with human judgments of
-                            translation quality. The bigger the better.
-                          </p>
-                        </HoverCardContent>
-                      </HoverCard>
-                    );
-                  } else {
-                    return (
-                      <TableHead key={header.id} colSpan={header.colSpan}>
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext(),
-                            )}
-                      </TableHead>
-                    );
-                  }
+                  return (
+                    <TableHead key={header.id} colSpan={header.colSpan}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
+                    </TableHead>
+                  );
                 })}
               </TableRow>
             ))}
