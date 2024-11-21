@@ -12,7 +12,6 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
-
 // takes in any zod object and returns deault cols
 export function makeDefaultZodCols<T extends ZodRawShape>(
   schema: ZodObject<T>,
@@ -36,13 +35,15 @@ export function makeDefaultZodColsNew<T extends ZodRawShape>(
           return (
             <>
               <HoverCard>
-                <HoverCardTrigger
-                  style={{ width: 0, height: 0, padding: 0 }}
-                  className="hover: cursor-pointer"
-                >
+                <div>
                   Bleu
-                </HoverCardTrigger>
-
+                  <HoverCardTrigger
+                    style={{ width: 0, height: 0, padding: 0 }}
+                    className="hover: ml-2 cursor-pointer rounded-3xl border-8 font-serif font-extrabold"
+                  >
+                    i
+                  </HoverCardTrigger>
+                </div>
                 <HoverCardContent>
                   <p>
                     Measurement of the difference between an automatic
@@ -63,12 +64,15 @@ export function makeDefaultZodColsNew<T extends ZodRawShape>(
           return (
             <>
               <HoverCard>
-                <HoverCardTrigger
-                  style={{ width: 0, height: 0, padding: 0 }}
-                  className="hover: cursor-pointer"
-                >
+                <div>
                   Rouge
-                </HoverCardTrigger>
+                  <HoverCardTrigger
+                    style={{ width: 0, height: 0, padding: 0 }}
+                    className="hover: ml-2 cursor-pointer rounded-3xl border-8 font-serif font-extrabold"
+                  >
+                    i
+                  </HoverCardTrigger>
+                </div>
 
                 <HoverCardContent>
                   <p>
@@ -90,12 +94,15 @@ export function makeDefaultZodColsNew<T extends ZodRawShape>(
           return (
             <>
               <HoverCard>
-                <HoverCardTrigger
-                  style={{ width: 0, height: 0, padding: 0 }}
-                  className="hover: cursor-pointer"
-                >
+                <div>
                   Meteor
-                </HoverCardTrigger>
+                  <HoverCardTrigger
+                    style={{ width: 0, height: 0, padding: 0 }}
+                    className="hover: ml-2 cursor-pointer rounded-3xl border-8 font-serif font-extrabold"
+                  >
+                    i
+                  </HoverCardTrigger>
+                </div>
 
                 <HoverCardContent>
                   <p>
