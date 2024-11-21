@@ -12,16 +12,22 @@ export const chatRouter = createTRPCRouter({
     .input(z.object({ data: z.array(promptSchema) }))
     .mutation(async ({ input: { data } }) => {
       const gemini = new Gemini();
+
       const mostRecentPrompt = data.at(data.length - 1)?.content
       if (!mostRecentPrompt) throw Error("No content!")
+
       const retriever = new SemanticRetriever()
 
-      const relivantPDFChunks = await retriever.getRelivantChunks(mostRecentPrompt)
+      // only run cosine simalarity based on the first message
+      // user would need to refresh page and start new chat to rerun embedding search
+      let geminiResponse = '';
+      if (data.length === 1) {
+        const relivantPDFChunks = await retriever.getRelivantChunks(mostRecentPrompt)
+        geminiResponse = await gemini.promptWithChunks(data, relivantPDFChunks.map(chunk => chunk.text));
+      } else {
+        geminiResponse = await gemini.prompt(data)
+      }
 
-      // Send the prompt data to Gemini and get the response
-      const geminiResponse = await gemini.promptWithChunks(data, relivantPDFChunks.map(chunk => chunk.text));
-
-      // Return an object with both the response message and recommended files
       return geminiResponse;
     }),
 
