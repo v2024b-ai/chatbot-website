@@ -1,10 +1,5 @@
 "use client";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
 import Image from "next/image";
 import notebookLM from "public/notebook-lm.png";
 import gemini from "public/gemini.png";
@@ -43,6 +38,7 @@ const arr: cardDetails[] = [
     link: "https://docs.openwebui.com/",
   },
 ];
+
 export default function ReccPage() {
   return (
     <main className="p-10 pb-16">
@@ -55,37 +51,33 @@ export default function ReccPage() {
           </p>
         </div>
         <br />
-        <Card className={"flex w-full justify-evenly p-3"}>
+        <div className="flex flex-row flex-wrap justify-center">
           {arr.map((recc) => (
-            <HoverCard key={recc.name}>
-              <HoverCardTrigger asChild>
-                <Link
-                  href={recc.link}
-                  className="text-white outline-primary duration-100 hover:outline"
-                >
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>{recc.name}</CardTitle>
-                      <HoverCardContent>{recc.description}</HoverCardContent>
-                    </CardHeader>
-                    <CardContent className="max-w-full">
-                      <div className="relative h-[30vh] w-[15vw]">
-                        <Image
-                          src={recc.img}
-                          alt={recc.name}
-                          fill
-                          style={{ objectFit: "contain" }}
-                        />
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Link>
-              </HoverCardTrigger>
-            </HoverCard>
+            <Link
+              href={recc.link}
+              className="my-2 text-white outline-primary"
+              key={recc.name}
+            >
+              <Card className="mx-2 h-full duration-100 hover:outline">
+                <CardHeader>
+                  <CardTitle>{recc.name}</CardTitle>
+                </CardHeader>
+                <CardContent className="max-w-[20vw]">
+                  <div className="relative h-[30vh] w-[15vw] snap-center">
+                    <Image
+                      src={recc.img}
+                      alt={recc.name}
+                      fill
+                      style={{ objectFit: "contain" }}
+                    />
+                  </div>
+                  <Card className="border-none py-2">{recc.description}</Card>
+                </CardContent>
+              </Card>
+            </Link>
           ))}
-        </Card>
+        </div>
       </div>
-
     </main>
   );
 }
