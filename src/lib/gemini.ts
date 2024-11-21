@@ -9,8 +9,10 @@ import {
   type PromptSchema,
   type UploadFileData,
 } from "@/types/ai/gemini";
-import { capitalizeFirstLetter } from "./utils";
+import { capitalizeFirstLetter, convertToMarkdownTable } from "./utils";
 import { type Readable } from "stream";
+import { db } from "@/server/db";
+import { type Record } from "@prisma/client/runtime/library";
 
 export class Gemini {
   private AImodelName = { model: "gemini-1.5-pro" };
@@ -35,24 +37,39 @@ export class Gemini {
     return result.response.text();
   }
 
-  async promptWithDB(messages: PromptSchema[], csvSchema: string ){
-
+  async promptWithDB(messages: PromptSchema[], csvSchema: string) {
     const systemPrompt: PromptSchema = {
       role: "system",
       content: "You are a chatbot that is meant to give back an PostgreSQL query on a specific schema based on " +
-        "the users question. Do NOT give back anything else other than PostgreSQL queries. If you are return an "+
-        "SQL query, start the query with ```sql and do NOT include anything else in the message. Limit the "+
-        "amount of rows you would the query show to 25 rows. Only return the user another SQL query if they "+
-        "explicitly request you to do so. You will then answer questions based on the result of the query, "+
+        "the users question. Do NOT give back anything else other than PostgreSQL queries. If you are return an " +
+        "SQL query, start the query with ```sql and do NOT include anything else in the message. Limit the " +
+        "amount of rows you would the query show to 25 rows. Only return the user another SQL query if they " +
+        "explicitly request you to do so. You will then answer questions based on the result of the query, " +
         "not necessarily only in SQL. This is the prisma schema you will use to reference:" + csvSchema
     };
 
-    try{
+    try {
       const result = await this.Model.generateContent(
         this.formatMessages([systemPrompt, ...messages]),
       );
-      return result.response.text();
-    } catch(error){
+
+      // Extract the response text
+      const responseText = result.response.text();
+
+      // Extract the SQL query from the response
+      const sqlStatement = responseText
+        .split('```sql') // Split the text to isolate the SQL query
+        .filter((_, index) => index % 2 !== 0) // Only take the odd indexed sections (SQL queries)
+        .map((query) => query.split('```')[0]?.trim())[0]; // Get the first SQL query, if any
+
+      if (sqlStatement) {
+        // Run the SQL query if one is found
+        const rows: Record<string, unknown>[] = await db.$queryRawUnsafe(sqlStatement);
+        return convertToMarkdownTable(rows)
+      } else {
+        return responseText
+      }
+    } catch (error) {
       console.error("Error generating content:", error);
       throw new Error("Failed to generate content.");
     }
