@@ -21,12 +21,13 @@ import { Textarea } from "../ui/textarea";
 import cuid from "cuid";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { DropdownMenuTrigger, DropdownMenuItem, DropdownMenuContent, DropdownMenu } from "@radix-ui/react-dropdown-menu";
+import { csvSchemaMap } from "@/data/csvMap";
 
 export default function ChatBotCSVBase() {
   const [isGenerating, setIsGenerating] = useState(false);
   const { messages, setMessages, isLoading } = useChat();
 
-  const csvOptions = ["Fountains"]
+  const csvOptions = Array.from(csvSchemaMap.keys());
   type CsvOption = typeof csvOptions[number]
   const [selectCSV, setSelectedCSV] = useState<CsvOption>("Fountains");
 
