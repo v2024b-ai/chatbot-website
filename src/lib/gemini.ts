@@ -67,14 +67,19 @@ export class SemanticRetriever {
 
   async getRelivantChunks(qryString: string, topK = 5) {
     const [embeddings, qryVector] = await Promise.all([
-      db.embeddings.findMany(),
+      db.embeddings.findMany({
+        select: {
+          embedding: true,
+          text: true
+        }
+      }),
       this.embed(qryString),
     ]);
 
     const sortedChunks = embeddings
-      .map((embedding) => ({
-        cs: this.cosineSimilarity(qryVector, embedding.embedding),
-        text: embedding.text,
+      .map(({ text, embedding }) => ({
+        cs: this.cosineSimilarity(qryVector, embedding),
+        text,
       }))
       .sort((a, b) => (a.cs < b.cs ? 1 : -1))
       .slice(0, topK);
