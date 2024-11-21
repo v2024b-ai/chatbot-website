@@ -12,7 +12,6 @@ import {
 import { capitalizeFirstLetter, convertToMarkdownTable } from "./utils";
 import { type Readable } from "stream";
 import { db } from "@/server/db";
-import { type Record } from "@prisma/client/runtime/library";
 
 export class Gemini {
   private AImodelName = { model: "gemini-1.5-pro" };
@@ -43,7 +42,11 @@ export class Gemini {
       content: "You are a chatbot that is meant to give back an PostgreSQL query on a specific schema based on " +
         "the users question. Do NOT give back anything else other than PostgreSQL queries. If you are return an " +
         "SQL query, start the query with ```sql and do NOT include anything else in the message. Limit the " +
-        "amount of rows you would the query show to 25 rows. Only return the user another SQL query if they " +
+        "amount of rows you would the query show to 25 rows. Do not select all of"+
+        " the columns. Only select the columns relevant to the users question. In your SQL statements, " + 
+        "ALWAYS add quotation marks around the name of the relation in the FROM field."+ 
+        " Only return the user " +
+        "another SQL query if they " +
         "explicitly request you to do so. You will then answer questions based on the result of the query, " +
         "not necessarily only in SQL. This is the prisma schema you will use to reference:" + csvSchema
     };
@@ -63,9 +66,13 @@ export class Gemini {
         .map((query) => query.split('```')[0]?.trim())[0]; // Get the first SQL query, if any
 
       if (sqlStatement) {
-        // Run the SQL query if one is found
-        const rows: Record<string, unknown>[] = await db.$queryRawUnsafe(sqlStatement);
-        return convertToMarkdownTable(rows)
+        // Run the SQL query if one is foun
+        //
+        console.log(">>> RUNNING SQL QUERY: ", sqlStatement)
+        const rows = await db.$queryRawUnsafe(sqlStatement);
+        console.log(rows)
+        return String(rows)
+        //return convertToMarkdownTable(rows)
       } else {
         return responseText
       }
