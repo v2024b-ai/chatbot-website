@@ -31,7 +31,7 @@ export default function ChatBotCSVBase() {
   const [selectCSV, setSelectedCSV] = useState<CsvOption>("Fountains");
 
 
-  const gemini = api.chat.text.useMutation({
+  const gemini = api.chat.db.useMutation({
     onSuccess: (data) => {
       if (data) setMessages([...messages, makeNewMessage(data, "assistant")]);
 

@@ -35,7 +35,7 @@ export class Gemini {
     return result.response.text();
   }
 
-  async prompWithDB(messages: PromptSchema[], csvSchema: string ){
+  async promptWithDB(messages: PromptSchema[], csvSchema: string ){
 
     const systemPrompt: PromptSchema = {
       role: "system",
