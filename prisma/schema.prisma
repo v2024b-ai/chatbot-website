@@ -41,9 +41,18 @@ model aiEval {
 }
 
 model iqpData {
-  title       String @id
+  title       String       @id
   description String
   url         String
+  pdfContents embeddings[]
 
   @@index([title])
+}
+
+model embeddings {
+  iqpData      iqpData? @relation(fields: [iqpTitle], references: [title])
+  iqpTitle String?
+  id String @id @default(cuid())
+  text String
+  embedding Float[]
 }

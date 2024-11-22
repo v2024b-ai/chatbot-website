@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
-import { Gemini } from "@/lib/gemini";
+import { Gemini, SemanticRetriever } from "@/lib/gemini";
 import {
   propmptWithFilesSchema,
   uploadFileData,
@@ -8,6 +8,29 @@ import {
 } from "@/types/ai/gemini";
 
 export const chatRouter = createTRPCRouter({
+  promptWithPDFChunks: publicProcedure
+    .input(z.object({ data: z.array(promptSchema) }))
+    .mutation(async ({ input: { data } }) => {
+      const gemini = new Gemini();
+
+      const mostRecentPrompt = data.at(data.length - 1)?.content
+      if (!mostRecentPrompt) throw Error("No content!")
+
+      const retriever = new SemanticRetriever()
+
+      // only run cosine simalarity based on the first message
+      // user would need to refresh page and start new chat to rerun embedding search
+      let geminiResponse = '';
+      if (data.length === 1) {
+        const relivantPDFChunks = await retriever.getRelivantChunks(mostRecentPrompt)
+        geminiResponse = await gemini.promptWithChunks(data, relivantPDFChunks.map(chunk => chunk.text));
+      } else {
+        geminiResponse = await gemini.prompt(data)
+      }
+
+      return geminiResponse;
+    }),
+
   prompt: publicProcedure
     .input(propmptWithFilesSchema)
     .mutation(async ({ input }) => {
