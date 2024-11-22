@@ -2,7 +2,6 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { addModelSchema } from "@/types/ai/models/model-eval-info-types";
 import axios from "axios";
-import { Simulate } from "react-dom/test-utils";
 
 interface PostData {
   genStr: string;
