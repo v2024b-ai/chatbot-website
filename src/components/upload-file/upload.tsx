@@ -15,13 +15,15 @@ export default function UploadButton() {
   const [transcript, setTranscript] = useState("");
   const { toast } = useToast();
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+
     if (e.target.files)
       setFile(e.target.files[0]);
 
   };
 
   async function downloadFile() {
-    const url = `${process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL}/gen-pod/`
+    const url = "https://podcast-gen.pages.dev/gen-pod/";
+
     const formData = new FormData();
     if (file) {
       formData.append("file", file);
@@ -44,20 +46,35 @@ export default function UploadButton() {
         document.body.removeChild(a);
         toast({
           title: "Podcast has been downloaded",
-          variant: "destructive",
+          variant: "default",
         });
 
         // Get the transcript
-        const urlTrans = process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL! + "/get-trans/";
-        const trans = await axios.get<string>(urlTrans);
+
+        const urlTrans = "https://podcast-gen.pages.dev/get-trans/";
+        const trans = await axios.get(urlTrans);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         setTranscript(trans.data);
         // Change the states
         setFile(undefined);
         setHasDownload(false);
         setPlay(true);
         return;
-      } catch (e) {
-        console.error(e);
+      } catch (error) {
+        if (error instanceof Error && error.message === "Network Error") {
+          toast({
+            title:
+              "Make sure you have the podcast generating program running on localhost:8000",
+            variant: "destructive",
+          });
+        } else {
+          toast({
+            title:
+              "Check the API keys in the .env file on your running program",
+            variant: "destructive",
+          });
+        }
+        setHasDownload(false);
         return;
       }
     }
@@ -65,7 +82,8 @@ export default function UploadButton() {
 
   return (
     <main className="flex h-full w-full flex-col items-center justify-center">
-      <div className='flex space-x-4'>
+      <div className="flex space-x-4">
+
         <Input
           type="file"
           accept=".pdf"

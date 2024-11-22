@@ -41,7 +41,7 @@ ListItem.displayName = "ListItem";
 
 export function NavBar() {
   return (
-    <header className="z-1000 top-0 flex items-center justify-between gap-4 border-b p-4">
+    <header className="top-0 z-10 flex items-center justify-between gap-4 border-b p-4">
       <div className="pl-4">
         <NavigationMenu>
           <NavigationMenuList>
@@ -112,6 +112,17 @@ export function NavBar() {
                 </ul>
               </NavigationMenuContent>
             </NavigationMenuItem>
+
+            <NavigationMenuItem>
+              <Link href="/recommendations" legacyBehavior passHref>
+                <NavigationMenuLink
+                  className={`${navigationMenuTriggerStyle()}`}
+                >
+                  Recommendations
+                </NavigationMenuLink>
+              </Link>
+            </NavigationMenuItem>
+
             <NavigationMenuItem>
               <Link href="/about" legacyBehavior passHref>
                 <NavigationMenuLink
@@ -124,7 +135,7 @@ export function NavBar() {
           </NavigationMenuList>
         </NavigationMenu>
       </div>
-      <div className="z-1000 pr-4">
+      <div className="z-1010 ml-auto">
         <ModeToggle />
       </div>
     </header>
