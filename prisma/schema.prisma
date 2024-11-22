@@ -41,12 +41,14 @@ model aiEval {
 }
 
 model iqpData {
-  title       String @id
+  title       String       @id
   description String
   url         String
+  pdfContents embeddings[]
 
   @@index([title])
 }
+
 
 model fountainsCSV {
   ck_id                               String @id
@@ -97,4 +99,12 @@ model fountainsCSV {
   wiki_friendly_title                 String?
 
   @@index([ck_id])
+}
+
+model embeddings {
+  iqpData      iqpData? @relation(fields: [iqpTitle], references: [title])
+  iqpTitle String?
+  id String @id @default(cuid())
+  text String
+  embedding Float[]
 }

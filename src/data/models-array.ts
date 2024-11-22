@@ -1,5 +1,6 @@
 import type { ModelCards } from "@/types/model-cards";
 
+
 export const Models: Array<ModelCards> = [
   {
     title: "Chatbot",
@@ -30,5 +31,13 @@ export const Models: Array<ModelCards> = [
       "Ask CSV specific questions to our live-querying chatbot" +
       " and get real-data answers from select data sets.",
     link: "/tools/csv-query",
+  },
+  {
+    title: "Report Chatbot",
+    shortDesc:
+      "Use the chatbot to ask questions after selecting a specific VPC IQP reports",
+    longDesc:
+      "Use the chatbot to ask questions after selecting a specific VPC IQP reports",
+    link: "/tools/chatbot",
   },
 ];

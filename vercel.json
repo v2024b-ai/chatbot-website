@@ -1,5 +1,5 @@
 {
-  "buildCommand": "pnpm run db:push --accept-data-loss && pnpm run build",
+  "buildCommand": "pnpm run build",
   "devCommand": "pnpm run dev",
   "installCommand": "pnpm install"
 }
