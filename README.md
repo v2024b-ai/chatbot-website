@@ -31,6 +31,7 @@ You must collect the following enviroment variables from other websites:
 To run this app locally, run the following command:
 
 ```sh
+pnpm i
 pnpm run dev
 ```
 
