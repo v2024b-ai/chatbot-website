@@ -29,7 +29,7 @@ export default function ChatBotCSVBase() {
 
   const csvOptions = Array.from(csvSchemaMap.keys());
   type CsvOption = typeof csvOptions[number]
-  const [selectCSV, setSelectedCSV] = useState<CsvOption>("Fountains");
+  const [selectCSV, setSelectedCSV] = useState<CsvOption>("CSVs");
 
 
   const gemini = api.chat.db.useMutation({
@@ -63,16 +63,17 @@ export default function ChatBotCSVBase() {
         <header className="px-4 pt-20">
           <h1 className="text-xl font-semibold">Chat about the VPC ✨</h1>
           <p>Choose one of our preloaded CSVs to ask questions</p>
+          <p>(If you notice that the chatbot is taking to long to respond, please refresh the page and try again)</p>
         </header>
         <div className="p-4">
-          <Card>
+          <Card className="w-60">
             <CardHeader>
-              <CardTitle>Choose a CSV here!</CardTitle>
+              <CardTitle className="flex justify-center">Choose a CSV here!</CardTitle>
               <CardContent className="p-2">
-                <div className="flex flex-col space-y-1.5">
+                <div className="flex flex-col space-y-3">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <button> Open Menu </button>
+                      <button> {selectCSV} </button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                       {csvOptions.map((csv, i) => (
