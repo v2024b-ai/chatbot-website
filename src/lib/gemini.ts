@@ -186,7 +186,8 @@ export class Gemini {
         "the users question. Do NOT give back anything else other than PostgreSQL queries. If you are return an " +
         "SQL query, start the query with ```sql and do NOT include anything else in the message. Limit the " +
         "amount of rows you would the query show to 25 rows. Do not select all of"+
-        " the columns. Only select the columns relevant to the users question. In your SQL statements, " + 
+        " the columns. Only select the columns relevant to the users question and the wiki friendly name for the fountains. "+ 
+        " In your SQL statements, " + 
         "ALWAYS add quotation marks around the name of the relation in the FROM field. Always filter out " + 
         " NULL values from the results. Only return the user another SQL query if they " +
         "explicitly request you to do so. You will then answer questions based on the result of the query, " +
@@ -208,13 +209,15 @@ export class Gemini {
         .map((query) => query.split('```')[0]?.trim())[0]; // Get the first SQL query, if any
 
       if (sqlStatement) {
-        // Run the SQL query if one is foun
+        // Run the SQL query if one is found
         //
-        console.log(">>> RUNNING SQL QUERY: ", sqlStatement)
-        const rows = await db.$queryRawUnsafe(sqlStatement);
-        console.log(rows)
-        return String(rows)
-        //return convertToMarkdownTable(rows)
+        console.log(">>> RUNNING SQL QUERY: \n", sqlStatement)
+        //es-lint-disable
+        const rows = await db.$queryRawUnsafe(sqlStatement) as Record<string, unknown>[];
+        
+        console.log( convertToMarkdownTable(rows));
+        //return rows
+        return convertToMarkdownTable(rows);
       } else {
         return responseText
       }
