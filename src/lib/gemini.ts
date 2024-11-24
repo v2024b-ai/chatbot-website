@@ -211,11 +211,9 @@ export class Gemini {
       if (sqlStatement) {
         // Run the SQL query if one is found
         //
-        console.log(">>> RUNNING SQL QUERY: \n", sqlStatement)
-        //es-lint-disable
-        const rows = await db.$queryRawUnsafe(sqlStatement) as Record<string, unknown>[];
         
-        console.log( convertToMarkdownTable(rows));
+        const rows:Record<string, unknown>[] = await db.$queryRawUnsafe(sqlStatement);
+        
         //return rows
         return convertToMarkdownTable(rows);
       } else {
