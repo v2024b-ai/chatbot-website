@@ -53,6 +53,18 @@ export default async function Home() {
             </Link>
 
           </div>
+          <div className="w-[70vw]">
+            <Card>
+              <CardHeader>
+                <CardTitle>
+                  What is this project?
+                </CardTitle>
+                <CardContent>
+                  This project was developed to help WPI students to find AI tools that might help them research, find, analyze, synthesize, and understand previous Venice Project Center IQP reports better! This project was developed as its own IQP for this reason. If you want to know more about the people who have worked on this before, visit our About Page.
+                </CardContent>
+              </CardHeader>
+            </Card>
+          </div>
 
         </div>
       </main>
