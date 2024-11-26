@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -49,10 +46,61 @@ model iqpData {
   @@index([title])
 }
 
+model fountainsCSV {
+  ck_id                              String   @id
+  lat                                Float
+  lng                                Float
+  additional_notes                   String?
+  base_area                          Float?
+  base_perimeter                     Float?
+  base_shape                         String
+  birthID                            String
+  bolted_to_ground                   Boolean
+  condition_notes                    String?
+  depth                              Float?
+  faucet_design                      String?
+  faucet_height_cm                   Float?
+  faucet_length_cm                   Float?
+  flow_rate                          Float?
+  format                             String?
+  height                             Float?
+  height_cm                          Float?
+  high_traffic_area                  Boolean?
+  material                           String
+  number_of_drains                   Int?
+  old_code                           String?
+  original_paint_remaining_pct       Float?
+  owner                              String
+  parish                             String?
+  raised_drain                       Boolean?
+  risk_factor_algae_pct              Float?
+  risk_factor_graffiti_pct           Float?
+  risk_factor_grime                  String
+  risk_factor_missing_pieces         String
+  risk_factor_overall_damage_pct     Float?
+  risk_factor_rust_percent           Float?
+  risk_factor_surface_damage_percent Float?
+  running                            Boolean?
+  service_panel                      Boolean
+  sestiere_or_island                 String
+  street                             String
+  street_address                     String
+  subtype                            String?
+  surface_area_sq_cm                 Float?
+  totalDonated                       Float?
+  type                               String?
+  visibility                         String?
+  width                              Float?
+  width_cm                           Float?
+  wiki_friendly_title                String?
+
+  @@index([ck_id])
+}
+
 model embeddings {
-  iqpData      iqpData? @relation(fields: [iqpTitle], references: [title])
-  iqpTitle String?
-  id String @id @default(cuid())
-  text String
+  iqpTitle  String?
+  id        String   @id @default(cuid())
+  text      String
   embedding Float[]
+  iqpData   iqpData? @relation(fields: [iqpTitle], references: [title])
 }

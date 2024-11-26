@@ -4,7 +4,7 @@
  * this provides default data table cols if caller does not want custom ones
  * */
 
-import { ColumnDef } from "@tanstack/react-table";
+import type { ColumnDef } from "@tanstack/react-table";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import type { ZodObject, ZodRawShape, z } from "zod";
 import {

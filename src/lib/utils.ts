@@ -41,3 +41,28 @@ export function debounce<A = unknown, R = void>(
 
   return [debouncedFunc, teardown];
 }
+
+// eslint-disable
+export function convertToMarkdownTable<T extends Record<string, unknown>>(data: T[]): string {
+  if (data.length === 0) {
+    return "No data available";
+  }
+
+  // Extract column names from the first row
+  const columns = Object.keys(data[0]!);
+
+  // Generate the header row
+  const header = `| ${columns.join(" | ")} |`;
+
+  // Generate the separator row
+  const separator = `| ${columns.map(() => "---").join(" | ")} |`;
+
+  // Generate the data rows
+  const rows = data.map(row =>
+    `| ${columns.map(col => row[col] ?? "").join(" | ")} |`
+  );
+
+  // Combine everything into a Markdown table
+  return [header, separator, ...rows].join("\n");
+}
+// eslint-enable
