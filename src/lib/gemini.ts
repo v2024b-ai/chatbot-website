@@ -70,16 +70,18 @@ export class SemanticRetriever {
       db.embeddings.findMany({
         select: {
           embedding: true,
-          text: true
+          text: true,
+          iqpTitle: true
         }
       }),
       this.embed(qryString),
     ]);
 
     const sortedChunks = embeddings
-      .map(({ text, embedding }) => ({
+      .map(({ text, embedding, iqpTitle }) => ({
         cs: this.cosineSimilarity(qryVector, embedding),
         text,
+        iqpTitle
       }))
       .sort((a, b) => (a.cs < b.cs ? 1 : -1))
       .slice(0, topK);
@@ -153,7 +155,7 @@ export class Gemini {
 
     const systemPrompt: PromptSchema = {
       role: "system",
-      content: `You are a ${assistantRole}. Here is some context provided in the form of paragraphs:
+      content: `You are a ${assistantRole} for the VPC, or Venice project center for Worcester Polytechnic Institute (wpi). Here is some context provided to you in the form of paragraphs:
               ${chunks.join("\n\n")}
               Use this information to answer the user's questions.
               If the provided context is insufficient to answer a question, respond with "I do not know."`
@@ -185,10 +187,10 @@ export class Gemini {
       content: "You are a chatbot that is meant to give back an PostgreSQL query on a specific schema based on " +
         "the users question. Do NOT give back anything else other than PostgreSQL queries. If you are return an " +
         "SQL query, start the query with ```sql and do NOT include anything else in the message. Limit the " +
-        "amount of rows you would the query show to 25 rows. Do not select all of"+
-        " the columns. Only select the columns relevant to the users question and the wiki friendly name for the fountains. "+ 
-        " In your SQL statements, " + 
-        "ALWAYS add quotation marks around the name of the relation in the FROM field. Always filter out " + 
+        "amount of rows you would the query show to 25 rows. Do not select all of" +
+        " the columns. Only select the columns relevant to the users question and the wiki friendly name for the fountains. " +
+        " In your SQL statements, " +
+        "ALWAYS add quotation marks around the name of the relation in the FROM field. Always filter out " +
         " NULL values from the results. Only return the user another SQL query if they " +
         "explicitly request you to do so. You will then answer questions based on the result of the query, " +
         "not necessarily only in SQL. This is the prisma schema you will use to reference:" + csvSchema
@@ -211,9 +213,9 @@ export class Gemini {
       if (sqlStatement) {
         // Run the SQL query if one is found
         //
-        
-        const rows:Record<string, unknown>[] = await db.$queryRawUnsafe(sqlStatement);
-        
+
+        const rows: Record<string, unknown>[] = await db.$queryRawUnsafe(sqlStatement);
+
         //return rows
         return convertToMarkdownTable(rows);
       } else {

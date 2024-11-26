@@ -3,13 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "prisma": {
-    "seed": "node prisma/seed.mjs"
-  },
   "scripts": {
     "build": "next build",
     "db:generate": "prisma migrate dev",
     "db:migrate": "prisma migrate deploy",
+    "db:seed": "node prisma/seed.mjs",
     "db:push": "prisma db push",
     "db:push++": "prisma db push && rm -rf node_modules/prisma && pnpm i",
     "db:push:hard": "prisma db push && rm -rf node_modules/prisma && pnpm i",
