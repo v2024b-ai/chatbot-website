@@ -1,9 +1,11 @@
 import { HydrateClient } from "@/trpc/server";
 
+import Link from "next/link";
 import {
   Card,
   CardContent,
   CardHeader,
+  CardDescription,
   CardTitle,
 } from "@/components/ui/card";
 
@@ -16,22 +18,54 @@ export default async function Home() {
           <h1 className="text-5xl font-extrabold tracking-tight">
             Welcome to the ChatVPC App
           </h1>
-          <Card>
-            <CardHeader>
-              <CardTitle>
-                Future work:
-              </CardTitle>
-              <CardContent>
-                Podcasts, Chatbots, Retrieval Augmented Generation, and more!
-              </CardContent>
-              <CardContent>
-                Check out the tools that we do have implemented in the tools section!
-              </CardContent>
-              <CardContent>
-                Also look at the evaluation tool that we have developed under Evaluations {'>'} Add a Model
-              </CardContent>
-            </CardHeader>
-          </Card>
+          <div className="flex flex-wrap gap-2">
+            <Link href={"/eval"}>
+              <Card className="aspect-square w-64 transition-shadow duration-300 hover:shadow-lg">
+                <CardHeader>
+                  <CardTitle>Evaluations</CardTitle>
+                  <CardDescription>Look at our evaluations of select models</CardDescription>
+                </CardHeader>
+              </Card>
+            </Link>
+            <Link href={"/tools"}>
+              <Card className="aspect-square w-64 transition-shadow duration-300 hover:shadow-lg">
+                <CardHeader>
+                  <CardTitle>Tools</CardTitle>
+                  <CardDescription>Take a peek at the sample tools that we&apos;ve developed</CardDescription>
+                </CardHeader>
+              </Card>
+            </Link>
+            <Link href={"/recommendations"}>
+              <Card className="aspect-square w-64 transition-shadow duration-300 hover:shadow-lg">
+                <CardHeader>
+                  <CardTitle>Recommendations</CardTitle>
+                  <CardDescription>Check out some of the AI tools that we recommend you use!</CardDescription>
+                </CardHeader>
+              </Card>
+            </Link>
+            <Link href={"/about"}>
+              <Card className="aspect-square w-64 transition-shadow duration-300 hover:shadow-lg">
+                <CardHeader>
+                  <CardTitle>About Us</CardTitle>
+                  <CardDescription>Get to know a bit more about the teams that have worked on this project in the past!</CardDescription>
+                </CardHeader>
+              </Card>
+            </Link>
+
+          </div>
+          <div className="w-[70vw]">
+            <Card>
+              <CardHeader>
+                <CardTitle>
+                  What is this project?
+                </CardTitle>
+                <CardContent>
+                  This project was developed to help WPI students to find AI tools that might help them research, find, analyze, synthesize, and understand previous Venice Project Center IQP reports better! This project was developed as its own IQP for this reason. If you want to know more about the people who have worked on this before, visit our About Page.
+                </CardContent>
+              </CardHeader>
+            </Card>
+          </div>
+
         </div>
       </main>
     </HydrateClient>
