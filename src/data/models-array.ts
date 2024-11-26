@@ -17,10 +17,10 @@ export const Models: Array<ModelCards> = [
   },
   {
     title: "Podcast",
-    shortDesc: "Get a full podcast about any inputted report",
+    shortDesc: "Get a full podcast about any inputted report (This feature requires the backend application to be running)",
     longDesc:
       "Import a report file and generate an AI podcast on that" +
-      " specific report.",
+      " specific report. (This feature requires the backend application to be running)",
     link: "/tools/podcast",
   },
   {
