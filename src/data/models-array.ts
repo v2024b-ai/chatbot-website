@@ -37,6 +37,6 @@ export const Models: Array<ModelCards> = [
       "Use the chatbot to ask questions after selecting a specific VPC IQP reports",
     longDesc:
       "Use the chatbot to ask questions after selecting a specific VPC IQP reports",
-    link: "/tools/chatbot",
+    link: "/tools/chatbotV2",
   },
 ]
