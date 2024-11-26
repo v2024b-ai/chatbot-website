@@ -1,6 +1,5 @@
 import type { ModelCards } from "@/types/model-cards";
 
-
 export const Models: Array<ModelCards> = [
   {
     title: "Chatbot",
@@ -40,4 +39,4 @@ export const Models: Array<ModelCards> = [
       "Use the chatbot to ask questions after selecting a specific VPC IQP reports",
     link: "/tools/chatbot",
   },
-];
+]
