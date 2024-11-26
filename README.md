@@ -2,7 +2,7 @@
 
 This is a [T3 Stack](https://create.t3.gg/) project for the Worcester Polytechnic Institute Venice Project Center. This is a chat bot that uses VPC collected data to answer user questions.
 
-## What's next? How do I make an app with this?
+## Prerequisites
 
 This app uses `pnpm` for a package manager. If you do not already have `pnpm` installed yet, run the following command: 
 
@@ -12,17 +12,36 @@ npm install -g pnpm
 
 You may need to use `sudo npm install -g pnpm` if you get a permissions error.
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+## Running locally
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+You must create a new `.env` file and add all your enviroment variables in order to run the app.
+This file is in the `.gitignore`, do not ever push your enviroment variables to github!!
+
+To make this `.env` file, run the following command:
+
+```sh
+cp .env.example .env
+```
+
+You must collect the following enviroment variables from other websites:
+
+- [Pinecone](https://www.pinecone.io/)
+- [Gemini](https://ai.google.dev/aistudio)
+
+To run this app locally, run the following command:
+
+```sh
+pnpm i
+pnpm run dev
+```
+
+If you are not familiar with the different technologies used in this project, please refer to the respective docs.
 
 - [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
 - [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
+    - We use [Supabase](https://supabase.com) to host our Postges database.
 - [Tailwind CSS](https://tailwindcss.com)
 - [tRPC](https://trpc.io)
-- Not part of original T3 stack: (Added by project members) 
 - [ShadCN](https://ui.shadcn.com/)
 
 ## Learn More
@@ -30,10 +49,18 @@ If you are not familiar with the different technologies used in this project, pl
 To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
 
 - [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
-
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
 
 ## How do I deploy this?
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+Follow the T3 deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+
+## Contributers
+
+- [Mina Boktor](https://github.com/minaboktor2628)
+- [James Walden](https://github.com/jdwalden74)
+- [Krishna Garg](https://github.com/kgkhs001)
+- [Lucas Lamenha](https://github.com/jlamenha)
+
+## Important links
+
+- [WPI homepage](https://www.wpi.edu/)

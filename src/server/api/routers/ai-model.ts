@@ -47,6 +47,7 @@ export const modelRoute = createTRPCRouter({
   }),
 
   getAllModels: publicProcedure.query(async ({ ctx }) => {
+    // await ctx.db.aiEval.deleteMany();
     return ctx.db.aiEval.findMany();
   }),
 });

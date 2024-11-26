@@ -3,6 +3,7 @@ import { pineconeRouter } from "@/server/api/routers/pinecone";
 import { modelRoute } from "./routers/ai-model";
 import { chatRouter } from "./routers/gemini";
 import { iqpUploadRouter } from "@/server/api/routers/iqp-upload";
+import { embeddingRouter } from "./routers/semantic-retriever";
 // import { chatRouter } from "./routers/gemini";
 
 /**
@@ -15,6 +16,7 @@ export const appRouter = createTRPCRouter({
   pinecone: pineconeRouter,
   chat: chatRouter,
   iqpUpload: iqpUploadRouter,
+  embedding: embeddingRouter
   // chat: chatRouter,
 });
 

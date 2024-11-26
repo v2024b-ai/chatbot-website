@@ -11,6 +11,10 @@ export const uploadFileData = z.object({
   displayName: z.string(),
 });
 
+export const promptWithDBSchema = z.object({
+  data: z.array(promptSchema)
+})
+
 export const propmptWithFilesSchema = z.object({
   data: z.array(promptSchema),
   files: uploadFileData,
