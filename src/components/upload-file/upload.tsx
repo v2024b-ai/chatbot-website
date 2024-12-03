@@ -15,14 +15,11 @@ export default function UploadButton() {
   const [transcript, setTranscript] = useState("");
   const { toast } = useToast();
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-
-    if (e.target.files)
-      setFile(e.target.files[0]);
-
+    if (e.target.files) setFile(e.target.files[0]);
   };
 
   async function downloadFile() {
-    const url = "https://podcast-gen.pages.dev/gen-pod/";
+    const url = "http://127.0.0.1:8000/gen-pod/";
 
     const formData = new FormData();
     if (file) {
@@ -51,7 +48,7 @@ export default function UploadButton() {
 
         // Get the transcript
 
-        const urlTrans = "https://podcast-gen.pages.dev/get-trans/";
+        const urlTrans = "http://127.0.0.1:8000/get-trans/";
         const trans = await axios.get(urlTrans);
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         setTranscript(trans.data);
@@ -83,7 +80,6 @@ export default function UploadButton() {
   return (
     <main className="flex h-full w-full flex-col items-center justify-center">
       <div className="flex space-x-4">
-
         <Input
           type="file"
           accept=".pdf"
