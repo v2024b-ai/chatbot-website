@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { LoadingSpinner } from "@/components/loading-spinner";
 import { useToast } from "@/hooks/use-toast";
+import { wait } from "next/dist/lib/wait";
 
 export default function UploadButton() {
   const [file, setFile] = useState<File | undefined>();
@@ -64,14 +65,26 @@ export default function UploadButton() {
               "Make sure you have the podcast generating program running on localhost:8000",
             variant: "destructive",
           });
+          setHasDownload(false);
+          await wait(3000);
+          toast({
+            title: "Checkout NotebookLM: https://notebooklm.google.com/",
+            variant: "default",
+          });
         } else {
           toast({
             title:
               "Check the API keys in the .env file on your running program",
             variant: "destructive",
           });
+          setHasDownload(false);
+          await wait(3000);
+          toast({
+            title: "Checkout NotebookLM: https://notebooklm.google.com/",
+            variant: "default",
+          });
         }
-        setHasDownload(false);
+
         return;
       }
     }
