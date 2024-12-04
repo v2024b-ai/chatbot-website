@@ -15,14 +15,14 @@ export const Models: Array<ModelCards> = [
   //     " conversation about the topics of the report",
   //   link: "/tools/csv-analyzer",
   // },
-  // {
-  //   title: "Podcast",
-  //   shortDesc: "Get a full podcast about any inputted report",
-  //   longDesc:
-  //     "Import a report file and generate an AI podcast on that" +
-  //     " specific report.",
-  //   link: "/tools/podcast",
-  // },
+  {
+    title: "Podcast",
+    shortDesc: "Get a full podcast about any inputted report",
+    longDesc:
+      "Import a report file and generate an AI podcast on that" +
+      " specific report.",
+    link: "/tools/podcast",
+  },
   {
     title: "CSV Query Tool Chatbot",
     shortDesc: "Query our CSVs and ask questions to our chatbot",
@@ -39,4 +39,4 @@ export const Models: Array<ModelCards> = [
       "Use the chatbot to ask questions after selecting a specific VPC IQP reports",
     link: "/tools/chatbotV2",
   },
-]
+];

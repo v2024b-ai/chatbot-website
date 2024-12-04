@@ -19,6 +19,7 @@ import CodeDisplayBlock from "@/components/chatbot/code-display-block";
 import { FormControl, FormField, FormItem, Form } from "../ui/form";
 import { Textarea } from "../ui/textarea";
 import cuid from "cuid";
+import { toast } from "@/hooks/use-toast";
 
 export default function ChatbotWithPDFChunking() {
   const [isGenerating, setIsGenerating] = useState(false);
@@ -27,9 +28,17 @@ export default function ChatbotWithPDFChunking() {
   const gemini = api.chat.promptWithPDFChunks.useMutation({
     onSuccess: (data) => {
       if (data) {
-        setMessages([...messages, makeNewMessage(data, "assistant")]);
+        setMessages([...messages, makeNewMessage(data as string, "assistant")]);
         setIsGenerating(false);
       }
+    },
+    onError: () => {
+      toast({
+        title:
+          "An error occurred. Please check your network connection and try again.",
+        variant: "destructive",
+      });
+      setIsGenerating(false);
     },
   });
 
@@ -149,4 +158,3 @@ const makeNewMessage = (
   content,
   role,
 });
-
