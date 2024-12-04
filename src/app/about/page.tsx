@@ -23,6 +23,7 @@ export default function AboutPage() {
                 {team.title}
               </h1>
               <h2 className="text-xl font-bold tracking-tight">{team.term}</h2>
+              <a href={team.website} target="_blank" className="text-lg underline">Visit their website here!</a>
               <p className="text-lg">{team.description}</p>
             </div>
 

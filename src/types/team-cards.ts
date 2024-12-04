@@ -3,6 +3,7 @@ import type { StaticImageData } from "next/image";
 export type TeamCards = {
   title: string;
   term: string;
+  website: string;
   description: string;
   member: MemberCards[];
 };

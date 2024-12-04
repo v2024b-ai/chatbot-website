@@ -30,6 +30,7 @@ export const B24Members: Array<MemberCards> = [
 export const B24Pioneers: TeamCards = {
   title: "ChatVPC",
   term: "B2024",
+  website: "https://sites.google.com/view/v24b-ai/home",
   description:
     "This was the first team to work on the ChatVPC project! They were the best.",
   member: B24Members,
